@@ -7,16 +7,15 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane fx:id="pageBookings" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="576.0" prefWidth="732.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.BookingController">
+<AnchorPane fx:id="pageBookings" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.BookingController">
    <children>
-      <ComboBox fx:id="cbCustomer" layoutX="125.0" layoutY="134.0" prefWidth="150.0" promptText="Customer Name" />
-      <ComboBox fx:id="cbTripType" layoutX="125.0" layoutY="318.0" prefWidth="150.0" promptText="Trip Type" />
-      <ComboBox fx:id="cbPackage" layoutX="448.0" layoutY="318.0" prefWidth="150.0" promptText="Package" />
-      <DatePicker fx:id="dtBookingStart" layoutX="432.0" layoutY="134.0" promptText="Booking Start Date:" />
-      <DatePicker fx:id="dtBookingEnd" layoutX="432.0" layoutY="195.0" promptText="Booking End Date:" />
-      <CheckBox fx:id="chkCustEmails" layoutX="235.0" layoutY="382.0" mnemonicParsing="false" text="Send Customer Emails For Upcoming Trips?" />
-      <Button fx:id="btnSubmit" layoutX="328.0" layoutY="443.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="68.0" text="Submit" textAlignment="CENTER">
+      <ComboBox fx:id="cbCustomer" layoutX="109.0" layoutY="130.0" prefWidth="150.0" promptText="Customer Name" />
+      <ComboBox fx:id="cbTripType" layoutX="109.0" layoutY="314.0" prefWidth="150.0" promptText="Trip Type" />
+      <ComboBox fx:id="cbPackage" layoutX="432.0" layoutY="314.0" prefWidth="150.0" promptText="Package" />
+      <DatePicker fx:id="dtBookingStart" layoutX="416.0" layoutY="130.0" promptText="Booking Start Date:" />
+      <DatePicker fx:id="dtBookingEnd" layoutX="416.0" layoutY="191.0" promptText="Booking End Date:" />
+      <CheckBox fx:id="chkCustEmails" layoutX="219.0" layoutY="378.0" mnemonicParsing="false" text="Send Customer Emails For Upcoming Trips?" />
+      <Button fx:id="btnSubmit" layoutX="312.0" layoutY="439.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="68.0" text="Submit" textAlignment="CENTER">
          <font>
             <Font size="14.0" />
          </font>
