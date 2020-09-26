@@ -22,6 +22,9 @@ import javafx.scene.layout.AnchorPane;
 import model.Booking;
 import model.TravelPackage;
 import model.TripType;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
+
 
 public class BookingController {
 
@@ -56,6 +59,18 @@ public class BookingController {
     private Button btnSubmit;
 
     @FXML
+    private TextArea txtPackageDescription;
+
+    @FXML
+    private Label txtTripType;
+
+    @FXML
+    private Label txtPackageName;
+
+    @FXML
+    private Label txtPackagePrice;
+
+    @FXML
     void initialize() {
         assert pageBookings != null : "fx:id=\"pageBookings\" was not injected: check your FXML file 'booking.fxml'.";
         assert cbCustomer != null : "fx:id=\"cbCustomer\" was not injected: check your FXML file 'booking.fxml'.";
@@ -65,6 +80,11 @@ public class BookingController {
         assert dtBookingEnd != null : "fx:id=\"dtBookingEnd\" was not injected: check your FXML file 'booking.fxml'.";
         assert chkCustEmails != null : "fx:id=\"chkCustEmails\" was not injected: check your FXML file 'booking.fxml'.";
         assert btnSubmit != null : "fx:id=\"btnSubmit\" was not injected: check your FXML file 'booking.fxml'.";
+        assert txtPackageDescription != null : "fx:id=\"txtPackageDescription\" was not injected: check your FXML file 'booking.fxml'.";
+        assert txtTripType != null : "fx:id=\"txtTripType\" was not injected: check your FXML file 'booking.fxml'.";
+        assert txtPackageName != null : "fx:id=\"txtPackageName\" was not injected: check your FXML file 'booking.fxml'.";
+        assert txtPackagePrice != null : "fx:id=\"txtPackagePrice\" was not injected: check your FXML file 'booking.fxml'.";
+
 
         Connection conn = connectDB();
         ObservableList<TravelPackage> packageList = FXCollections.observableArrayList();
@@ -94,19 +114,21 @@ public class BookingController {
             throwables.printStackTrace();
         }
 
-//        cbPackage.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<TravelPackage>() {
-//            @Override
-//            public void changed(ObservableValue<? extends TravelPackage> observableValue, TravelPackage travelpackage, TravelPackage t1) {
-//                txtAgentId.setText(t1.getAgentId() + "");
-//                txtAgtFirstName.setText(t1.getAgtFirstName());
-//                txtAgtMiddleInitial.setText(t1.getAgtMiddleInitial());
-//                txtAgtLastName.setText(t1.getAgtLastName());
-//                txtAgtBusPhone.setText(t1.getAgtBusPhone());
-//                txtAgtEmail.setText(t1.getAgtEmail());
-//                txtAgtPosition.setText(t1.getAgtPosition());
-//                txtAgencyId.setText(t1.getAgencyId() + "");
-//            }
-//        });
+        cbTripType.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<TripType>() {
+            @Override
+            public void changed(ObservableValue<? extends TripType> observableValue, TripType triptype, TripType t1) {
+                txtTripType.setText(t1.getTripTypeName());
+            }
+        });
+
+        cbPackage.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<TravelPackage>() {
+            @Override
+            public void changed(ObservableValue<? extends TravelPackage> observableValue, TravelPackage travelpackage, TravelPackage t1) {
+                txtPackageName.setText(t1.getPkgName());
+                txtPackagePrice.setText(t1.getPkgBasePrice() + "");
+                txtPackageDescription.setText(t1.getPkgDesc());
+            }
+        });
 
     }
     private Connection connectDB() {
