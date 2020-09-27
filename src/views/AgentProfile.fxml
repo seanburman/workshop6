@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.Tooltip?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<FlowPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="603.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AgentProfile">
+   <children>
+      <VBox prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: gainsboro;">
+         <padding>
+            <Insets bottom="30.0" left="30.0" right="30.0" top="100.0" />
+         </padding>
+         <children>
+            <HBox alignment="CENTER" prefHeight="95.0" prefWidth="756.0" style="-fx-background-color: whitesmoke;">
+               <children>
+                  <Label alignment="CENTER" prefHeight="38.0" prefWidth="167.0" text="Agent Profile">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+               </children>
+            </HBox>
+            <HBox prefHeight="333.0" prefWidth="762.0" style="-fx-background-color: white;">
+               <children>
+                  <Pane prefHeight="316.0" prefWidth="622.0" style="-fx-background-color: white;" HBox.hgrow="ALWAYS">
+                     <children>
+                        <Label alignment="CENTER_RIGHT" layoutX="87.0" layoutY="31.0" prefHeight="25.0" prefWidth="103.0" text="First Name">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Label>
+                        <Label alignment="CENTER_RIGHT" layoutX="87.0" layoutY="96.0" prefHeight="25.0" prefWidth="103.0" text="Last Name">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Label>
+                        <Label alignment="CENTER_RIGHT" layoutX="65.0" layoutY="125.0" prefHeight="25.0" prefWidth="126.0" text="Business Phone">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Label>
+                        <Label alignment="CENTER_RIGHT" layoutX="108.0" layoutY="161.0" prefHeight="17.0" prefWidth="82.0" text="Email">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="txtAgtFirstName" layoutX="200.0" layoutY="32.0" prefHeight="25.0" prefWidth="142.0" />
+                        <TextField fx:id="txtAgtLastName" layoutX="199.0" layoutY="95.0" prefHeight="25.0" prefWidth="142.0" />
+                        <TextField fx:id="txtAgtBusPhone" layoutX="200.0" layoutY="127.0" prefHeight="25.0" prefWidth="118.0" />
+                        <TextField fx:id="txtAgtEmail" layoutX="200.0" layoutY="161.0" prefHeight="25.0" prefWidth="190.0" />
+                        <Button fx:id="btnAgtAddPhone" layoutX="319.0" layoutY="128.0" mnemonicParsing="false" text="+">
+                           <tooltip>
+                              <Tooltip text="Add Home Phone" />
+                           </tooltip>
+                        </Button>
+                        <Button fx:id="btnAgtProfileRefresh" layoutX="431.0" layoutY="21.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="63.0" text="(refresh)" />
+                        <TextField fx:id="txtAgtMiddleInitial" layoutX="199.0" layoutY="64.0" prefHeight="25.0" prefWidth="142.0" />
+                        <Label alignment="CENTER_RIGHT" layoutX="86.0" layoutY="65.0" prefHeight="25.0" prefWidth="103.0" text="Middle Initial">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Label>
+                        <Label alignment="CENTER_RIGHT" layoutX="72.0" layoutY="194.0" prefHeight="25.0" prefWidth="118.0" text="Agent Position">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="txtAgtPosition" layoutX="200.0" layoutY="194.0" prefHeight="25.0" prefWidth="142.0" />
+                        <Label alignment="CENTER_RIGHT" layoutX="70.0" layoutY="230.0" prefHeight="25.0" prefWidth="118.0" text="Agency ID">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Label>
+                        <ComboBox fx:id="cbAgencyId" layoutX="200.0" layoutY="230.0" prefHeight="25.0" prefWidth="70.0" />
+                     </children>
+                     <HBox.margin>
+                        <Insets left="125.0" right="100.0" />
+                     </HBox.margin>
+                  </Pane>
+               </children>
+            </HBox>
+            <HBox alignment="BOTTOM_RIGHT" prefHeight="72.0" prefWidth="739.0" style="-fx-background-color: whitesmoke;">
+               <children>
+                  <Button fx:id="btnAgtProfileEdit" layoutX="493.0" layoutY="69.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="98.0" text="Edit Profile">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets bottom="5.0" left="15.0" right="15.0" top="18.0" />
+                     </HBox.margin>
+                  </Button>
+                  <Button fx:id="btnAgtProfileSave" mnemonicParsing="false" prefHeight="37.0" prefWidth="99.0" text="Save">
+                     <HBox.margin>
+                        <Insets bottom="5.0" left="15.0" right="15.0" top="18.0" />
+                     </HBox.margin>
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="btnAgtProfileCancel" layoutX="507.0" layoutY="30.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="98.0" text="Cancel">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets bottom="5.0" left="15.0" right="15.0" top="18.0" />
+                     </HBox.margin>
+                  </Button>
+               </children>
+               <padding>
+                  <Insets bottom="20.0" right="25.0" />
+               </padding>
+            </HBox>
+         </children>
+      </VBox>
+   </children>
+</FlowPane>
