@@ -1,19 +1,19 @@
 package model;
 
 public class TripType {
-    private Character tripTypeId;
+    private String tripTypeId;
     private String tripTypeName;
 
-    public TripType(Character tripTypeId, String tripTypeName) {
+    public TripType(String tripTypeId, String tripTypeName) {
         this.tripTypeId = tripTypeId;
         this.tripTypeName = tripTypeName;
     }
 
-    public Character getTripTypeId() {
+    public String getTripTypeId() {
         return tripTypeId;
     }
 
-    public void setTripTypeId(Character tripTypeId) {
+    public void setTripTypeId(String tripTypeId) {
         this.tripTypeId = tripTypeId;
     }
 
@@ -23,5 +23,10 @@ public class TripType {
 
     public void setTripTypeName(String tripTypeName) {
         this.tripTypeName = tripTypeName;
+    }
+
+    @Override
+    public String toString() {
+        return tripTypeName;
     }
 }
