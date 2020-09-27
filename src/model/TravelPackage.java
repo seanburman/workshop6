@@ -5,19 +5,21 @@ import java.sql.Date;
 
 public class TravelPackage {
     private int packageId;
-    private Date PkgStartDate;
-    private Date PkgEndDate;
-    private String PkgDesc;
-    private Double PkgBasePrice;
-    private Double PkgAgencyCommision;
+    private String pkgName;
+    private Date pkgStartDate;
+    private Date pkgEndDate;
+    private String pkgDesc;
+    private Double pkgBasePrice;
+    private Double pkgAgencyCommission;
 
-    public TravelPackage(int packageId, Date pkgStartDate, Date pkgEndDate, String pkgDesc, Double pkgBasePrice, Double pkgAgencyCommision) {
+    public TravelPackage(int packageId, String pkgName, Date pkgStartDate, Date pkgEndDate, String pkgDesc, Double pkgBasePrice, Double pkgAgencyCommission) {
         this.packageId = packageId;
-        PkgStartDate = pkgStartDate;
-        PkgEndDate = pkgEndDate;
-        PkgDesc = pkgDesc;
-        PkgBasePrice = pkgBasePrice;
-        PkgAgencyCommision = pkgAgencyCommision;
+        this.pkgName = pkgName;
+        this.pkgStartDate = pkgStartDate;
+        this.pkgEndDate = pkgEndDate;
+        this.pkgDesc = pkgDesc;
+        this.pkgBasePrice = pkgBasePrice;
+        this.pkgAgencyCommission = pkgAgencyCommission;
     }
 
     public int getPackageId() {
@@ -28,43 +30,56 @@ public class TravelPackage {
         this.packageId = packageId;
     }
 
+    public String getPkgName() {
+        return pkgName;
+    }
+
+    public void setPkgName(String pkgName) {
+        this.pkgName = pkgName;
+    }
+
     public Date getPkgStartDate() {
-        return PkgStartDate;
+        return pkgStartDate;
     }
 
     public void setPkgStartDate(Date pkgStartDate) {
-        PkgStartDate = pkgStartDate;
+        this.pkgStartDate = pkgStartDate;
     }
 
     public Date getPkgEndDate() {
-        return PkgEndDate;
+        return pkgEndDate;
     }
 
     public void setPkgEndDate(Date pkgEndDate) {
-        PkgEndDate = pkgEndDate;
+        this.pkgEndDate = pkgEndDate;
     }
 
     public String getPkgDesc() {
-        return PkgDesc;
+        return pkgDesc;
     }
 
     public void setPkgDesc(String pkgDesc) {
-        PkgDesc = pkgDesc;
+        this.pkgDesc = pkgDesc;
     }
 
     public Double getPkgBasePrice() {
-        return PkgBasePrice;
+        return pkgBasePrice;
     }
 
     public void setPkgBasePrice(Double pkgBasePrice) {
-        PkgBasePrice = pkgBasePrice;
+        this.pkgBasePrice = pkgBasePrice;
     }
 
-    public Double getPkgAgencyCommision() {
-        return PkgAgencyCommision;
+    public Double getPkgAgencyCommission() {
+        return pkgAgencyCommission;
     }
 
-    public void setPkgAgencyCommision(Double pkgAgencyCommision) {
-        PkgAgencyCommision = pkgAgencyCommision;
+    public void setPkgAgencyCommission(Double pkgAgencyCommission) {
+        this.pkgAgencyCommission = pkgAgencyCommission;
+    }
+
+    @Override
+    public String toString() {
+        return pkgName;
     }
 }
