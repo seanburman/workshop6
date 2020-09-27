@@ -3,7 +3,7 @@ package model;
 
 import java.sql.Date;
 
-public class travelpackage {
+public class TravelPackage {
     private int packageId;
     private Date PkgStartDate;
     private Date PkgEndDate;
@@ -11,7 +11,7 @@ public class travelpackage {
     private Double PkgBasePrice;
     private Double PkgAgencyCommision;
 
-    public travelpackage(int packageId, Date pkgStartDate, Date pkgEndDate, String pkgDesc, Double pkgBasePrice, Double pkgAgencyCommision) {
+    public TravelPackage(int packageId, Date pkgStartDate, Date pkgEndDate, String pkgDesc, Double pkgBasePrice, Double pkgAgencyCommision) {
         this.packageId = packageId;
         PkgStartDate = pkgStartDate;
         PkgEndDate = pkgEndDate;
