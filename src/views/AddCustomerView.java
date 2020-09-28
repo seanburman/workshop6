@@ -12,7 +12,7 @@ public class AddCustomerView extends Application {
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("AddCustomer.fxml"));
         primaryStage.setTitle("Add A Customer");
-        primaryStage.setScene(new Scene(root, 800, 600));
+        primaryStage.setScene(new Scene(root, 800, 475));
         primaryStage.show();
     }
 
