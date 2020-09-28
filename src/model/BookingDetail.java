@@ -11,8 +11,8 @@ public class BookingDetail {
     private Date tripEnd;
     private String description;
     private String destination;
-    private Currency basePrice;
-    private Currency agencyCommission;
+    private double basePrice;
+    private double agencyCommission;
     private int bookingId;
     private String regionId;
     private String classId;
@@ -20,7 +20,7 @@ public class BookingDetail {
     private String productSupplierId;
 
     public BookingDetail(int bookingDetailId, int itineraryNo, Date tripstart, Date tripEnd,
-                         String description, String destination, Currency basePrice, Currency agencyCommission,
+                         String description, String destination, double basePrice, double agencyCommission,
                          int bookingId, String regionId, String classId, String feeId, String productSupplierId) {
         this.bookingDetailId = bookingDetailId;
         this.itineraryNo = itineraryNo;
@@ -85,19 +85,19 @@ public class BookingDetail {
         this.destination = destination;
     }
 
-    public Currency getBasePrice() {
+    public double getBasePrice() {
         return basePrice;
     }
 
-    public void setBasePrice(Currency basePrice) {
+    public void setBasePrice(double basePrice) {
         this.basePrice = basePrice;
     }
 
-    public Currency getAgencyCommission() {
+    public double getAgencyCommission() {
         return agencyCommission;
     }
 
-    public void setAgencyCommission(Currency agencyCommission) {
+    public void setAgencyCommission(double agencyCommission) {
         this.agencyCommission = agencyCommission;
     }
 
