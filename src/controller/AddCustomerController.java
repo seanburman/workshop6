@@ -1,20 +1,31 @@
 package controller;
 
-import java.net.URL;
-import java.util.ResourceBundle;
-
+import Validator.Validator;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
-import model.Province;
+import javafx.stage.Stage;
 
-public class AddCustomerController {
+import javax.swing.*;
+import java.io.IOException;
+import java.net.URL;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.ResourceBundle;
+
+public class AddCustomerController extends Validator {
 
     @FXML
     private ResourceBundle resources;
@@ -53,10 +64,10 @@ public class AddCustomerController {
     private TextField txt_CustCity;
 
     @FXML
-    private ComboBox<Province> cb_CustProvince;
+    private ComboBox<String> cb_CustProvince;
 
     @FXML
-    private ComboBox<?> cb_CustCountry;
+    private ComboBox<String> cb_CustCountry;
 
     @FXML
     private Button btn_AddCustomerRefresh;
@@ -85,69 +96,243 @@ public class AddCustomerController {
         assert btn_AddCustomerSave != null : "fx:id=\"btn_AddCustomerSave\" was not injected: check your FXML file 'AddCustomer.fxml'.";
         assert btn_AddCustomerCancel != null : "fx:id=\"btn_AddCustomerCancel\" was not injected: check your FXML file 'AddCustomer.fxml'.";
 
-        //idk about this
-        ObservableList<Province> provinceList = FXCollections.observableArrayList();
-        provinceList.add(new Province("British Columbia", "BC"));
-        provinceList.add(new Province("Alberta", "AB"));
-        provinceList.add(new Province("Saskatchewan", "SK"));
-        provinceList.add(new Province("Manitoba", "MB"));
-        provinceList.add(new Province("Ontario", "ON"));
-        provinceList.add(new Province("Quebec", "QC"));
-        provinceList.add(new Province("Nova Scotia", "NS"));
-        provinceList.add(new Province("New Brunswick", "NB"));
-        provinceList.add(new Province("Prince Edward Island", "PE"));
-        provinceList.add(new Province("Newfoundland and Labrador", "NL"));
-        provinceList.add(new Province("Northwest Territories", "NT"));
-        provinceList.add(new Province("Nunavut", "NU"));
-        provinceList.add(new Province("Yukon", "YT"));
+        pnl_CustHomePhone.setVisible(false);
+        disableFields();
 
-//        private void displayProvince(Province p){
-//            cb_CustProvince.setText(c.getProvinceName);
-//        }
-//
-//        cb_CustProvince.setItems(provinceList);
-//        cb_CustProvince.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
-//        displayProvince(Province.get(0));
-//        cb_CustProvince.setOnMouseClicked(new EventHandler<MouseEvent>() {
-//            @Override
-//            public void handle(MouseEvent mouseEvent) {
-//                Province p = cb_CustProvince.getSelectionModel().getSelectedItem();
-//                displayProvince(p);
-//            }
-//        });
-//
+        ////-------------------------------------------PROVINCE DROP DOWN-----------------------------------------////
+
+        ArrayList<String> province = new ArrayList<>();                //Instantiate new list to hold country names
+        province.add("BC");                              //       populate list with countries
+        province.add("AB");
+        province.add("SK");
+        province.add("MB");
+        province.add("ON");
+        province.add("QC");
+        province.add("NS");
+        province.add("NB");
+        province.add("PE");
+        province.add("NL");
+        province.add("NT");
+        province.add("NU");
+        province.add("YT");
+
+        ObservableList<String> provinceList = FXCollections.observableArrayList(province);
+        cb_CustProvince.setItems(provinceList);
+
+        cb_CustProvince.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                String p = cb_CustProvince.getSelectionModel().getSelectedItem();
+            }
+        });
+
+        ////-------------------------------------COUNTRY DROP DOWN----------------------------------------------////
+        ArrayList<String> country = new ArrayList<>();
+        country.add("Canada");
+        ObservableList<String> countryList = FXCollections.observableArrayList(country);
+        cb_CustCountry.setItems(countryList);
+
+        cb_CustCountry.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                String c = cb_CustCountry.getSelectionModel().getSelectedItem();
+            }
+        });
+
+        ////----------------------ENABLE FIELDS /  ON FOCUS EVENT LISTENER---------------------------------------////
+
+        txt_CustEmail.focusedProperty().addListener((ov, oldV, newV) -> {
+            if (!newV) { // focus lost
+                //check if email  && phone number are .isEmpty(false)
+                if (!txt_CustEmail.getText().isEmpty() && !txt_CustBusPhone.getText().isEmpty()) {
+                    enableFields();
+                }
+
+            }
+        });
+        txt_CustBusPhone.focusedProperty().addListener((ov, oldV, newV) -> {
+            if (!newV) { // focus lost
+                //check if email  && phone number are .isEmpty(false)
+                if (!txt_CustEmail.getText().isEmpty()&& !txt_CustBusPhone.getText().isEmpty()) {
+                    enableFields();
+                }
+            }
+        });
+
+
+        ////-------------------------------------- ADD HOME PHONE BUTTON ------------------------------------------------////
+
+        btn_CustAddPhone.setOnMouseClicked(new EventHandler<MouseEvent>() {//when the user click the [+] button,
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                if (!pnl_CustHomePhone.isVisible()) {                //IF the home phone panel is not visible
+                    pnl_CustHomePhone.setVisible(true);                     //Make the home phone panel visible
+                    btn_CustAddPhone.setText("-");                          //Also, Change the button to a 'minimize' symbol
+
+                } else if (pnl_CustHomePhone.isVisible()) {          //ELSE IF,  the home phone panel is visible,
+                    //then we need to check another condition,
+
+                    if (txt_CustHomePhone.getText().isEmpty()) {      //IF the home phone text box is empty
+                        pnl_CustHomePhone.setVisible(false);                //then clicking the button when the panel is visible, should make it invisible
+                        btn_CustAddPhone.setText("+");                      //and also restore the ' + ' sign as the text for the button
+
+                    } else if (!txt_CustHomePhone.getText().isEmpty()) {                                      //ELSE IF , the text box is not empty
+                        JOptionPane.showMessageDialog(null, "Clear Home Phone to minimize",   //present the user with a message box
+                                "Home Phone : Warning", JOptionPane.CLOSED_OPTION);                              //requiring the field to be empty to minimize
+                    }
+                }
+            }
+        });
+
+        ////-----------------------------------------------REFRESH BUTTON---------------------------------------------------////
+
         btn_AddCustomerRefresh.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-
-                //clear all fields
-                //refocus onto customer phone number field
-                // first name, last name, Address, Postal, city, province, country disabled untill Phone & email are filled
+                clearFields();
+                txt_CustBusPhone.isFocused();
+                disableFields();
             }
-
         });
 
+        ////--------------------------------------------------CANCEL BUTTON--------------------------------------------------////
         btn_AddCustomerCancel.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                // close Add a customer form,
-                //open agent dashboard
+                try {
+                    Stage stage = (Stage) btn_AddCustomerCancel.getScene().getWindow();
+                    stage.close();
+                    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../views/booking.fxml"));
+                    Parent root1 = (Parent) fxmlLoader.load();
+                    stage = new Stage();
+                    stage.setScene((new Scene(root1)));
+                    stage.show();
+                    JOptionPane.showMessageDialog(null, "Redirecting to (view name) page",
+                            "Redirecting : Warning", JOptionPane.CLOSED_OPTION);
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         });
+
+
+        ////--------------------------------------------------SAVE BUTTON-----------------------------------------------////
 
         btn_AddCustomerSave.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
-            public void handle(MouseEvent mouseEvent) {
-                //check all required fields are completed
-                //save to db
-                //close add customer form
+            public void handle(MouseEvent event) {
+                if(!txt_CustFName.getText().isEmpty() && !txt_CustLName.getText().isEmpty() && !txt_CustEmail.getText().isEmpty() && !txt_CustBusPhone.getText().isEmpty() && !txt_CustAddress.getText().isEmpty() && !txt_CustCity.getText().isEmpty() && !txt_CustPostal.getText().isEmpty() && !cb_CustProvince.getValue().isEmpty() && !cb_CustCountry.getValue().isEmpty()){
+                    Connection conn = connectDB();
+                    String sql = "INSERT INTO `customers` SET `CustFirstName`=?, `CustLastName`=?, `CustAddress`=?, `CustCity`=?, `CustProv`=?, `CustPostal`=?, `CustCountry`=?, `CustHomePhone`=?, `CustBusPhone`=?, `CustEmail`=?";
+                    try {
+                        PreparedStatement stmt = conn.prepareStatement(sql);
+                        stmt.setString(1, txt_CustFName.getText());
+                        stmt.setString(2, txt_CustLName.getText());
+                        stmt.setString(3, txt_CustAddress.getText());
+                        stmt.setString(4, txt_CustCity.getText());
+                        stmt.setString(5, cb_CustProvince.getValue());
+                        stmt.setString(6, txt_CustPostal.getText());
+                        stmt.setString(7, cb_CustCountry.getValue());
+                        stmt.setString(8, txt_CustHomePhone.getText());
+                        stmt.setString(9, txt_CustBusPhone.getText());
+                        stmt.setString(10, txt_CustEmail.getText());
 
-                //open book a trip
+                        int numRows = stmt.executeUpdate();
+                        if(numRows == 0)
+                        {
+                            System.out.println("save was unsuccessfull");
+                        }
+                        else {
+                            System.out.println("save was successful! WOOHOO");
+                        }
+                        conn.close();
+                    }catch (SQLException throwables) {
+                        throwables.printStackTrace();
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(null, "FILL IN ALL FIELDS!!",
+                            "Warning", JOptionPane.CLOSED_OPTION);
+                }
+
+                try {
+                    Stage stage = (Stage) btn_AddCustomerSave.getScene().getWindow();
+                    stage.close();
+                    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../views/booking.fxml"));
+                    Parent root1 = (Parent) fxmlLoader.load();
+                    stage = new Stage();
+                    stage.setScene((new Scene(root1)));
+                    stage.show();
+                    JOptionPane.showMessageDialog(null, "Redirecting to (view name) page",
+                            "Redirecting : Warning", JOptionPane.CLOSED_OPTION);
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         });
 
+    } //ends initialize(), all 'stand alone' methods go below this!
+
+    private Connection connectDB() {
+        Connection c = null;
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            c = DriverManager.getConnection("jdbc:mysql://localhost:3306/travelexperts","TEAdmin","password");
+        } catch (ClassNotFoundException |
+                SQLException e){
+            e.printStackTrace();
+            System.out.println("DB connection failed");
+        }
+        return c;
     }
+        public void clearFields() {
+            txt_CustFName.setText("");
+            txt_CustLName.setText("");
+            txt_CustBusPhone.setText("");
+            txt_CustHomePhone.setText("");
+            txt_CustEmail.setText("");
+            txt_CustAddress.setText("");
+            txt_CustPostal.setText("");
+            txt_CustCity.setText("");
+            pnl_CustHomePhone.setVisible(false);
+        }
+
+        public void disableFields() {
+            txt_CustFName.setDisable(true);
+            txt_CustLName.setDisable(true);
+            txt_CustAddress.setDisable(true);
+            txt_CustCity.setDisable(true);
+            txt_CustPostal.setDisable(true);
+            cb_CustCountry.setDisable(true);
+            cb_CustProvince.setDisable(true);
+            btn_CustAddPhone.setDisable(true);
+        }
+
+        public void enableFields() {
+            txt_CustFName.setDisable(false);
+            txt_CustLName.setDisable(false);
+            txt_CustAddress.setDisable(false);
+            txt_CustCity.setDisable(false);
+            txt_CustPostal.setDisable(false);
+            cb_CustCountry.setDisable(false);
+            cb_CustProvince.setDisable(false);
+            btn_CustAddPhone.setDisable(false);
+        }
+
+        ////----------------------------------------Validation Method-----------------------------////
+        public void validateAllFields(){
+            txt_CustFName.getText(); // Letter Values only, no numbers or special characters
+            txt_CustLName.getText(); // Letter values only, no numbers or special characters
+            txt_CustAddress.getText(); // Letter and number values, no special characters?
+            txt_CustCity.getText(); //Letter values only no numbers or special characters
+            txt_CustPostal.getText(); //canadian postal Regex
+        }
 }
+
+
+////////////--------------------NOTES AND OTHER JUNK - DELETE DELETE DELETE DELETE ---------------------------////////////
+
 
 //one controller to edit and add
         //if customer exists (
