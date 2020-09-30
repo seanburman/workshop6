@@ -21,7 +21,7 @@
          <children>
             <HBox alignment="CENTER" prefHeight="95.0" prefWidth="756.0" style="-fx-background-color: whitesmoke;">
                <children>
-                  <Label alignment="CENTER" prefHeight="38.0" prefWidth="167.0" text="Add a Customer">
+                  <Label fx:id="lbl_Title" alignment="CENTER" prefHeight="38.0" prefWidth="167.0" text="Add a Customer">
                      <font>
                         <Font size="18.0" />
                      </font>
