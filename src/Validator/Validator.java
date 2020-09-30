@@ -90,7 +90,7 @@ public class Validator {
         return isValid;
     }
     //matches Canadian postal code in this format - T2E 0K6
-    public static boolean isValidPostalCode(TextField tf, String fieldName, String message) {
+    public static boolean isValidPostalCode(TextField tf) { //TextField tf, String fieldName, String message
         boolean isValid = true;
 
         String postalCode = tf.getText();
@@ -99,7 +99,7 @@ public class Validator {
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(postalCode);
         if (!matcher.matches()) {
-            createAlert(tf, fieldName, message);
+//            createAlert(tf, fieldName, message);
             isValid = false;
         }
         return isValid;
