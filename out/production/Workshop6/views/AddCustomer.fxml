@@ -61,7 +61,7 @@
                               <Tooltip text="Add Home Phone" />
                            </tooltip>
                         </Button>
-                        <Pane fx:id="pnl_CustHomePhone" layoutX="77.0" layoutY="150.0" prefHeight="30.0" prefWidth="265.0" style="-fx-background-color: gainsboro;">
+                        <Pane fx:id="pnl_CustHomePhone" layoutX="77.0" layoutY="150.0" prefHeight="30.0" prefWidth="265.0">
                            <children>
                               <TextField fx:id="txt_CustHomePhone" layoutX="123.0" layoutY="2.0" prefHeight="25.0" prefWidth="118.0" />
                               <Label alignment="CENTER_RIGHT" layoutX="14.0" layoutY="2.0" prefHeight="25.0" prefWidth="103.0" text="Home Phone">

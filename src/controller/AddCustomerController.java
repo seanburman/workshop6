@@ -99,21 +99,18 @@ public class AddCustomerController {
         assert btn_AddCustomerSave != null : "fx:id=\"btn_AddCustomerSave\" was not injected: check your FXML file 'AddCustomer.fxml'.";
         assert btn_AddCustomerCancel != null : "fx:id=\"btn_AddCustomerCancel\" was not injected: check your FXML file 'AddCustomer.fxml'.";
 
-        //lbl_Title
-
-        //boolean isEditPage = false   - like a switch for add and edit page, DEFAULT Add page ,
-        //ehsans page will send a token that changes this to true, rendering it an edit page
-        //throughout this code anything that specifically applies to the save page will be wrapped
-        //in a conditional statement with that boolean value to check for true (edit page)
-
-
         // -------------------- CASING ------- NEED TO FIX
                 // Methods should be PascalCase
                 // Variables should be camelCase
                 // Constants are all UPPERCASE
 
-        int custID = 152; //CHANGE THIS TO THE CUSTOMER YOU WANT TO EDIT -- NOT YET WORKING <3
-        boolean isEditPage = true;
+        int custID = 149; //CHANGE THIS TO THE CUSTOMER YOU WANT TO EDIT -- NOT YET WORKING <3
+
+        boolean isEditPage = true; // (FALSE = ADD CUSTOMER PAGE, TRUE = EDIT PAGE)
+        //boolean isEditPage = false   - like a switch for add and edit page, DEFAULT Add page ,
+        //ehsans page will send a token that changes this to true, rendering it an edit page
+        //throughout this code anything that specifically applies to the save page will be wrapped
+        //in a conditional statement with that boolean value to check for true (edit page)
 
         if(isEditPage){
             btn_AddCustomerRefresh.setVisible(false);
@@ -162,9 +159,9 @@ public class AddCustomerController {
             }
         });
 
+        ////-->>>>>>>>>>>>>>>>>>>>>>>>>>>----FOCUS EVENT LISTENER + VALIDATION-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<--////
 
-        ////-->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>----FOCUS EVENT LISTENER-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<--////
-
+        ///-------------CUSTOMER EMAIL-------------///
         txt_CustEmail.focusedProperty().addListener((ov, oldV, newV) -> {
         if (isEditPage){ //if returns true
             //check if valid email address
@@ -204,7 +201,7 @@ public class AddCustomerController {
          }
       });
 
-
+        ///-------------CUSTOMER BUSINESS PHONE-------------///
         txt_CustBusPhone.focusedProperty().addListener((ov, oldV, newV) -> {
             if (isEditPage){ //if returns true
                 //check if valid phone using validator
@@ -242,6 +239,79 @@ public class AddCustomerController {
                 }
             }
         });
+
+        ///-------------CUSTOMER HOME PHONE-------------///
+        txt_CustHomePhone.focusedProperty().addListener((ov, oldV, newV) -> {
+            if (Validator.isValidPhone(txt_CustHomePhone)) {
+                txt_CustHomePhone.setStyle("-fx-border-color: null");
+            }
+            else {
+                txt_CustHomePhone.setStyle("-fx-border-color: red");
+            }
+        });
+
+        ///-------------CUSTOMER FIRST NAME-------------///
+        txt_CustFName.focusedProperty().addListener((ov, oldV, newV) -> {
+            if (!newV){
+                if (!txt_CustFName.getText().isEmpty()){
+                    txt_CustFName.setStyle("-fx-border-color: null");
+                }
+                else {
+                    txt_CustFName.setStyle("-fx-border-color: red");
+                }
+            }
+                });
+
+        ///-------------CUSTOMER FIRST NAME-------------///
+        txt_CustLName.focusedProperty().addListener((ov, oldV, newV) -> {
+            if (!newV){
+                if (!txt_CustLName.getText().isEmpty()){
+                    txt_CustLName.setStyle("-fx-border-color: null");
+                }
+                else {
+                    txt_CustLName.setStyle("-fx-border-color: red");
+                }
+            }
+        });
+
+        ///-------------CUSTOMER ADDRESS-------------///
+        txt_CustAddress.focusedProperty().addListener((ov, oldV, newV) -> {
+            if (!newV){
+                if (!txt_CustAddress.getText().isEmpty() ){
+                    txt_CustAddress.setStyle("-fx-border-color: null");
+                }
+                else {
+                    txt_CustAddress.setStyle("-fx-border-color: red");
+                }
+            }
+        });
+
+        ///-------------CUSTOMER POSTAL-------------///
+        txt_CustPostal.focusedProperty().addListener((ov, oldV, newV) -> {
+            if (!newV){
+                if (!txt_CustPostal.getText().isEmpty() && Validator.isValidPostalCode(txt_CustPostal)){
+                    txt_CustPostal.setStyle("-fx-border-color: null");
+                }
+                else{
+                    txt_CustPostal.setStyle("-fx-border-color: red");
+                }
+            }
+        });
+
+        ///-------------CUSTOMER CITY-------------///
+        txt_CustCity.focusedProperty().addListener((ov, oldV, newV) -> {
+            if (!newV){
+                if (!txt_CustCity.getText().isEmpty()){
+                    txt_CustCity.setStyle("-fx-border-color: null");
+                }
+                else {
+                    txt_CustCity.setStyle("-fx-border-color: red");
+                }
+            }
+        });
+
+
+
 
         ////-------------------------------------- ADD HOME PHONE BUTTON ------------------------------------------------////
 
@@ -314,7 +384,7 @@ public class AddCustomerController {
                         Connection conn = connectDB();
                         //SQL string for insertion
                         String sql = "UPDATE `customers` SET `CustFirstName`=?, `CustLastName`=?, `CustAddress`=?, `CustCity`=?, `CustProv`=?, " +
-                                "`CustPostal`=?, `CustCountry`=?, `CustHomePhone`=?, `CustBusPhone`=?, `CustEmail`=? WHERE 'CustomerId = custID'"; //should be the cust ID from ehsans search view
+                                "`CustPostal`=?, `CustCountry`=?, `CustHomePhone`=?, `CustBusPhone`=?, `CustEmail`=? WHERE `CustomerId` = ?"; //should be the cust ID from ehsans search view
                         try {
                             PreparedStatement stmt = conn.prepareStatement(sql);
                             stmt.setString(1, txt_CustFName.getText());         //assigns the text values from the form to the sql query
@@ -327,6 +397,7 @@ public class AddCustomerController {
                             stmt.setString(8, txt_CustHomePhone.getText());
                             stmt.setString(9, txt_CustBusPhone.getText());
                             stmt.setString(10, txt_CustEmail.getText());
+                            stmt.setInt(11, custID);
 
                             int numRows = stmt.executeUpdate();                             //this is to check if the insert was successfull
                             if (numRows == 0) {
@@ -521,7 +592,7 @@ public class AddCustomerController {
                 Validator.isValidEmail(txt_CustEmail) &&
                 Validator.isValidPhone(txt_CustBusPhone) &&
                 Validator.isValidPhone(txt_CustHomePhone) &&
-                        Validator.isValidPostalCode(txt_CustPostal,"Postal Code", "This is not a valid Postal code")
+                        Validator.isValidPostalCode(txt_CustPostal)
 
                 );
     }
@@ -531,6 +602,8 @@ public class AddCustomerController {
 //        int custID = 0;
 //        custID.set(c.getCustomerId());
         txt_CustFName.setText(c.getCustFirstName());
+        txt_CustLName.setText(c.getCustLastName());
+
        txt_CustEmail.setText(c.getCustEmail());
 
 
