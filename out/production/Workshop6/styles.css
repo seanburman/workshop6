@@ -1,0 +1,44 @@
+Button.dashboard {
+	-fx-background-color: "#FDF344";
+	-fx-pref-height: 50;
+	-fx-pref-width: 300;
+}
+
+Button.dashboard:hover {
+	-fx-background-color: "#F0E637";
+}
+
+Button {
+	-fx-background-color: "#FDF344";
+}
+
+Button:hover {
+	-fx-background-color: "#F0E637";
+}
+
+TextField {
+	-fx-background-color: "#FFFFFF";
+	-fx-border-color: "#000000";
+	-fx-border-radius: 4;
+	-fx-border-width: 2;
+}
+
+ComboBox {
+	-fx-background-color: "#FFFFFF";
+	-fx-border-color: "#000000";
+	-fx-border-radius: 4;
+	-fx-border-width: 2;
+}
+
+#logo {
+	-fx-fitHeight: 100;
+}
+
+ImageView.navIcon {
+	margin-left: 10;
+}
+
+ImageView:hover {
+	-fx-opacity: 0.8;
+	transition: opacity .25s ease-in-out;
+}
