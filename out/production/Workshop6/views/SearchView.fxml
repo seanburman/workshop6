@@ -8,21 +8,24 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-
 <AnchorPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.SearchController">
    <children>
       <TextField fx:id="tfEmail" layoutX="145.0" layoutY="87.0" />
-      <TextField fx:id="tfFirstName" layoutX="145.0" layoutY="196.0" />
-      <TextField fx:id="tfLastName" layoutX="145.0" layoutY="231.0" />
+      <TextField fx:id="tfFirstName" disable="true" layoutX="145.0" layoutY="196.0" />
+      <TextField fx:id="tfLastName" disable="true" layoutX="145.0" layoutY="231.0" />
       <TextField fx:id="tfPhone" layoutX="145.0" layoutY="124.0" />
-      <TextField fx:id="tfCity" layoutX="145.0" layoutY="265.0" />
-      <TextField fx:id="tfAddress" layoutX="526.0" layoutY="196.0" />
-      <TextField fx:id="tfCountry" layoutX="526.0" layoutY="230.0" />
-      <TextField fx:id="tfPostal" layoutX="526.0" layoutY="265.0" />
+      <TextField fx:id="tfCity" disable="true" layoutX="145.0" layoutY="265.0" />
+      <TextField fx:id="tfAddress" disable="true" layoutX="526.0" layoutY="196.0" />
+      <TextField fx:id="tfCountry" disable="true" layoutX="526.0" layoutY="230.0" />
+      <TextField fx:id="tfPostal" disable="true" layoutX="526.0" layoutY="265.0" />
       <TableView fx:id="tvBookings" layoutX="60.0" layoutY="356.0" prefHeight="200.0" prefWidth="697.0">
         <columns>
-          <TableColumn prefWidth="75.0" text="C1" />
-          <TableColumn prefWidth="75.0" text="C2" />
+          <TableColumn fx:id="tcItineraryNo" prefWidth="78.39999389648438" text="Itinerary No" />
+          <TableColumn fx:id="tcDestination" prefWidth="135.20004272460938" text="Destination" />
+            <TableColumn fx:id="tcTripStart" prefWidth="135.99993896484375" text="Trip Start" />
+            <TableColumn fx:id="tcTripEnd" prefWidth="134.4000244140625" text="Trip End" />
+            <TableColumn fx:id="tcDescription" prefWidth="146.4000244140625" text="Description" />
+            <TableColumn fx:id="tcBasePrice" prefWidth="66.4000244140625" text="Base Price" />
         </columns>
       </TableView>
       <Label layoutX="32.0" layoutY="91.0" prefWidth="82.0" text="Email:">

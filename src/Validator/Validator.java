@@ -7,6 +7,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Validator {
+
     public boolean isPresent(TextField tf, String fieldName, String message) {
         boolean isValid = true;
         if (tf.getText().isEmpty()) {
@@ -58,7 +59,7 @@ public class Validator {
     }
 
     //validate email
-    public boolean isValidEmail(TextField tf, String fieldName, String message ) {
+    public static boolean isValidEmail(TextField tf) { //TextField tf, String fieldName, String message
         boolean isValid = true;
 
         String email = tf.getText();
@@ -67,14 +68,14 @@ public class Validator {
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(email);
         if (!matcher.matches()) {
-            createAlert(tf, fieldName, message);
+//            createAlert(tf, fieldName, message);
             isValid = false;
         }
         return isValid;
     }
 
     //this matches phone format (403) 210-7801
-    public boolean isValidPhone(TextField tf, String fieldName, String message ) {
+    public static boolean isValidPhone(TextField tf) { //TextField tf, String fieldName, String message
         boolean isValid = true;
 
         String phone = tf.getText();
@@ -83,13 +84,13 @@ public class Validator {
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(phone);
         if (!matcher.matches()) {
-            createAlert(tf, fieldName, message);
+//            createAlert(tf, fieldName, message);
             isValid = false;
         }
         return isValid;
     }
     //matches Canadian postal code in this format - T2E 0K6
-    public boolean isValidPostalCode(TextField tf, String fieldName, String message ) {
+    public static boolean isValidPostalCode(TextField tf) { //TextField tf, String fieldName, String message
         boolean isValid = true;
 
         String postalCode = tf.getText();
@@ -98,13 +99,13 @@ public class Validator {
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(postalCode);
         if (!matcher.matches()) {
-            createAlert(tf, fieldName, message);
+//            createAlert(tf, fieldName, message);
             isValid = false;
         }
         return isValid;
     }
 
-    private void createAlert(TextField tf, String fieldName, String message) {
+    private static void createAlert(TextField tf, String fieldName, String message) {
 
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Input Error");
