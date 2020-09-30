@@ -13,9 +13,9 @@ public class Customer {
     private String custHomePhone;
     private String custBusPhone;
     private String custEmail;
-    private String agentId;
+    private int agentId;
 
-    public Customer(int customerId, String custFirstName, String custLastName, String custAddress, String custCity, String custProv, String custPostal, String custCountry, String custHomePhone, String custBusPhone, String custEmail, String agentId) {
+    public Customer(int customerId, String custFirstName, String custLastName, String custAddress, String custCity, String custProv, String custPostal, String custCountry, String custHomePhone, String custBusPhone, String custEmail, int agentId) {
         this.customerId = customerId;
         this.custFirstName = custFirstName;
         this.custLastName = custLastName;
@@ -118,11 +118,11 @@ public class Customer {
         this.custEmail = custEmail;
     }
 
-    public String getAgentId() {
+    public int getAgentId() {
         return agentId;
     }
 
-    public void setAgentId(String agentId) {
+    public void setAgentId(int agentId) {
         this.agentId = agentId;
     }
 }
