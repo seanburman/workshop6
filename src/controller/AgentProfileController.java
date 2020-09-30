@@ -139,8 +139,8 @@ public class AgentProfileController {
                 Validator v = new Validator();
                 if (v.isPresent(txtAgtFirstName, "First Name", " must not be empty") &&
                 v.isPresent(txtAgtLastName, "Last Name", " must not be empty") &&
-                v.isValidPhone(txtAgtBusPhone, "Business Phone", " format may be incorrect")&&
-                v.isValidEmail(txtAgtEmail, "Email", " format may be incorrect") &&
+                //v.isValidPhone(txtAgtBusPhone, "Business Phone", " format may be incorrect")&&
+                //v.isValidEmail(txtAgtEmail, "Email", " format may be incorrect") &&
                 v.isPresent(txtAgtPosition, "Agent Position", " must not be empty")) {
                     try {
                         PreparedStatement stmtUpdate = conn.prepareStatement(sql);
