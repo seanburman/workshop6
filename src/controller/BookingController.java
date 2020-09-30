@@ -20,6 +20,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.layout.AnchorPane;
 import model.Booking;
+import model.Customer;
 import model.TravelPackage;
 import model.TripType;
 import javafx.scene.control.Label;
@@ -38,7 +39,7 @@ public class BookingController {
     private AnchorPane pageBookings;
 
     @FXML
-    private ComboBox<?> cbCustomer;
+    private ComboBox<String> cbCustomer;
 
     @FXML
     private ComboBox<TripType> cbTripType;
@@ -131,6 +132,7 @@ public class BookingController {
         });
 
     }
+
     private Connection connectDB() {
         Connection c = null;
         try {
@@ -140,5 +142,10 @@ public class BookingController {
             e.printStackTrace();
         }
         return c;
+    }
+
+    public void SetCustomerInfo(Customer c){
+        String CustomerName = c.getCustFirstName() + " " + c.getCustLastName();
+        cbCustomer.setValue(CustomerName);
     }
 }

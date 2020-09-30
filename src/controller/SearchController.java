@@ -1,29 +1,29 @@
 package controller;
 
-import java.awt.print.Book;
+import Validator.Validator;
+
+import java.io.IOException;
 import java.net.URL;
 import java.sql.*;
-import java.util.Currency;
 import java.util.Date;
 import java.util.ResourceBundle;
 
-import javafx.beans.Observable;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableArray;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
-import model.Booking;
+import javafx.stage.Stage;
 import model.BookingDetail;
 import model.Customer;
-
-import javax.xml.transform.Result;
-import javax.xml.validation.Validator;
 
 public class SearchController {
 
@@ -61,22 +61,22 @@ public class SearchController {
     private TableView<BookingDetail> tvBookings;
 
     @FXML
-    private TableColumn<BookingDetail, String> tcItineraryNo;
+    private TableColumn<BookingDetail, Integer> tcItineraryNo;
 
     @FXML
     private TableColumn<BookingDetail, String> tcDestination;
 
     @FXML
-    private TableColumn<BookingDetail, String> tcTripStart;
+    private TableColumn<BookingDetail, Date> tcTripStart;
 
     @FXML
-    private TableColumn<BookingDetail, String> tcTripEnd;
+    private TableColumn<BookingDetail, Date> tcTripEnd;
 
     @FXML
     private TableColumn<BookingDetail, String> tcDescription;
 
     @FXML
-    private TableColumn<BookingDetail, String> tcBasePrice;
+    private TableColumn<BookingDetail, Double> tcBasePrice;
 
     @FXML
     private Button btnSearch;
@@ -146,22 +146,53 @@ public class SearchController {
                         tfPostal.setText(customer[0].getCustPostal());
 
                         int customerId = customer[0].getCustomerId();
-                        String sqlBooking = "SELECT bookingdetails.* FROM `bookingdetails` JOIN bookings on bookingdetails.BookingId = bookings.BookingId WHERE bookings.CustomerId = " + customerId;
+                        System.out.println(customerId);
+                        String sqlBooking = "SELECT ItineraryNo, Destination, TripStart, TripEnd, Description, " +
+                                "BasePrice FROM `bookingdetails` JOIN bookings on bookingdetails.BookingId" +
+                                " = bookings.BookingId WHERE bookings.CustomerId = " + customerId;
                         Statement statement1 = conn.createStatement();
                         ResultSet rs1 = statement1.executeQuery(sqlBooking);
 
-                        while (rs.next()){
-                            bookingList.add(new BookingDetail(rs1.getInt(1),rs1.getInt(2), rs1.getDate(3),rs1.getDate(4),rs1.getString(5),rs1.getString(6),
-                                    rs1.getDouble(7),rs1.getDouble(8),rs1.getInt(9),rs1.getString(10),rs1.getString(11),rs1.getString(12),rs1.getString(13)));
+
+                        tcItineraryNo.setCellValueFactory(new PropertyValueFactory<BookingDetail, Integer>("itineraryNo"));
+                        tcDestination.setCellValueFactory(new PropertyValueFactory<BookingDetail, String>("destination"));
+                        tcTripStart.setCellValueFactory(new PropertyValueFactory<BookingDetail, Date>("tripStart"));
+                        tcTripEnd.setCellValueFactory(new PropertyValueFactory<BookingDetail, Date>("tripEnd"));
+                        tcDescription.setCellValueFactory(new PropertyValueFactory<BookingDetail, String>("description"));
+                        tcBasePrice.setCellValueFactory(new PropertyValueFactory<BookingDetail, Double>("basePrice"));
+
+                        while (rs1.next()){
+                            bookingList.add(new BookingDetail(rs1.getInt(1),rs1.getString(2),rs1.getDate(3),
+                                    rs1.getDate(4),rs1.getString(5),rs1.getDouble(6)));
                         }
 
-
-
+                        tvBookings.setItems(bookingList);
 
                     } catch (SQLException throwables) {
                         throwables.printStackTrace();
                     }
                 }
+            }
+        });
+
+        btnBookAdd.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                Stage stage = new Stage();
+                try {
+                    FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("views/booking.fxml"), resources);
+                    Parent mainLoader = (Parent) loader.load();
+                    stage.setTitle("My New Stage Title");
+                    stage.setScene(new Scene(mainLoader, 800, 600));
+                    BookingController bookingController = loader.getController();
+                    bookingController.SetCustomerInfo(customer[0]);
+
+                    stage.show();
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
             }
         });
 
@@ -181,4 +212,6 @@ public class SearchController {
         }
         return c;
     }
+
+
 }
