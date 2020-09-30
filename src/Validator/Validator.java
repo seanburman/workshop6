@@ -59,7 +59,7 @@ public class Validator {
     }
 
     //validate email
-    public static boolean isValidEmail(TextField tf) { //TextField tf, String fieldName, String message
+/*    public static boolean isValidEmail(TextField tf) {String fieldName, String message
         boolean isValid = true;
 
         String email = tf.getText();
@@ -72,7 +72,7 @@ public class Validator {
             isValid = false;
         }
         return isValid;
-    }
+    }*/
 
     //this matches phone format (403) 210-7801
     public static boolean isValidPhone(TextField tf) { //TextField tf, String fieldName, String message
