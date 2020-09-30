@@ -1,48 +1,23 @@
 package model;
 
 import java.sql.Date;
-import java.util.Currency;
 
 public class BookingDetail {
 
-    private int bookingDetailId;
     private int itineraryNo;
-    private Date tripstart;
+    private String destination;
+    private Date tripStart;
     private Date tripEnd;
     private String description;
-    private String destination;
-    private Currency basePrice;
-    private Currency agencyCommission;
-    private int bookingId;
-    private String regionId;
-    private String classId;
-    private String feeId;
-    private String productSupplierId;
+    private double basePrice;
 
-    public BookingDetail(int bookingDetailId, int itineraryNo, Date tripstart, Date tripEnd,
-                         String description, String destination, Currency basePrice, Currency agencyCommission,
-                         int bookingId, String regionId, String classId, String feeId, String productSupplierId) {
-        this.bookingDetailId = bookingDetailId;
+    public BookingDetail(int itineraryNo, String destination, Date tripStart, Date tripEnd, String description, double basePrice) {
         this.itineraryNo = itineraryNo;
-        this.tripstart = tripstart;
+        this.destination = destination;
+        this.tripStart = tripStart;
         this.tripEnd = tripEnd;
         this.description = description;
-        this.destination = destination;
         this.basePrice = basePrice;
-        this.agencyCommission = agencyCommission;
-        this.bookingId = bookingId;
-        this.regionId = regionId;
-        this.classId = classId;
-        this.feeId = feeId;
-        this.productSupplierId = productSupplierId;
-    }
-
-    public int getBookingDetailId() {
-        return bookingDetailId;
-    }
-
-    public void setBookingDetailId(int bookingDetailId) {
-        this.bookingDetailId = bookingDetailId;
     }
 
     public int getItineraryNo() {
@@ -53,12 +28,12 @@ public class BookingDetail {
         this.itineraryNo = itineraryNo;
     }
 
-    public Date getTripstart() {
-        return tripstart;
+    public Date getTripStart() {
+        return tripStart;
     }
 
-    public void setTripstart(Date tripstart) {
-        this.tripstart = tripstart;
+    public void setTripStart(Date tripStart) {
+        this.tripStart = tripStart;
     }
 
     public Date getTripEnd() {
@@ -85,60 +60,11 @@ public class BookingDetail {
         this.destination = destination;
     }
 
-    public Currency getBasePrice() {
+    public double getBasePrice() {
         return basePrice;
     }
 
-    public void setBasePrice(Currency basePrice) {
+    public void setBasePrice(double basePrice) {
         this.basePrice = basePrice;
     }
-
-    public Currency getAgencyCommission() {
-        return agencyCommission;
-    }
-
-    public void setAgencyCommission(Currency agencyCommission) {
-        this.agencyCommission = agencyCommission;
-    }
-
-    public int getBookingId() {
-        return bookingId;
-    }
-
-    public void setBookingId(int bookingId) {
-        this.bookingId = bookingId;
-    }
-
-    public String getRegionId() {
-        return regionId;
-    }
-
-    public void setRegionId(String regionId) {
-        this.regionId = regionId;
-    }
-
-    public String getClassId() {
-        return classId;
-    }
-
-    public void setClassId(String classId) {
-        this.classId = classId;
-    }
-
-    public String getFeeId() {
-        return feeId;
-    }
-
-    public void setFeeId(String feeId) {
-        this.feeId = feeId;
-    }
-
-    public String getProductSupplierId() {
-        return productSupplierId;
-    }
-
-    public void setProductSupplierId(String productSupplierId) {
-        this.productSupplierId = productSupplierId;
-    }
-
 }
