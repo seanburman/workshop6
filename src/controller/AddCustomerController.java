@@ -11,6 +11,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
 import model.Customer;
 import model.Province;
@@ -22,6 +23,9 @@ public class AddCustomerController {
 
     @FXML
     private URL location;
+
+    @FXML
+    private FlowPane addCustomerPane;
 
     @FXML
     private TextField txt_CustFName;
@@ -70,6 +74,7 @@ public class AddCustomerController {
 
     @FXML
     void initialize() {
+        assert addCustomerPane != null : "fx:id=\"addCustomerPane\" was not injected: check your FXML file 'AddCustomer.fxml'.";
         assert txt_CustFName != null : "fx:id=\"txt_CustFName\" was not injected: check your FXML file 'AddCustomer.fxml'.";
         assert txt_CustLName != null : "fx:id=\"txt_CustLName\" was not injected: check your FXML file 'AddCustomer.fxml'.";
         assert txt_CustBusPhone != null : "fx:id=\"txt_CustBusPhone\" was not injected: check your FXML file 'AddCustomer.fxml'.";
