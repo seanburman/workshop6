@@ -15,6 +15,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import model.Customer;
 
 import javax.swing.*;
 import java.io.IOException;
@@ -105,6 +106,13 @@ public class AddCustomerController {
         //throughout this code anything that specifically applies to the save page will be wrapped
         //in a conditional statement with that boolean value to check for true (edit page)
 
+
+        // -------------------- CASING ------- NEED TO FIX
+                // Methods should be PascalCase
+                // Variables should be camelCase
+                // Constants are all UPPERCASE
+
+        int custID = 152; //CHANGE THIS TO THE CUSTOMER YOU WANT TO EDIT -- NOT YET WORKING <3
         boolean isEditPage = true;
 
         if(isEditPage){
@@ -277,7 +285,7 @@ public class AddCustomerController {
                 try {
                     Stage stage = (Stage) btn_AddCustomerCancel.getScene().getWindow();
                     stage.close();
-                    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../views/booking.fxml"));
+                    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../views/SearchView.fxml"));
                     Parent root1 = (Parent) fxmlLoader.load();
                     stage = new Stage();
                     stage.setScene((new Scene(root1)));
@@ -305,7 +313,8 @@ public class AddCustomerController {
                         //establish connection to insert new customer into DB
                         Connection conn = connectDB();
                         //SQL string for insertion
-                        String sql = "UPDATE `customers` SET `CustFirstName`=?, `CustLastName`=?, `CustAddress`=?, `CustCity`=?, `CustProv`=?, `CustPostal`=?, `CustCountry`=?, `CustHomePhone`=?, `CustBusPhone`=?, `CustEmail`=? WHERE 'CustID='";
+                        String sql = "UPDATE `customers` SET `CustFirstName`=?, `CustLastName`=?, `CustAddress`=?, `CustCity`=?, `CustProv`=?, " +
+                                "`CustPostal`=?, `CustCountry`=?, `CustHomePhone`=?, `CustBusPhone`=?, `CustEmail`=? WHERE 'CustomerId = custID'"; //should be the cust ID from ehsans search view
                         try {
                             PreparedStatement stmt = conn.prepareStatement(sql);
                             stmt.setString(1, txt_CustFName.getText());         //assigns the text values from the form to the sql query
@@ -453,13 +462,13 @@ public class AddCustomerController {
     }
 
     ////----------------------------------------Validation Method-----------------------------////
-    public void validateAllFields() {
-        txt_CustFName.getText(); // Letter Values only, no numbers or special characters
-        txt_CustLName.getText(); // Letter values only, no numbers or special characters
-        txt_CustAddress.getText(); // Letter and number values, no special characters?
-        txt_CustCity.getText(); //Letter values only no numbers or special characters
-        txt_CustPostal.getText(); //canadian postal Regex
-    }
+//    public void validateAllFields() {
+//        txt_CustFName.getText(); // Letter Values only, no numbers or special characters
+//        txt_CustLName.getText(); // Letter values only, no numbers or special characters
+//        txt_CustAddress.getText(); // Letter and number values, no special characters?
+//        txt_CustCity.getText(); //Letter values only no numbers or special characters
+//        txt_CustPostal.getText(); //canadian postal Regex
+//    }
 
     ////------------------------SEARCH / CONFIRM CUSTOMER DOES NOT ALREADY EXIST---------------------------------////
                                                                                         //    CUST EMAIL    //
@@ -515,6 +524,16 @@ public class AddCustomerController {
                         Validator.isValidPostalCode(txt_CustPostal,"Postal Code", "This is not a valid Postal code")
 
                 );
+    }
+
+    ////----------------------------------------------EDIT FILL FIELDS------------------------------------////
+    public void GetCustomerInfo(Customer c){
+//        int custID = 0;
+//        custID.set(c.getCustomerId());
+        txt_CustFName.setText(c.getCustFirstName());
+       txt_CustEmail.setText(c.getCustEmail());
+
+
     }
 
 }//ends controller
