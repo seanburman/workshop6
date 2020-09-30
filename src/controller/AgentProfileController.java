@@ -16,6 +16,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
 import model.Agency;
 import model.Agent;
 
@@ -98,6 +99,36 @@ public class AgentProfileController {
             }
         });
 
+        btnAgtProfileEdit.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                txtAgtFirstName.setDisable(false);
+                txtAgtFirstName.setEditable(true);
+                txtAgtMiddleInitial.setDisable(false);
+                txtAgtMiddleInitial.setEditable(true);
+                txtAgtLastName.setDisable(false);
+                txtAgtLastName.setEditable(true);
+                txtAgtBusPhone.setDisable(false);
+                txtAgtBusPhone.setEditable(true);
+                txtAgtEmail.setDisable(false);
+                txtAgtEmail.setEditable(true);
+                txtAgtPosition.setDisable(false);
+                txtAgtPosition.setEditable(true);
+                txtAgtAgencyId.setDisable(false);
+                txtAgtAgencyId.setEditable(true);
+                cbAgencyId.setDisable(false);
+                btnAgtProfileSave.setDisable(false);
+                btnAgtProfileEdit.setDisable(true);
+            }
+        });
+
+        btnAgtProfileCancel.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                Stage stage = (Stage) btnAgtProfileCancel.getScene().getWindow();
+                stage.close();
+            }
+        });
         btnAgtProfileSave.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
@@ -126,13 +157,32 @@ public class AgentProfileController {
                         //if the number of updates was zero
                         if (numRows == 0) {
                             //System.out.println("Failed");
-                            createMessageBox("Test1", "Test2");
+                            createMessageBox("Update Failed");
                         }
                         else
                         {
-                            System.out.println("Updated");
-                            createMessageBox("Test1", "Test2");
+                            //System.out.println("Updated");
+                            createMessageBox("Update Successful");
                             //initialLoad(conn, agenciesList);
+
+                            txtAgtFirstName.setDisable(true);
+                            txtAgtFirstName.setEditable(false);
+                            txtAgtMiddleInitial.setDisable(true);
+                            txtAgtMiddleInitial.setEditable(false);
+                            txtAgtLastName.setDisable(true);
+                            txtAgtLastName.setEditable(false);
+                            txtAgtBusPhone.setDisable(true);
+                            txtAgtBusPhone.setEditable(false);
+                            txtAgtEmail.setDisable(true);
+                            txtAgtEmail.setEditable(false);
+                            txtAgtPosition.setDisable(true);
+                            txtAgtPosition.setEditable(false);
+                            txtAgtAgencyId.setDisable(true);
+                            txtAgtAgencyId.setEditable(false);
+                            cbAgencyId.setDisable(true);
+                            btnAgtProfileSave.setDisable(true);
+                            btnAgtProfileEdit.setDisable(false);
+
                         }
 
                     } catch (SQLException throwables) {
@@ -193,19 +243,19 @@ public class AgentProfileController {
         Connection c = null; //declare the connection set it to null
         try {
             Class.forName("com.mysql.jdbc.Driver");  //driver at the package path
-            c = DriverManager.getConnection("jdbc:mysql://localhost:3306/travelexperts", "doug1", "password");
+            c = DriverManager.getConnection("jdbc:mysql://localhost:3306/travelexperts", "TAAdmin", "password");
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
         }
         return c; //return the connection
     }
 
-    private void createMessageBox(String fieldName, String message) {
+    private void createMessageBox(String message) {
 
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Update Message");
-        alert.setHeaderText(fieldName + " Input Error!");
-        alert.setContentText(fieldName + message);
+        alert.setHeaderText(message);
+        alert.setContentText(message);
         alert.showAndWait();
         }
 }
