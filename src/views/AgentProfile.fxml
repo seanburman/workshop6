@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<FlowPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="603.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AgentProfile">
+<FlowPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="603.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AgentProfileController">
    <children>
       <VBox prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: gainsboro;">
          <padding>
@@ -74,12 +74,18 @@
                            </font>
                         </Label>
                         <TextField fx:id="txtAgtPosition" layoutX="200.0" layoutY="194.0" prefHeight="25.0" prefWidth="142.0" />
-                        <Label alignment="CENTER_RIGHT" layoutX="70.0" layoutY="230.0" prefHeight="25.0" prefWidth="118.0" text="Agency ID">
+                        <Label alignment="CENTER_RIGHT" layoutX="46.0" layoutY="258.0" prefHeight="25.0" prefWidth="142.0" text="Agency ID Selection">
                            <font>
                               <Font size="16.0" />
                            </font>
                         </Label>
-                        <ComboBox fx:id="cbAgencyId" layoutX="200.0" layoutY="230.0" prefHeight="25.0" prefWidth="70.0" />
+                        <ComboBox fx:id="cbAgencyId" layoutX="200.0" layoutY="258.0" prefHeight="25.0" prefWidth="70.0" />
+                        <Label alignment="CENTER_RIGHT" layoutX="72.0" layoutY="228.0" prefHeight="25.0" prefWidth="118.0" text="Agency ID">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="txtAgtAgencyId" layoutX="200.0" layoutY="228.0" prefHeight="25.0" prefWidth="70.0" />
                      </children>
                      <HBox.margin>
                         <Insets left="125.0" right="100.0" />
