@@ -12,9 +12,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<FlowPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="603.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AddCustomerController">
+<FlowPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="475.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AddCustomerController">
    <children>
-      <VBox prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: gainsboro;">
+      <VBox prefHeight="475.0" prefWidth="800.0" style="-fx-background-color: gainsboro;">
          <padding>
             <Insets bottom="30.0" left="30.0" right="30.0" top="100.0" />
          </padding>
@@ -61,7 +61,7 @@
                               <Tooltip text="Add Home Phone" />
                            </tooltip>
                         </Button>
-                        <Pane fx:id="pnl_CustHomePhone" layoutX="77.0" layoutY="150.0" prefHeight="30.0" prefWidth="265.0">
+                        <Pane fx:id="pnl_CustHomePhone" layoutX="77.0" layoutY="150.0" prefHeight="30.0" prefWidth="265.0" style="-fx-background-color: gainsboro;">
                            <children>
                               <TextField fx:id="txt_CustHomePhone" layoutX="123.0" layoutY="2.0" prefHeight="25.0" prefWidth="118.0" />
                               <Label alignment="CENTER_RIGHT" layoutX="14.0" layoutY="2.0" prefHeight="25.0" prefWidth="103.0" text="Home Phone">
