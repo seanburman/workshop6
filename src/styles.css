@@ -34,10 +34,6 @@ ComboBox {
 	-fx-fitHeight: 100;
 }
 
-ImageView.navIcon {
-	margin-left: 10;
-}
-
 ImageView:hover {
 	-fx-opacity: 0.8;
 	transition: opacity .25s ease-in-out;
