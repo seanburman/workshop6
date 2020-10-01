@@ -13,6 +13,7 @@ public class Validator {
         if (tf.getText().isEmpty()) {
 
             createAlert(tf, fieldName, message);
+            tf.setStyle("-fx-border-color: #ff0000");
             isValid = false;
         }
         return isValid;

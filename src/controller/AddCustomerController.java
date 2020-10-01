@@ -293,7 +293,7 @@ public class AddCustomerController {
                     txt_CustPostal.setStyle("-fx-border-color: null");
                 }
                 else{
-                    txt_CustPostal.setStyle("-fx-border-color: red");
+                    txt_CustPostal.setStyle("-fx-border-color: #ff0000");
                 }
             }
         });
@@ -489,7 +489,7 @@ public class AddCustomerController {
         Connection c = null;
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            c = DriverManager.getConnection("jdbc:mysql://localhost:3306/travelexperts", "TEAdmin", "password");
+            c = DriverManager.getConnection("jdbc:mysql://localhost:3306/travelexperts", "doug1", "password");
         } catch (ClassNotFoundException |
                 SQLException e) {
             e.printStackTrace();
