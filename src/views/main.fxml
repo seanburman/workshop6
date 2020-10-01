@@ -12,9 +12,9 @@
 
 <AnchorPane fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.DashBoardController">
    <children>
-      <HBox layoutY="12.0" prefHeight="125.0" prefWidth="800.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <HBox layoutY="12.0" prefHeight="125.0" prefWidth="800.0" AnchorPane.bottomAnchor="475.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: #FFFFFF;">
+            <HBox alignment="CENTER" prefHeight="125.0" prefWidth="200.0" style="-fx-background-color: #FFFFFF;">
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>
@@ -26,7 +26,7 @@
                   </ImageView>
                </children>
             </HBox>
-            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="400.0" style="-fx-background-color: #FFFFFF;">
+            <HBox alignment="CENTER" prefHeight="125.0" prefWidth="400.0" style="-fx-background-color: #FFFFFF;">
                <children>
                   <ImageView fitHeight="50.0" fitWidth="50.0" onMouseClicked="#dash" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -43,7 +43,7 @@
                   </Text>
                </children>
             </HBox>
-            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: #FFFFFF;">
+            <HBox alignment="CENTER" prefHeight="125.0" prefWidth="200.0" style="-fx-background-color: #FFFFFF;">
                <children>
                   <ImageView fx:id="iconAdd" fitHeight="30.0" fitWidth="30.0" onMouseClicked="#add" pickOnBounds="true" preserveRatio="true" styleClass="navIcon">
                      <image>
@@ -78,7 +78,7 @@
             </HBox>
          </children>
       </HBox>
-      <AnchorPane fx:id="dynamicPane" layoutX="-1.0" layoutY="126.0" prefHeight="475.0" prefWidth="800.0" style="-fx-background-color: #A4C2F4;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+      <AnchorPane fx:id="dynamicPane" layoutX="-1.0" layoutY="126.0" prefHeight="475.0" prefWidth="800.0" style="-fx-background-color: #A4C2F4;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="125.0">
          <children>
             <Button fx:id="btnAgent" layoutX="274.0" layoutY="108.0" mnemonicParsing="false" onMouseClicked="#agent" styleClass="dashboard" text="Agent Profile" AnchorPane.topAnchor="108.0">
                <font>
