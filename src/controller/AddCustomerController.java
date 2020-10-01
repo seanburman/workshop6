@@ -603,8 +603,7 @@ public class AddCustomerController {
 //        custID.set(c.getCustomerId());
         txt_CustFName.setText(c.getCustFirstName());
         txt_CustLName.setText(c.getCustLastName());
-
-       txt_CustEmail.setText(c.getCustEmail());
+        txt_CustEmail.setText(c.getCustEmail());
 
 
     }
