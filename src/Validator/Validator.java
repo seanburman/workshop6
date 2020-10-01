@@ -59,7 +59,22 @@ public class Validator {
     }
 
     //validate email
-    public static boolean isValidEmail(TextField tf) { //TextField tf, String fieldName, String message
+    public static boolean isValidEmail(TextField tf, String fieldName, String message) { //TextField tf, String fieldName, String message
+        boolean isValid = true;
+
+        String email = tf.getText();
+        String regex = "^[\\w!#$%&’*+/=?`{|}~^-]+(?:\\.[\\w!#$%&’*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$";
+
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(email);
+        if (!matcher.matches()) {
+            createAlert(tf, fieldName, message);
+            isValid = false;
+        }
+        return isValid;
+    }
+    //validate email
+    public static boolean isValidEmailNoAlert(TextField tf) { //
         boolean isValid = true;
 
         String email = tf.getText();
@@ -73,9 +88,24 @@ public class Validator {
         }
         return isValid;
     }
+    //this matches phone format (403) 210-7801
+    public static boolean isValidPhone(TextField tf, String fieldName, String message) { //
+        boolean isValid = true;
+
+        String phone = tf.getText();
+        String regex = "^((\\(\\d{3}\\))|\\s{3})\\s\\d{3}[-]\\d{4}$";
+
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(phone);
+        if (!matcher.matches()) {
+            createAlert(tf, fieldName, message);
+            isValid = false;
+        }
+        return isValid;
+    }
 
     //this matches phone format (403) 210-7801
-    public static boolean isValidPhone(TextField tf) { //TextField tf, String fieldName, String message
+    public static boolean isValidPhoneNoAlert(TextField tf) { //TextField tf, String fieldName, String message
         boolean isValid = true;
 
         String phone = tf.getText();
@@ -90,7 +120,23 @@ public class Validator {
         return isValid;
     }
     //matches Canadian postal code in this format - T2E 0K6
-    public static boolean isValidPostalCode(TextField tf) { //TextField tf, String fieldName, String message
+    public static boolean isValidPostalCode(TextField tf, String fieldName, String message) { //
+        boolean isValid = true;
+
+        String postalCode = tf.getText();
+        String regex = "^(?!.*[DFIOQU])[A-VXY][0-9][A-Z]\\s[0-9][A-Z][0-9]$";
+
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(postalCode);
+        if (!matcher.matches()) {
+           createAlert(tf, fieldName, message);
+            isValid = false;
+        }
+        return isValid;
+    }
+
+    //matches Canadian postal code in this format - T2E 0K6
+    public static boolean isValidPostalCodeNoAlert(TextField tf) { //TextField tf, String fieldName, String message
         boolean isValid = true;
 
         String postalCode = tf.getText();
@@ -104,7 +150,6 @@ public class Validator {
         }
         return isValid;
     }
-
     private static void createAlert(TextField tf, String fieldName, String message) {
 
         Alert alert = new Alert(Alert.AlertType.ERROR);

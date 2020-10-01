@@ -106,7 +106,7 @@ public class AddCustomerController {
 
         int custID = 149; //CHANGE THIS TO THE CUSTOMER YOU WANT TO EDIT -- NOT YET WORKING <3
 
-        boolean isEditPage = true; // (FALSE = ADD CUSTOMER PAGE, TRUE = EDIT PAGE)
+        boolean isEditPage = false; // (FALSE = ADD CUSTOMER PAGE, TRUE = EDIT PAGE)
         //boolean isEditPage = false   - like a switch for add and edit page, DEFAULT Add page ,
         //ehsans page will send a token that changes this to true, rendering it an edit page
         //throughout this code anything that specifically applies to the save page will be wrapped
@@ -165,19 +165,19 @@ public class AddCustomerController {
         txt_CustEmail.focusedProperty().addListener((ov, oldV, newV) -> {
         if (isEditPage){ //if returns true
             //check if valid email address
-            if (Validator.isValidEmail(txt_CustEmail)) {                  //if it is valid do this stuff
+            if (Validator.isValidEmailNoAlert(txt_CustEmail)) {                  //if it is valid do this stuff
                 if (!txt_CustEmail.getText().isEmpty() && !txt_CustBusPhone.getText().isEmpty()) {
                     //if the fields are both filled, and subsequently both do not belong to other customers, then enable fields
                     enableFields();
                 }
                 txt_CustEmail.setStyle("-fx-border-color: null");
-            }else if(!Validator.isValidEmail(txt_CustEmail)) {           //if its not valid, lets indicate that to the user
+            }else if(!Validator.isValidEmailNoAlert(txt_CustEmail)) {           //if its not valid, lets indicate that to the user
             txt_CustEmail.focusedProperty();
             txt_CustEmail.setStyle("-fx-border-color: red");
             }
         }else{ //else isEditPage returns FALSE
         //check if valid email address
-        if (Validator.isValidEmail(txt_CustEmail)) {                  //if it is valid do this stuff
+        if (Validator.isValidEmailNoAlert(txt_CustEmail)) {                  //if it is valid do this stuff
             boolean checkExists = custEmailExists();
             if (checkExists) {
 //                    if the customer exists, show the agent a message
@@ -194,7 +194,7 @@ public class AddCustomerController {
                         enableFields();
                     }
                 }
-            } else if(!Validator.isValidEmail(txt_CustEmail)) {           //if its not valid, lets indicate that to the user
+            } else if(!Validator.isValidEmailNoAlert(txt_CustEmail)) {           //if its not valid, lets indicate that to the user
                 txt_CustEmail.focusedProperty();
                 txt_CustEmail.setStyle("-fx-border-color: red");
             }
@@ -205,19 +205,19 @@ public class AddCustomerController {
         txt_CustBusPhone.focusedProperty().addListener((ov, oldV, newV) -> {
             if (isEditPage){ //if returns true
                 //check if valid phone using validator
-                if (Validator.isValidPhone(txt_CustBusPhone)) {                  //if it is valid do this stuff
+                if (Validator.isValidPhoneNoAlert(txt_CustBusPhone)) {                  //if it is valid do this stuff
                     if (!txt_CustBusPhone.getText().isEmpty() && !txt_CustBusPhone.getText().isEmpty()) {
                         //if the fields are both filled, and subsequently both do not belong to other customers, then enable fields
                         enableFields();
                     }
                     txt_CustBusPhone.setStyle("-fx-border-color: null");
-                }else if(!Validator.isValidEmail(txt_CustBusPhone)) {           //if its not valid, lets indicate that to the user
+                }else if(!Validator.isValidEmailNoAlert(txt_CustBusPhone)) {           //if its not valid, lets indicate that to the user
                     txt_CustBusPhone.focusedProperty();
                     txt_CustBusPhone.setStyle("-fx-border-color: red");
                 }
             }else{ //else isEditPage returns FALSE
                 //check if valid phone using validator
-                if (Validator.isValidPhone(txt_CustBusPhone)) {                  //if it is valid do this stuff
+                if (Validator.isValidPhoneNoAlert(txt_CustBusPhone)) {                  //if it is valid do this stuff
                     boolean checkExists = custPhoneExists();
                     if (checkExists) {
 //                    if the customer exists, show the agent a message
@@ -233,7 +233,7 @@ public class AddCustomerController {
                             enableFields();
                         }
                     }
-                } else if(!Validator.isValidPhone(txt_CustBusPhone)) {           //if its not valid, lets indicate that to the user
+                } else if(!Validator.isValidPhoneNoAlert(txt_CustBusPhone)) {           //if its not valid, lets indicate that to the user
                     txt_CustBusPhone.focusedProperty();
                     txt_CustBusPhone.setStyle("-fx-border-color: red");
                 }
@@ -242,7 +242,7 @@ public class AddCustomerController {
 
         ///-------------CUSTOMER HOME PHONE-------------///
         txt_CustHomePhone.focusedProperty().addListener((ov, oldV, newV) -> {
-            if (Validator.isValidPhone(txt_CustHomePhone)) {
+            if (Validator.isValidPhoneNoAlert(txt_CustHomePhone)) {
                 txt_CustHomePhone.setStyle("-fx-border-color: null");
             }
             else {
@@ -289,7 +289,7 @@ public class AddCustomerController {
         ///-------------CUSTOMER POSTAL-------------///
         txt_CustPostal.focusedProperty().addListener((ov, oldV, newV) -> {
             if (!newV){
-                if (!txt_CustPostal.getText().isEmpty() && Validator.isValidPostalCode(txt_CustPostal)){
+                if (!txt_CustPostal.getText().isEmpty() && Validator.isValidPostalCodeNoAlert(txt_CustPostal)){
                     txt_CustPostal.setStyle("-fx-border-color: null");
                 }
                 else{
@@ -589,10 +589,10 @@ public class AddCustomerController {
 
     private boolean IsValidData() {
         return(
-                Validator.isValidEmail(txt_CustEmail) &&
-                Validator.isValidPhone(txt_CustBusPhone) &&
-                Validator.isValidPhone(txt_CustHomePhone) &&
-                        Validator.isValidPostalCode(txt_CustPostal)
+                Validator.isValidEmailNoAlert(txt_CustEmail) &&
+                Validator.isValidPhoneNoAlert(txt_CustBusPhone) &&
+                Validator.isValidPhoneNoAlert(txt_CustHomePhone) &&
+                        Validator.isValidPostalCodeNoAlert(txt_CustPostal)
 
                 );
     }

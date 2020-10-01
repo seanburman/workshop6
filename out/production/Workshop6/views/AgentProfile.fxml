@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<FlowPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="603.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AgentProfile">
+<FlowPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="603.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AgentProfileController">
    <children>
       <VBox prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: gainsboro;">
          <padding>
@@ -52,17 +52,17 @@
                               <Font size="16.0" />
                            </font>
                         </Label>
-                        <TextField fx:id="txtAgtFirstName" layoutX="200.0" layoutY="32.0" prefHeight="25.0" prefWidth="142.0" />
-                        <TextField fx:id="txtAgtLastName" layoutX="199.0" layoutY="95.0" prefHeight="25.0" prefWidth="142.0" />
-                        <TextField fx:id="txtAgtBusPhone" layoutX="200.0" layoutY="127.0" prefHeight="25.0" prefWidth="118.0" />
-                        <TextField fx:id="txtAgtEmail" layoutX="200.0" layoutY="161.0" prefHeight="25.0" prefWidth="190.0" />
-                        <Button fx:id="btnAgtAddPhone" layoutX="319.0" layoutY="128.0" mnemonicParsing="false" text="+">
+                        <TextField fx:id="txtAgtFirstName" disable="true" editable="false" layoutX="200.0" layoutY="32.0" prefHeight="25.0" prefWidth="142.0" />
+                        <TextField fx:id="txtAgtLastName" disable="true" editable="false" layoutX="199.0" layoutY="95.0" prefHeight="25.0" prefWidth="142.0" />
+                        <TextField fx:id="txtAgtBusPhone" disable="true" editable="false" layoutX="200.0" layoutY="127.0" prefHeight="25.0" prefWidth="118.0" />
+                        <TextField fx:id="txtAgtEmail" disable="true" editable="false" layoutX="200.0" layoutY="161.0" prefHeight="25.0" prefWidth="190.0" />
+                        <Button fx:id="btnAgtAddPhone" disable="true" layoutX="319.0" layoutY="128.0" mnemonicParsing="false" text="+">
                            <tooltip>
                               <Tooltip text="Add Home Phone" />
                            </tooltip>
                         </Button>
                         <Button fx:id="btnAgtProfileRefresh" layoutX="431.0" layoutY="21.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="63.0" text="(refresh)" />
-                        <TextField fx:id="txtAgtMiddleInitial" layoutX="199.0" layoutY="64.0" prefHeight="25.0" prefWidth="142.0" />
+                        <TextField fx:id="txtAgtMiddleInitial" disable="true" editable="false" layoutX="199.0" layoutY="64.0" prefHeight="25.0" prefWidth="142.0" />
                         <Label alignment="CENTER_RIGHT" layoutX="86.0" layoutY="65.0" prefHeight="25.0" prefWidth="103.0" text="Middle Initial">
                            <font>
                               <Font size="16.0" />
@@ -73,13 +73,19 @@
                               <Font size="16.0" />
                            </font>
                         </Label>
-                        <TextField fx:id="txtAgtPosition" layoutX="200.0" layoutY="194.0" prefHeight="25.0" prefWidth="142.0" />
-                        <Label alignment="CENTER_RIGHT" layoutX="70.0" layoutY="230.0" prefHeight="25.0" prefWidth="118.0" text="Agency ID">
+                        <TextField fx:id="txtAgtPosition" disable="true" editable="false" layoutX="200.0" layoutY="194.0" prefHeight="25.0" prefWidth="142.0" />
+                        <Label alignment="CENTER_RIGHT" layoutX="46.0" layoutY="258.0" prefHeight="25.0" prefWidth="142.0" text="Agency ID Selection">
                            <font>
                               <Font size="16.0" />
                            </font>
                         </Label>
-                        <ComboBox fx:id="cbAgencyId" layoutX="200.0" layoutY="230.0" prefHeight="25.0" prefWidth="70.0" />
+                        <ComboBox fx:id="cbAgencyId" disable="true" layoutX="200.0" layoutY="258.0" prefHeight="25.0" prefWidth="70.0" />
+                        <Label alignment="CENTER_RIGHT" layoutX="72.0" layoutY="228.0" prefHeight="25.0" prefWidth="118.0" text="Agency ID">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="txtAgtAgencyId" disable="true" layoutX="200.0" layoutY="228.0" prefHeight="25.0" prefWidth="70.0" />
                      </children>
                      <HBox.margin>
                         <Insets left="125.0" right="100.0" />
@@ -89,7 +95,7 @@
             </HBox>
             <HBox alignment="BOTTOM_RIGHT" prefHeight="72.0" prefWidth="739.0" style="-fx-background-color: whitesmoke;">
                <children>
-                  <Button fx:id="btnAgtProfileEdit" layoutX="493.0" layoutY="69.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="98.0" text="Edit Profile">
+                  <Button fx:id="btnAgtProfileEdit" layoutX="493.0" layoutY="69.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="126.0" text="Edit Profile">
                      <font>
                         <Font size="16.0" />
                      </font>
@@ -97,7 +103,7 @@
                         <Insets bottom="5.0" left="15.0" right="15.0" top="18.0" />
                      </HBox.margin>
                   </Button>
-                  <Button fx:id="btnAgtProfileSave" mnemonicParsing="false" prefHeight="37.0" prefWidth="99.0" text="Save">
+                  <Button fx:id="btnAgtProfileSave" disable="true" mnemonicParsing="false" prefHeight="37.0" prefWidth="99.0" text="Save">
                      <HBox.margin>
                         <Insets bottom="5.0" left="15.0" right="15.0" top="18.0" />
                      </HBox.margin>
