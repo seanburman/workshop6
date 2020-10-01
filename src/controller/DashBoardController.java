@@ -3,7 +3,6 @@ package controller;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -24,111 +23,79 @@ public class DashBoardController {
     private AnchorPane mainPane;
 
     @FXML
+    private ImageView iconAdd;
+
+    @FXML
+    private ImageView iconSearch;
+
+    @FXML
+    private ImageView iconBook;
+
+    @FXML
+    private ImageView iconLogout;
+
+    @FXML
     private AnchorPane dynamicPane;
 
     @FXML
-    private Button btnAgentProfile;
+    private Button btnAgent;
 
     @FXML
-    private Button btnAddCustomer;
+    private Button btnAdd;
 
     @FXML
-    private Button btnSearchCustomer;
+    private Button btnSearch;
 
     @FXML
-    private Button btnBrowseTP;
+    private Button btnBook;
 
     @FXML
-    private ImageView agentIcon;
-
-    @FXML
-    private ImageView bookIcon;
-
-    @FXML
-    private ImageView searchIcon;
-
-    @FXML
-    private ImageView addCustomerIcon;
-
-    @FXML
-    private ImageView logoutIcon;
-
-    @FXML
-    void addCustomer(ActionEvent event) throws IOException {
+    void add(MouseEvent event) throws IOException {
         Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("views/AddCustomer.fxml"));
         dynamicPane.getChildren().setAll(root);
-        System.out.println("Add Customer Loaded");
+        System.out.println("Add Customer Loaded...");
     }
 
     @FXML
-    void addCustomerIconClick(MouseEvent event) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("views/AddCustomer.fxml"));
-        dynamicPane.getChildren().setAll(root);
-        System.out.println("Add Customer Loaded");
-    }
-
-    @FXML
-    void agentIconClicked(MouseEvent event) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("views/Dashboard.fxml"));
-        dynamicPane.getChildren().setAll(root);
-        System.out.println("Agent Profile Loaded");
-    }
-
-    @FXML
-    void agentProfile(ActionEvent event) throws IOException {
+    void agent(MouseEvent event) throws IOException {
         Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("views/AgentProfile.fxml"));
         dynamicPane.getChildren().setAll(root);
-        System.out.println("Agent Profile Loaded");
+        System.out.println("Agent Profile Loaded...");
     }
 
     @FXML
-    void bookIconClick(MouseEvent event) throws IOException {
+    void book(MouseEvent event) throws IOException {
         Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("views/booking.fxml"));
         dynamicPane.getChildren().setAll(root);
-        System.out.println("Customer Booking Loaded");
+        System.out.println("Customer Booking Loaded...");
     }
 
     @FXML
-    void booking(ActionEvent event) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("views/booking.fxml"));
+    void dash(MouseEvent event) throws IOException {
+        Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("views/DashBoard.fxml"));
         dynamicPane.getChildren().setAll(root);
-        System.out.println("Customer Booking Loaded");
+        System.out.println("DashBoard Loaded...");
     }
 
     @FXML
-    void loadMain(MouseEvent event) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("views/Dashboard.fxml"));
-        dynamicPane.getChildren().setAll(root);
-        System.out.println("Main View Loaded");
-    }
-
-    @FXML
-    void searchIconClick(MouseEvent event) throws IOException {
+    void search(MouseEvent event) throws IOException {
         Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("views/SearchView.fxml"));
         dynamicPane.getChildren().setAll(root);
-        System.out.println("Search View Loaded");
-    }
-
-    @FXML
-    void searchView(ActionEvent event) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("views/SearchView.fxml"));
-        dynamicPane.getChildren().setAll(root);
-        System.out.println("Search View Loaded");
+        System.out.println("Search View Loaded...");
     }
 
     @FXML
     void initialize() {
-        assert mainPane != null : "fx:id=\"mainPane\" was not injected: check your FXML file 'Dashboard.fxml'.";
-        assert dynamicPane != null : "fx:id=\"dynamicPane\" was not injected: check your FXML file 'Dashboard.fxml'.";
-        assert btnAgentProfile != null : "fx:id=\"btnAgentProfile\" was not injected: check your FXML file 'Dashboard.fxml'.";
-        assert btnAddCustomer != null : "fx:id=\"btnAddCustomer\" was not injected: check your FXML file 'Dashboard.fxml'.";
-        assert btnSearchCustomer != null : "fx:id=\"btnSearchCustomer\" was not injected: check your FXML file 'Dashboard.fxml'.";
-        assert btnBrowseTP != null : "fx:id=\"btnBrowseTP\" was not injected: check your FXML file 'Dashboard.fxml'.";
-        assert agentIcon != null : "fx:id=\"agentIcon\" was not injected: check your FXML file 'Dashboard.fxml'.";
-        assert bookIcon != null : "fx:id=\"bookIcon\" was not injected: check your FXML file 'Dashboard.fxml'.";
-        assert searchIcon != null : "fx:id=\"searchIcon\" was not injected: check your FXML file 'Dashboard.fxml'.";
-        assert addCustomerIcon != null : "fx:id=\"addCustomerIcon\" was not injected: check your FXML file 'Dashboard.fxml'.";
-        assert logoutIcon != null : "fx:id=\"logoutIcon\" was not injected: check your FXML file 'Dashboard.fxml'.";
+        assert mainPane != null : "fx:id=\"mainPane\" was not injected: check your FXML file 'main.fxml'.";
+        assert iconAdd != null : "fx:id=\"iconAdd\" was not injected: check your FXML file 'main.fxml'.";
+        assert iconSearch != null : "fx:id=\"iconSearch\" was not injected: check your FXML file 'main.fxml'.";
+        assert iconBook != null : "fx:id=\"iconBook\" was not injected: check your FXML file 'main.fxml'.";
+        assert iconLogout != null : "fx:id=\"iconLogout\" was not injected: check your FXML file 'main.fxml'.";
+        assert dynamicPane != null : "fx:id=\"dynamicPane\" was not injected: check your FXML file 'main.fxml'.";
+        assert btnAgent != null : "fx:id=\"btnAgent\" was not injected: check your FXML file 'main.fxml'.";
+        assert btnAdd != null : "fx:id=\"btnAdd\" was not injected: check your FXML file 'main.fxml'.";
+        assert btnSearch != null : "fx:id=\"btnSearch\" was not injected: check your FXML file 'main.fxml'.";
+        assert btnBook != null : "fx:id=\"btnBook\" was not injected: check your FXML file 'main.fxml'.";
 
     }
 }

@@ -243,7 +243,7 @@ public class AgentProfileController {
         Connection c = null; //declare the connection set it to null
         try {
             Class.forName("com.mysql.jdbc.Driver");  //driver at the package path
-            c = DriverManager.getConnection("jdbc:mysql://localhost:3306/travelexperts", "TAAdmin", "password");
+            c = DriverManager.getConnection("jdbc:mysql://localhost:3306/travelexperts", "doug1", "password");
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
         }
