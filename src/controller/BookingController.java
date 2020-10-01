@@ -38,8 +38,8 @@ public class BookingController {
     @FXML
     private AnchorPane pageBookings;
 
-    @FXML
-    private ComboBox<String> cbCustomer;
+//    @FXML
+//    private ComboBox<String> cbCustomer;
 
     @FXML
     private ComboBox<TripType> cbTripType;
@@ -72,9 +72,12 @@ public class BookingController {
     private Label txtPackagePrice;
 
     @FXML
+    private Label lblCustomer;
+
+    @FXML
     void initialize() {
         assert pageBookings != null : "fx:id=\"pageBookings\" was not injected: check your FXML file 'booking.fxml'.";
-        assert cbCustomer != null : "fx:id=\"cbCustomer\" was not injected: check your FXML file 'booking.fxml'.";
+//        assert cbCustomer != null : "fx:id=\"cbCustomer\" was not injected: check your FXML file 'booking.fxml'.";
         assert cbTripType != null : "fx:id=\"cbTripType\" was not injected: check your FXML file 'booking.fxml'.";
         assert cbPackage != null : "fx:id=\"cbPackage\" was not injected: check your FXML file 'booking.fxml'.";
         assert dtBookingStart != null : "fx:id=\"dtBookingStart\" was not injected: check your FXML file 'booking.fxml'.";
@@ -85,6 +88,7 @@ public class BookingController {
         assert txtTripType != null : "fx:id=\"txtTripType\" was not injected: check your FXML file 'booking.fxml'.";
         assert txtPackageName != null : "fx:id=\"txtPackageName\" was not injected: check your FXML file 'booking.fxml'.";
         assert txtPackagePrice != null : "fx:id=\"txtPackagePrice\" was not injected: check your FXML file 'booking.fxml'.";
+        assert lblCustomer != null : "fx:id=\"lblCustomer\" was not injected: check your FXML file 'booking.fxml'.";
 
 
         Connection conn = connectDB();
@@ -146,6 +150,6 @@ public class BookingController {
 
     public void SetCustomerInfo(Customer c){
         String CustomerName = c.getCustFirstName() + " " + c.getCustLastName();
-        cbCustomer.setValue(CustomerName);
+        lblCustomer.setText(CustomerName);
     }
 }
