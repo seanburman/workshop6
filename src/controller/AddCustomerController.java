@@ -106,13 +106,13 @@ public class AddCustomerController {
 
         int custID = 149; //CHANGE THIS TO THE CUSTOMER YOU WANT TO EDIT -- NOT YET WORKING <3
 
-        boolean isEditPage = false; // (FALSE = ADD CUSTOMER PAGE, TRUE = EDIT PAGE)
-        //boolean isEditPage = false   - like a switch for add and edit page, DEFAULT Add page ,
+        boolean isSavePage = true; // TRUE = ADD CUSTOMER PAGE, (FALSE = EDIT PAGE)
+        //boolean isSavePage = true   - like a switch for add and edit page, DEFAULT Add page ,
         //ehsans page will send a token that changes this to true, rendering it an edit page
         //throughout this code anything that specifically applies to the save page will be wrapped
         //in a conditional statement with that boolean value to check for true (edit page)
 
-        if(isEditPage){
+        if(!isSavePage){
             btn_AddCustomerRefresh.setVisible(false);
             lbl_Title.setText("Edit Customer");
         }
@@ -163,7 +163,7 @@ public class AddCustomerController {
 
         ///-------------CUSTOMER EMAIL-------------///
         txt_CustEmail.focusedProperty().addListener((ov, oldV, newV) -> {
-        if (isEditPage){ //if returns true
+        if (!isSavePage){ //if this page was loaded as EDIT PAGE
             //check if valid email address
             if (Validator.isValidEmailNoAlert(txt_CustEmail)) {                  //if it is valid do this stuff
                 if (!txt_CustEmail.getText().isEmpty() && !txt_CustBusPhone.getText().isEmpty()) {
@@ -203,7 +203,7 @@ public class AddCustomerController {
 
         ///-------------CUSTOMER BUSINESS PHONE-------------///
         txt_CustBusPhone.focusedProperty().addListener((ov, oldV, newV) -> {
-            if (isEditPage){ //if returns true
+            if (!isSavePage){ //if this page was loaded as EDIT PAGE
                 //check if valid phone using validator
                 if (Validator.isValidPhoneNoAlert(txt_CustBusPhone)) {                  //if it is valid do this stuff
                     if (!txt_CustBusPhone.getText().isEmpty() && !txt_CustBusPhone.getText().isEmpty()) {
@@ -375,7 +375,7 @@ public class AddCustomerController {
         btn_AddCustomerSave.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                if(isEditPage){
+                if(!isSavePage){ //if this page was loaded as EDIT PAGE
                     //if all fields are filled
                     if (!txt_CustFName.getText().isEmpty() && !txt_CustLName.getText().isEmpty() && !txt_CustEmail.getText().isEmpty()                      //ADD VALIDATION
                             && !txt_CustBusPhone.getText().isEmpty() && !txt_CustAddress.getText().isEmpty() && !txt_CustCity.getText().isEmpty()
