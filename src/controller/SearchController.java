@@ -19,6 +19,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import model.BookingDetail;
 import model.Customer;
 
@@ -215,16 +216,17 @@ public class SearchController {
                 try {
                     FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("views/AddCustomer.fxml"), resources);
                     Parent mainLoader = (Parent) loader.load();
-                    stage.setTitle("Edit Customer");
                     stage.setScene(new Scene(mainLoader, 800, 600));
+                    stage.setTitle("Edit Customer");
                     AddCustomerController addCustomerController = loader.getController();
                     addCustomerController.GetCustomerInfo(customer[0]);
-
+                    addCustomerController.EditPage();
                     stage.show();
 
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+
             }
         });
 
@@ -312,6 +314,5 @@ public class SearchController {
         }
         return c;
     }
-
 
 }

@@ -27,6 +27,20 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class AddCustomerController {
+    public boolean isSavePage = true;
+    private boolean testToken;
+    int custID = 0; //CHANGE THIS TO THE CUSTOMER YOU WANT TO EDIT -- NOT YET WORKING <3
+//    public AddCustomerController(boolean testToken) {
+//        this.testToken = testToken;
+//    }
+//
+//    public boolean isTestToken() {
+//        return testToken;
+//    }
+//
+//    public void setTestToken(boolean testToken) {
+//        this.testToken = testToken;
+//    }
 
     @FXML
     private Label lbl_Title;
@@ -106,15 +120,18 @@ public class AddCustomerController {
                 // Variables should be camelCase
                 // Constants are all UPPERCASE
 
-        int custID = 138; //CHANGE THIS TO THE CUSTOMER YOU WANT TO EDIT -- NOT YET WORKING <3
 
-        boolean isSavePage = false; // TRUE = ADD CUSTOMER PAGE, (FALSE = EDIT PAGE)
+
+        //boolean isSavePage = true; // TRUE = ADD CUSTOMER PAGE, (FALSE = EDIT PAGE)
         //boolean isSavePage = true   - like a switch for add and edit page, DEFAULT Add page ,
         //ehsans page will send a token that changes this to true, rendering it an edit page
         //throughout this code anything that specifically applies to the save page will be wrapped
         //in a conditional statement with that boolean value to check for true (edit page)
+//        if(testToken){
+//            isSavePage = true;
+//        }
 
-        if(!isSavePage){
+        if(isSavePage == false){
             btn_AddCustomerRefresh.setVisible(false);
             lbl_Title.setText("Edit Customer");
         }
@@ -183,8 +200,8 @@ public class AddCustomerController {
             boolean checkExists = custEmailExists();
             if (checkExists) {
 //                    if the customer exists, show the agent a message
-                   JOptionPane.showMessageDialog(null, "Customer Email Exists, do not add new customer",   //------ TESTING ONLY!!!!!!!!! REPLACE WITH REDIRECT ----------//
-
+                   JOptionPane.showMessageDialog(null, "Customer Email Exists, do not add new customer",   //------ TESTING ONLY!!!!!!!!! REPLACE WITH REDIRECT ----------/
+                           //change the token
                         "Warning", JOptionPane.CLOSED_OPTION);
                      } else {
                      //if it DOESNT, then we want to allow the addition of this customer
@@ -377,7 +394,7 @@ public class AddCustomerController {
         btn_AddCustomerSave.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                if(!isSavePage){ //if this page was loaded as EDIT PAGE
+                if(!isSavePage){ //if this page was loaded as EDIT PAGE  // IDEA - if the customer exi
                     //if all fields are filled
                     if (allArePresent() && IsValidData()) {
                         //establish connection to insert new customer into DB
@@ -608,7 +625,7 @@ public class AddCustomerController {
 
     }
 
-    private boolean allArePresent() {
+    private boolean allArePresent() { // doesnt include home phone as that one is nullable
         return(
                 !txt_CustFName.getText().isEmpty() && !txt_CustLName.getText().isEmpty() && !txt_CustEmail.getText().isEmpty()                      //ADD VALIDATION
                         && !txt_CustBusPhone.getText().isEmpty() && !txt_CustAddress.getText().isEmpty() && !txt_CustCity.getText().isEmpty()
@@ -622,13 +639,24 @@ public class AddCustomerController {
         txt_CustLName.setText(c.getCustLastName());
         txt_CustEmail.setText(c.getCustEmail());
         txt_CustPostal.setText(c.getCustPostal());
-        txt_CustAddress.setText(c.getCustPostal());
+        txt_CustAddress.setText(c.getCustAddress());
         txt_CustCity.setText(c.getCustCity());
         txt_CustHomePhone.setText(c.getCustHomePhone());
         txt_CustBusPhone.setText(c.getCustBusPhone());
         cb_CustProvince.setValue(c.getCustProv());
         cb_CustCountry.setValue(c.getCustCountry());
+        custID = c.getCustomerId();
+    }
 
+    public void EditPage(){
+        isSavePage = false;
+        initialize();
     }
 
 }//ends controller
+
+
+
+//Ehsans page gets a boolean value / method  that holds true or false token for my page
+//this method would be called in ehsans edit button click which changes the token to false on click ?
+//then this method could be taken and tested in my initialization to use within my page?
