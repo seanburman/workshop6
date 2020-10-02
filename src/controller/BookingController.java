@@ -19,10 +19,7 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.layout.AnchorPane;
-import model.Booking;
-import model.Customer;
-import model.TravelPackage;
-import model.TripType;
+import model.*;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 
@@ -148,8 +145,15 @@ public class BookingController {
         return c;
     }
 
+    // From Ehsan to Jessy: we've discussed the customer info one for adding, the new method is for editing. from
+    // BookingDetail model you can extract bookingId and use it for a query or however you think is best to do the edit!
+    // <3
     public void SetCustomerInfo(Customer c){
         String CustomerName = c.getCustFirstName() + " " + c.getCustLastName();
         lblCustomer.setText(CustomerName);
+    }
+
+    public void GetBookingDetailInfo(BookingDetail bd){
+
     }
 }

@@ -10,14 +10,16 @@ public class BookingDetail {
     private Date tripEnd;
     private String description;
     private double basePrice;
+    private int bookingId;
 
-    public BookingDetail(int itineraryNo, String destination, Date tripStart, Date tripEnd, String description, double basePrice) {
+    public BookingDetail(int itineraryNo, String destination, Date tripStart, Date tripEnd, String description, double basePrice, int bookingId) {
         this.itineraryNo = itineraryNo;
         this.destination = destination;
         this.tripStart = tripStart;
         this.tripEnd = tripEnd;
         this.description = description;
         this.basePrice = basePrice;
+        this.bookingId = bookingId;
     }
 
     public int getItineraryNo() {
@@ -66,5 +68,13 @@ public class BookingDetail {
 
     public void setBasePrice(double basePrice) {
         this.basePrice = basePrice;
+    }
+
+    public int getBookingId() {
+        return bookingId;
+    }
+
+    public void setBookingId(int bookingId) {
+        this.bookingId = bookingId;
     }
 }
