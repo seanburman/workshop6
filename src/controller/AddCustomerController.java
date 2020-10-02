@@ -23,6 +23,8 @@ import java.net.URL;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class AddCustomerController {
 
@@ -104,9 +106,9 @@ public class AddCustomerController {
                 // Variables should be camelCase
                 // Constants are all UPPERCASE
 
-        int custID = 149; //CHANGE THIS TO THE CUSTOMER YOU WANT TO EDIT -- NOT YET WORKING <3
+        int custID = 138; //CHANGE THIS TO THE CUSTOMER YOU WANT TO EDIT -- NOT YET WORKING <3
 
-        boolean isSavePage = true; // TRUE = ADD CUSTOMER PAGE, (FALSE = EDIT PAGE)
+        boolean isSavePage = false; // TRUE = ADD CUSTOMER PAGE, (FALSE = EDIT PAGE)
         //boolean isSavePage = true   - like a switch for add and edit page, DEFAULT Add page ,
         //ehsans page will send a token that changes this to true, rendering it an edit page
         //throughout this code anything that specifically applies to the save page will be wrapped
@@ -377,9 +379,7 @@ public class AddCustomerController {
             public void handle(MouseEvent event) {
                 if(!isSavePage){ //if this page was loaded as EDIT PAGE
                     //if all fields are filled
-                    if (!txt_CustFName.getText().isEmpty() && !txt_CustLName.getText().isEmpty() && !txt_CustEmail.getText().isEmpty()                      //ADD VALIDATION
-                            && !txt_CustBusPhone.getText().isEmpty() && !txt_CustAddress.getText().isEmpty() && !txt_CustCity.getText().isEmpty()
-                            && !txt_CustPostal.getText().isEmpty() && !cb_CustProvince.getValue().isEmpty() && !cb_CustCountry.getValue().isEmpty() ) {
+                    if (allArePresent() && IsValidData()) {
                         //establish connection to insert new customer into DB
                         Connection conn = connectDB();
                         //SQL string for insertion
@@ -424,14 +424,13 @@ public class AddCustomerController {
                             throwables.printStackTrace();
                         }
                     } else {
-                        JOptionPane.showMessageDialog(null, "FILL IN ALL FIELDS!!",
+                        JOptionPane.showMessageDialog(null, "Missing field data or incorrect format, please try again.",
                                 "Warning", JOptionPane.CLOSED_OPTION);
                     }
                 }else{
                     //if all fields are filled
-                    if (!txt_CustFName.getText().isEmpty() && !txt_CustLName.getText().isEmpty() && !txt_CustEmail.getText().isEmpty()                      //ADD VALIDATION
-                            && !txt_CustBusPhone.getText().isEmpty() && !txt_CustAddress.getText().isEmpty() && !txt_CustCity.getText().isEmpty()
-                            && !txt_CustPostal.getText().isEmpty() && !cb_CustProvince.getValue().isEmpty() && !cb_CustCountry.getValue().isEmpty() ) {
+                    if (allArePresent() && IsValidData()) {
+
                         //establish connection to insert new customer into DB
                         Connection conn = connectDB();
                         //SQL string for insertion
@@ -478,8 +477,6 @@ public class AddCustomerController {
                                 "Warning", JOptionPane.CLOSED_OPTION);
                     }
                 }
-
-
             }
         });
 
@@ -591,20 +588,46 @@ public class AddCustomerController {
         return(
                 Validator.isValidEmailNoAlert(txt_CustEmail) &&
                 Validator.isValidPhoneNoAlert(txt_CustBusPhone) &&
-                Validator.isValidPhoneNoAlert(txt_CustHomePhone) &&
-                        Validator.isValidPostalCodeNoAlert(txt_CustPostal)
+                Validator.isValidPostalCodeNoAlert(txt_CustPostal)&&
+                    HomePhoneValidOrEmpty()
+        );
+    }
 
-                );
+    public boolean HomePhoneValidOrEmpty(){
+
+        boolean isValid = true;
+        String phone = txt_CustHomePhone.getText();
+        String regex = "^((\\(\\d{3}\\))|\\s{3})\\s\\d{3}[-]\\d{4}$";
+
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(phone);
+        if (!matcher.matches() || txt_CustHomePhone.getText().isEmpty()) {
+            isValid = false;
+        }
+        return isValid;
+
+    }
+
+    private boolean allArePresent() {
+        return(
+                !txt_CustFName.getText().isEmpty() && !txt_CustLName.getText().isEmpty() && !txt_CustEmail.getText().isEmpty()                      //ADD VALIDATION
+                        && !txt_CustBusPhone.getText().isEmpty() && !txt_CustAddress.getText().isEmpty() && !txt_CustCity.getText().isEmpty()
+                        && !txt_CustPostal.getText().isEmpty() && !cb_CustProvince.getValue().isEmpty() && !cb_CustCountry.getValue().isEmpty()
+        );
     }
 
     ////----------------------------------------------EDIT FILL FIELDS------------------------------------////
     public void GetCustomerInfo(Customer c){
-//        int custID = 0;
-//        custID.set(c.getCustomerId());
         txt_CustFName.setText(c.getCustFirstName());
         txt_CustLName.setText(c.getCustLastName());
         txt_CustEmail.setText(c.getCustEmail());
-
+        txt_CustPostal.setText(c.getCustPostal());
+        txt_CustAddress.setText(c.getCustPostal());
+        txt_CustCity.setText(c.getCustCity());
+        txt_CustHomePhone.setText(c.getCustHomePhone());
+        txt_CustBusPhone.setText(c.getCustBusPhone());
+        cb_CustProvince.setValue(c.getCustProv());
+        cb_CustCountry.setValue(c.getCustCountry());
 
     }
 
