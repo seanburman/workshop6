@@ -79,6 +79,9 @@ public class SearchController {
     private TableColumn<BookingDetail, Double> tcBasePrice;
 
     @FXML
+    private TableColumn<BookingDetail, Integer> tcBookingId;
+
+    @FXML
     private Button btnSearch;
 
     @FXML
@@ -120,6 +123,7 @@ public class SearchController {
         Connection conn = connectDB();
         final Customer[] customer = new Customer[1];
         ObservableList<BookingDetail> bookingList = FXCollections.observableArrayList();
+        final BookingDetail[] bd = new BookingDetail[1];
 
 
         btnSearch.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -148,7 +152,7 @@ public class SearchController {
                         int customerId = customer[0].getCustomerId();
                         System.out.println(customerId);
                         String sqlBooking = "SELECT ItineraryNo, Destination, TripStart, TripEnd, Description, " +
-                                "BasePrice FROM `bookingdetails` JOIN bookings on bookingdetails.BookingId" +
+                                "BasePrice, bookings.bookingId FROM `bookingdetails` JOIN bookings on bookingdetails.BookingId" +
                                 " = bookings.BookingId WHERE bookings.CustomerId = " + customerId;
                         Statement statement1 = conn.createStatement();
                         ResultSet rs1 = statement1.executeQuery(sqlBooking);
@@ -160,18 +164,49 @@ public class SearchController {
                         tcTripEnd.setCellValueFactory(new PropertyValueFactory<BookingDetail, Date>("tripEnd"));
                         tcDescription.setCellValueFactory(new PropertyValueFactory<BookingDetail, String>("description"));
                         tcBasePrice.setCellValueFactory(new PropertyValueFactory<BookingDetail, Double>("basePrice"));
+                        tcBookingId.setCellValueFactory(new PropertyValueFactory<BookingDetail, Integer>("bookingId"));
 
                         while (rs1.next()){
                             bookingList.add(new BookingDetail(rs1.getInt(1),rs1.getString(2),rs1.getDate(3),
-                                    rs1.getDate(4),rs1.getString(5),rs1.getDouble(6)));
+                                    rs1.getDate(4),rs1.getString(5),rs1.getDouble(6),rs1.getInt(7)));
                         }
 
                         tvBookings.setItems(bookingList);
+                        btnEdit.setDisable(false);
+                        btnReset.setDisable(false);
+                        btnBookAdd.setDisable(false);
 
                     } catch (SQLException throwables) {
                         throwables.printStackTrace();
                     }
                 }
+            }
+        });
+
+        btnEdit.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                Stage stage = new Stage();
+                try {
+                    FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("views/AddCustomer.fxml"), resources);
+                    Parent mainLoader = (Parent) loader.load();
+                    stage.setTitle("Edit Customer");
+                    stage.setScene(new Scene(mainLoader, 800, 600));
+                    AddCustomerController addCustomerController = loader.getController();
+                    addCustomerController.GetCustomerInfo(customer[0]);
+
+                    stage.show();
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        btnReset.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                ClearFields();
             }
         });
 
@@ -182,7 +217,7 @@ public class SearchController {
                 try {
                     FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("views/booking.fxml"), resources);
                     Parent mainLoader = (Parent) loader.load();
-                    stage.setTitle("My New Stage Title");
+                    stage.setTitle("Add a Booking!");
                     stage.setScene(new Scene(mainLoader, 800, 600));
                     BookingController bookingController = loader.getController();
                     bookingController.SetCustomerInfo(customer[0]);
@@ -196,7 +231,46 @@ public class SearchController {
             }
         });
 
+        tvBookings.getSelectionModel().selectedItemProperty().addListener((observableValue, bookingDetail, t1) -> {
+            btnBookEdit.setDisable(false);
+            bd[0] = t1;
+        });
+        
+        btnBookEdit.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                Stage stage = new Stage();
+                try {
+                    FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("views/booking.fxml"), resources);
+                    Parent mainLoader = (Parent) loader.load();
+                    stage.setTitle("Edit Booking!");
+                    stage.setScene(new Scene(mainLoader, 800, 600));
+                    BookingController bookingController = loader.getController();
+                    bookingController.GetBookingDetailInfo(bd[0]);
 
+                    stage.show();
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    private void ClearFields() {
+        tfEmail.setText("");
+        tfPhone.setText("");
+        tfFirstName.setText("");
+        tfLastName.setText("");
+        tfPostal.setText("");
+        tfCountry.setText("");
+        tfAddress.setText("");
+        tfCity.setText("");
+        tvBookings.setItems(null);
+        btnEdit.setDisable(true);
+        btnBookAdd.setDisable(true);
+        btnBookEdit.setDisable(true);
+        btnReset.setDisable(true);
     }
 
 
