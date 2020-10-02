@@ -88,6 +88,8 @@ public class Validator {
         }
         return isValid;
     }
+
+
     //this matches phone format (403) 210-7801
     public static boolean isValidPhone(TextField tf, String fieldName, String message) { //
         boolean isValid = true;
