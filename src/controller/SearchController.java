@@ -15,10 +15,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
@@ -129,56 +126,84 @@ public class SearchController {
         btnSearch.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                if (tfEmail.getText() != "" || tfPhone.getText() != ""){
-                    try {
+                String sql = null;
+                if (!tfEmail.getText().isEmpty() || !tfPhone.getText().isEmpty()) {
+                    if (tfEmail.getText().isEmpty() && !tfPhone.getText().isEmpty()
+                            && Validator.isValidPhone(tfPhone, "tfPhone", "Invaid Phone Number!")) {
+                        String phone = tfPhone.getText();
+                        System.out.println(phone);
+                        sql = "Select * from customers Where custHomePhone= '" + phone + "' OR custBusPhone= '" + phone + "'";
+                    }
+                    if (!tfEmail.getText().isEmpty() && tfPhone.getText().isEmpty()
+                            && Validator.isValidEmail(tfEmail, "tfEmail", "Invaid Email!")) {
                         String email = tfEmail.getText();
                         System.out.println(email);
-                        String sql = "Select * from customers Where CustEmail= '" + email + "'";
-                        Statement statement = conn.createStatement();
-                        ResultSet rs = statement.executeQuery(sql);
-                        rs.first();
-                        customer[0] = new Customer(rs.getInt(1),rs.getString(2),rs.getString(3),
-                                rs.getString(4),rs.getString(5),rs.getString(6),rs.getString(7)
-                        ,rs.getString(8),rs.getString(9),rs.getString(10),rs.getString(11),rs.getInt(12));
-
-                        tfPhone.setText(customer[0].getCustHomePhone());
-                        tfFirstName.setText(customer[0].getCustFirstName());
-                        tfLastName.setText(customer[0].getCustLastName());
-                        tfCity.setText(customer[0].getCustCity());
-                        tfAddress.setText(customer[0].getCustAddress());
-                        tfCountry.setText(customer[0].getCustCountry());
-                        tfPostal.setText(customer[0].getCustPostal());
-
-                        int customerId = customer[0].getCustomerId();
-                        System.out.println(customerId);
-                        String sqlBooking = "SELECT ItineraryNo, Destination, TripStart, TripEnd, Description, " +
-                                "BasePrice, bookings.bookingId FROM `bookingdetails` JOIN bookings on bookingdetails.BookingId" +
-                                " = bookings.BookingId WHERE bookings.CustomerId = " + customerId;
-                        Statement statement1 = conn.createStatement();
-                        ResultSet rs1 = statement1.executeQuery(sqlBooking);
-
-
-                        tcItineraryNo.setCellValueFactory(new PropertyValueFactory<BookingDetail, Integer>("itineraryNo"));
-                        tcDestination.setCellValueFactory(new PropertyValueFactory<BookingDetail, String>("destination"));
-                        tcTripStart.setCellValueFactory(new PropertyValueFactory<BookingDetail, Date>("tripStart"));
-                        tcTripEnd.setCellValueFactory(new PropertyValueFactory<BookingDetail, Date>("tripEnd"));
-                        tcDescription.setCellValueFactory(new PropertyValueFactory<BookingDetail, String>("description"));
-                        tcBasePrice.setCellValueFactory(new PropertyValueFactory<BookingDetail, Double>("basePrice"));
-                        tcBookingId.setCellValueFactory(new PropertyValueFactory<BookingDetail, Integer>("bookingId"));
-
-                        while (rs1.next()){
-                            bookingList.add(new BookingDetail(rs1.getInt(1),rs1.getString(2),rs1.getDate(3),
-                                    rs1.getDate(4),rs1.getString(5),rs1.getDouble(6),rs1.getInt(7)));
-                        }
-
-                        tvBookings.setItems(bookingList);
-                        btnEdit.setDisable(false);
-                        btnReset.setDisable(false);
-                        btnBookAdd.setDisable(false);
-
-                    } catch (SQLException throwables) {
-                        throwables.printStackTrace();
+                        sql = "Select * from customers Where CustEmail= '" + email + "'";
                     }
+
+                    if (sql != null)
+                    {
+                        try {
+
+                            Statement statement = conn.createStatement();
+                            ResultSet rs = statement.executeQuery(sql);
+                            rs.first();
+                            customer[0] = new Customer(rs.getInt(1),rs.getString(2),rs.getString(3),
+                                    rs.getString(4),rs.getString(5),rs.getString(6),rs.getString(7)
+                                    ,rs.getString(8),rs.getString(9),rs.getString(10),rs.getString(11),rs.getInt(12));
+
+                            tfEmail.setText((customer[0].getCustEmail()));
+                            tfPhone.setText(customer[0].getCustHomePhone());
+                            tfFirstName.setText(customer[0].getCustFirstName());
+                            tfLastName.setText(customer[0].getCustLastName());
+                            tfCity.setText(customer[0].getCustCity());
+                            tfAddress.setText(customer[0].getCustAddress());
+                            tfCountry.setText(customer[0].getCustCountry());
+                            tfPostal.setText(customer[0].getCustPostal());
+
+                            if (tfEmail.getText().isEmpty()){
+                                tfEmail.setDisable(true);
+                            }
+
+                            int customerId = customer[0].getCustomerId();
+                            System.out.println(customerId);
+                            String sqlBooking = "SELECT ItineraryNo, Destination, TripStart, TripEnd, Description, " +
+                                    "BasePrice, bookings.bookingId FROM `bookingdetails` JOIN bookings on bookingdetails.BookingId" +
+                                    " = bookings.BookingId WHERE bookings.CustomerId = " + customerId;
+                            Statement statement1 = conn.createStatement();
+                            ResultSet rs1 = statement1.executeQuery(sqlBooking);
+
+
+                            tcItineraryNo.setCellValueFactory(new PropertyValueFactory<BookingDetail, Integer>("itineraryNo"));
+                            tcDestination.setCellValueFactory(new PropertyValueFactory<BookingDetail, String>("destination"));
+                            tcTripStart.setCellValueFactory(new PropertyValueFactory<BookingDetail, Date>("tripStart"));
+                            tcTripEnd.setCellValueFactory(new PropertyValueFactory<BookingDetail, Date>("tripEnd"));
+                            tcDescription.setCellValueFactory(new PropertyValueFactory<BookingDetail, String>("description"));
+                            tcBasePrice.setCellValueFactory(new PropertyValueFactory<BookingDetail, Double>("basePrice"));
+                            tcBookingId.setCellValueFactory(new PropertyValueFactory<BookingDetail, Integer>("bookingId"));
+
+                            while (rs1.next()){
+                                bookingList.add(new BookingDetail(rs1.getInt(1),rs1.getString(2),rs1.getDate(3),
+                                        rs1.getDate(4),rs1.getString(5),rs1.getDouble(6),rs1.getInt(7)));
+                            }
+
+                            tvBookings.setItems(bookingList);
+                            btnEdit.setDisable(false);
+                            btnReset.setDisable(false);
+                            btnBookAdd.setDisable(false);
+
+                        } catch (SQLException throwables) {
+                            throwables.printStackTrace();
+                        }
+                    }
+                }
+                else {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Input Error");
+                    alert.setHeaderText("Search Input Error!");
+                    alert.setContentText("Please input a valid Email or Phone Number!");
+                    alert.showAndWait();
+                    tfEmail.isFocused();
                 }
             }
         });
@@ -271,6 +296,7 @@ public class SearchController {
         btnBookAdd.setDisable(true);
         btnBookEdit.setDisable(true);
         btnReset.setDisable(true);
+        tfEmail.setDisable(false);
     }
 
 
