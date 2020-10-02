@@ -21,11 +21,12 @@
       <TableView fx:id="tvBookings" layoutX="60.0" layoutY="356.0" prefHeight="200.0" prefWidth="697.0">
         <columns>
           <TableColumn fx:id="tcItineraryNo" prefWidth="78.39999389648438" text="Itinerary No" />
-          <TableColumn fx:id="tcDestination" prefWidth="135.20004272460938" text="Destination" />
-            <TableColumn fx:id="tcTripStart" prefWidth="135.99993896484375" text="Trip Start" />
-            <TableColumn fx:id="tcTripEnd" prefWidth="134.4000244140625" text="Trip End" />
-            <TableColumn fx:id="tcDescription" prefWidth="146.4000244140625" text="Description" />
-            <TableColumn fx:id="tcBasePrice" prefWidth="66.4000244140625" text="Base Price" />
+            <TableColumn fx:id="tcBookingId" prefWidth="67.99993896484375" text="Booking ID" />
+          <TableColumn fx:id="tcDestination" prefWidth="100.0" text="Destination" />
+            <TableColumn fx:id="tcTripStart" prefWidth="114.4000244140625" text="Trip Start" />
+            <TableColumn fx:id="tcTripEnd" prefWidth="118.39996337890625" text="Trip End" />
+            <TableColumn fx:id="tcDescription" prefWidth="150.39996337890625" text="Description" />
+            <TableColumn fx:id="tcBasePrice" prefWidth="70.4000244140625" text="Base Price" />
         </columns>
       </TableView>
       <Label layoutX="32.0" layoutY="91.0" prefWidth="82.0" text="Email:">
@@ -74,9 +75,9 @@
          </font>
       </Label>
       <Button fx:id="btnSearch" layoutX="474.0" layoutY="100.0" mnemonicParsing="false" text="Search" />
-      <Button fx:id="btnEdit" layoutX="548.0" layoutY="101.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="52.0" text="Edit" />
-      <Button fx:id="btnReset" layoutX="623.0" layoutY="101.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="52.0" text="Reset" />
-      <Button fx:id="btnBookAdd" layoutX="145.0" layoutY="312.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="52.0" text="Add" />
+      <Button fx:id="btnEdit" disable="true" layoutX="548.0" layoutY="101.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="52.0" text="Edit" />
+      <Button fx:id="btnReset" disable="true" layoutX="623.0" layoutY="101.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="52.0" text="Reset" />
+      <Button fx:id="btnBookAdd" disable="true" layoutX="145.0" layoutY="312.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="52.0" text="Add" />
       <Label layoutX="14.0" layoutY="162.0" prefHeight="26.0" prefWidth="149.0" text="Customer Information:">
          <font>
             <Font name="System Bold" size="12.0" />
@@ -87,6 +88,6 @@
             <Font name="System Bold" size="12.0" />
          </font>
       </Label>
-      <Button fx:id="btnBookEdit" layoutX="219.0" layoutY="312.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="52.0" text="Edit" />
+      <Button fx:id="btnBookEdit" disable="true" layoutX="219.0" layoutY="312.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="52.0" text="Edit" />
    </children>
 </AnchorPane>

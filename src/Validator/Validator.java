@@ -95,7 +95,8 @@ public class Validator {
         boolean isValid = true;
 
         String phone = tf.getText();
-        String regex = "^((\\(\\d{3}\\))|\\s{3})\\s\\d{3}[-]\\d{4}$";
+        String regex = "^(\\+\\d{1,2}\\s?)?1?\\-?\\.?\\s?\\(?\\d{3}\\)?[\\s.-]?\\d{3}[\\s.-]?\\d{4}$";
+                //"^((\\(\\d{3}\\))|\\s{3})\\s\\d{3}[-]\\d{4}$";
 
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(phone);
