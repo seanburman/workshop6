@@ -374,7 +374,7 @@ public class AddCustomerController {
                 try {
                     Stage stage = (Stage) btn_AddCustomerCancel.getScene().getWindow();
                     stage.close();
-                    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../views/SearchView.fxml"));
+                    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../views/Main.fxml"));
                     Parent root1 = (Parent) fxmlLoader.load();
                     stage = new Stage();
                     stage.setScene((new Scene(root1)));
