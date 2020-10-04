@@ -13,6 +13,7 @@ public class Validator {
         if (tf.getText().isEmpty()) {
 
             createAlert(tf, fieldName, message);
+            tf.setStyle("-fx-border-color: #ff0000");
             isValid = false;
         }
         return isValid;
@@ -88,6 +89,8 @@ public class Validator {
         }
         return isValid;
     }
+
+
     //this matches phone format (403) 210-7801
     public static boolean isValidPhone(TextField tf, String fieldName, String message) { //
         boolean isValid = true;

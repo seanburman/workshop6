@@ -138,7 +138,7 @@ public class BookingController {
         Connection c = null;
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            c = DriverManager.getConnection("jdbc:mysql://localhost:3306/travelexperts", "TEAdmin", "password");
+            c = DriverManager.getConnection("jdbc:mysql://localhost:3306/travelexperts", "doug1", "password");
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
         }
