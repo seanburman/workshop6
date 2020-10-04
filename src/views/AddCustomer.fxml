@@ -12,63 +12,60 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<FlowPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="475.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AddCustomerController">
+<FlowPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="475.0" prefWidth="800.0" stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AddCustomerController">
    <children>
-      <VBox prefHeight="475.0" prefWidth="800.0" style="-fx-background-color: gainsboro;">
-         <padding>
-            <Insets bottom="30.0" left="30.0" right="30.0" top="100.0" />
-         </padding>
+      <VBox id="addCust" prefHeight="475.0" prefWidth="800.0">
          <children>
-            <HBox alignment="CENTER" prefHeight="95.0" prefWidth="756.0" style="-fx-background-color: whitesmoke;">
+            <HBox alignment="CENTER" prefHeight="115.0" prefWidth="800.0">
                <children>
-                  <Label fx:id="lbl_Title" alignment="CENTER" prefHeight="38.0" prefWidth="167.0" text="Add a Customer">
+                  <Label fx:id="lbl_Title" alignment="CENTER" prefHeight="38.0" prefWidth="167.0" styleClass="labelRadius" text="Add a Customer">
                      <font>
-                        <Font size="18.0" />
+                        <Font name="System Bold" size="18.0" />
                      </font>
                   </Label>
                </children>
             </HBox>
-            <HBox prefHeight="333.0" prefWidth="762.0" style="-fx-background-color: white;">
+            <HBox prefHeight="333.0" prefWidth="625.0" style="-fx-border-radius: 6;">
                <children>
-                  <Pane prefHeight="267.0" prefWidth="336.0" style="-fx-background-color: white;" HBox.hgrow="ALWAYS">
+                  <Pane id="addCustLeft" prefHeight="267.0" prefWidth="336.0" HBox.hgrow="ALWAYS">
                      <children>
-                        <Label alignment="CENTER_RIGHT" layoutX="87.0" layoutY="60.0" prefHeight="25.0" prefWidth="103.0" text="First Name">
+                        <Label alignment="CENTER_RIGHT" layoutX="87.0" layoutY="61.0" prefHeight="25.0" prefWidth="103.0" text="First Name">
                            <font>
                               <Font size="16.0" />
                            </font>
                         </Label>
-                        <Label alignment="CENTER_RIGHT" layoutX="87.0" layoutY="91.0" prefHeight="25.0" prefWidth="103.0" text="Last Name">
+                        <Label alignment="CENTER_RIGHT" layoutX="87.0" layoutY="109.0" prefHeight="25.0" prefWidth="103.0" text="Last Name">
                            <font>
                               <Font size="16.0" />
                            </font>
                         </Label>
-                        <Label alignment="CENTER_RIGHT" layoutX="65.0" layoutY="125.0" prefHeight="25.0" prefWidth="126.0" text="Business Phone">
-                           <font>
-                              <Font size="16.0" />
-                           </font>
-                        </Label>
-                        <Label alignment="CENTER_RIGHT" layoutX="108.0" layoutY="187.0" prefHeight="17.0" prefWidth="82.0" text="Email">
-                           <font>
-                              <Font size="16.0" />
-                           </font>
-                        </Label>
-                        <TextField fx:id="txt_CustFName" layoutX="200.0" layoutY="60.0" prefHeight="25.0" prefWidth="142.0" />
-                        <TextField fx:id="txt_CustLName" layoutX="200.0" layoutY="91.0" prefHeight="25.0" prefWidth="142.0" />
-                        <TextField fx:id="txt_CustBusPhone" layoutX="200.0" layoutY="125.0" prefHeight="25.0" prefWidth="118.0" />
-                        <TextField fx:id="txt_CustEmail" layoutX="200.0" layoutY="187.0" prefHeight="25.0" prefWidth="142.0" />
-                        <Button fx:id="btn_CustAddPhone" layoutX="319.0" layoutY="125.0" mnemonicParsing="false" text="+">
+                        <TextField fx:id="txt_CustFName" layoutX="201.0" layoutY="60.0" prefHeight="25.0" prefWidth="142.0" />
+                        <TextField fx:id="txt_CustLName" layoutX="201.0" layoutY="106.0" prefHeight="25.0" prefWidth="142.0" />
+                        <Button fx:id="btn_CustAddPhone" layoutX="324.0" layoutY="153.0" mnemonicParsing="false" text="+">
                            <tooltip>
                               <Tooltip text="Add Home Phone" />
                            </tooltip>
                         </Button>
-                        <Pane fx:id="pnl_CustHomePhone" layoutX="77.0" layoutY="150.0" prefHeight="30.0" prefWidth="265.0">
+                        <TextField fx:id="txt_CustBusPhone" layoutX="201.0" layoutY="151.0" prefHeight="25.0" prefWidth="118.0" />
+                        <Label alignment="CENTER_RIGHT" layoutX="64.0" layoutY="152.0" prefHeight="25.0" prefWidth="126.0" text="Business Phone">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="txt_CustEmail" layoutX="200.0" layoutY="239.0" prefHeight="25.0" prefWidth="142.0" />
+                        <Label alignment="CENTER_RIGHT" layoutX="107.0" layoutY="241.0" prefHeight="17.0" prefWidth="82.0" text="Email">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Label>
+                        <Pane fx:id="pnl_CustHomePhone" layoutX="86.0" layoutY="196.0" prefHeight="30.0" prefWidth="265.0">
                            <children>
-                              <TextField fx:id="txt_CustHomePhone" layoutX="123.0" layoutY="2.0" prefHeight="25.0" prefWidth="118.0" />
-                              <Label alignment="CENTER_RIGHT" layoutX="14.0" layoutY="2.0" prefHeight="25.0" prefWidth="103.0" text="Home Phone">
+                              <Label alignment="CENTER_RIGHT" prefHeight="25.0" prefWidth="103.0" text="Home Phone">
                                  <font>
                                     <Font size="16.0" />
                                  </font>
                               </Label>
+                              <TextField fx:id="txt_CustHomePhone" layoutX="115.0" prefHeight="25.0" prefWidth="118.0" />
                            </children>
                         </Pane>
                      </children>
@@ -76,38 +73,68 @@
                         <Insets />
                      </HBox.margin>
                   </Pane>
-                  <Pane prefHeight="315.0" prefWidth="362.0" style="-fx-background-color: white;">
+                  <Pane id="addCustRight" prefHeight="315.0" prefWidth="362.0">
                      <children>
-                        <Label alignment="CENTER_RIGHT" layoutX="29.0" layoutY="61.0" prefHeight="17.0" prefWidth="84.0" text="Address">
+                        <Label alignment="CENTER_RIGHT" layoutX="27.0" layoutY="61.0" prefHeight="17.0" prefWidth="84.0" text="Address">
                            <font>
                               <Font size="16.0" />
                            </font>
+                           <opaqueInsets>
+                              <Insets />
+                           </opaqueInsets>
                         </Label>
-                        <TextField fx:id="txt_CustAddress" layoutX="123.0" layoutY="61.0" />
-                        <Label alignment="CENTER_RIGHT" layoutX="29.0" layoutY="91.0" text="Postal Code">
+                        <TextField fx:id="txt_CustAddress" layoutX="123.0" layoutY="61.0" styleClass="margin">
+                           <opaqueInsets>
+                              <Insets />
+                           </opaqueInsets></TextField>
+                        <Label alignment="CENTER_RIGHT" layoutX="27.0" layoutY="106.0" text="Postal Code">
                            <font>
                               <Font size="16.0" />
                            </font>
+                           <opaqueInsets>
+                              <Insets />
+                           </opaqueInsets>
                         </Label>
-                        <Label alignment="CENTER_RIGHT" layoutX="29.0" layoutY="121.0" prefHeight="17.0" prefWidth="84.0" text="Province">
+                        <Label alignment="CENTER_RIGHT" layoutX="28.0" layoutY="151.0" prefHeight="17.0" prefWidth="84.0" text="Province">
                            <font>
                               <Font size="16.0" />
                            </font>
+                           <opaqueInsets>
+                              <Insets />
+                           </opaqueInsets>
                         </Label>
-                        <Label alignment="CENTER_RIGHT" layoutX="28.0" layoutY="150.0" prefHeight="17.0" prefWidth="84.0" text="City">
+                        <Label alignment="CENTER_RIGHT" layoutX="28.0" layoutY="199.0" prefHeight="17.0" prefWidth="84.0" text="City">
                            <font>
                               <Font size="16.0" />
                            </font>
+                           <opaqueInsets>
+                              <Insets />
+                           </opaqueInsets>
                         </Label>
-                        <Label alignment="CENTER_RIGHT" layoutX="31.0" layoutY="181.0" prefHeight="25.0" prefWidth="82.0" text="Country">
+                        <Label alignment="CENTER_RIGHT" layoutX="29.0" layoutY="238.0" prefHeight="25.0" prefWidth="82.0" text="Country">
                            <font>
                               <Font size="16.0" />
                            </font>
+                           <opaqueInsets>
+                              <Insets />
+                           </opaqueInsets>
                         </Label>
-                        <TextField fx:id="txt_CustPostal" layoutX="123.0" layoutY="91.0" prefHeight="25.0" prefWidth="118.0" />
-                        <TextField fx:id="txt_CustCity" layoutX="123.0" layoutY="151.0" prefHeight="25.0" prefWidth="118.0" />
-                        <ComboBox fx:id="cb_CustProvince" layoutX="123.0" layoutY="121.0" prefHeight="25.0" prefWidth="118.0" />
-                        <ComboBox fx:id="cb_CustCountry" layoutX="123.0" layoutY="180.0" prefHeight="25.0" prefWidth="118.0" />
+                        <TextField fx:id="txt_CustPostal" layoutX="123.0" layoutY="104.0" prefHeight="25.0" prefWidth="118.0">
+                           <opaqueInsets>
+                              <Insets />
+                           </opaqueInsets></TextField>
+                        <TextField fx:id="txt_CustCity" layoutX="123.0" layoutY="193.0" prefHeight="25.0" prefWidth="118.0">
+                           <opaqueInsets>
+                              <Insets />
+                           </opaqueInsets></TextField>
+                        <ComboBox fx:id="cb_CustProvince" layoutX="123.0" layoutY="148.0" prefHeight="25.0" prefWidth="118.0">
+                           <opaqueInsets>
+                              <Insets />
+                           </opaqueInsets></ComboBox>
+                        <ComboBox fx:id="cb_CustCountry" layoutX="123.0" layoutY="237.0" prefHeight="25.0" prefWidth="118.0">
+                           <opaqueInsets>
+                              <Insets />
+                           </opaqueInsets></ComboBox>
                         <Button fx:id="btn_AddCustomerRefresh" layoutX="257.0" layoutY="14.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="63.0" text="(refresh)" />
                      </children>
                      <HBox.margin>
@@ -115,8 +142,11 @@
                      </HBox.margin>
                   </Pane>
                </children>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
             </HBox>
-            <HBox alignment="BOTTOM_RIGHT" prefHeight="95.0" prefWidth="762.0" style="-fx-background-color: whitesmoke;">
+            <HBox alignment="BOTTOM_RIGHT" prefHeight="115.0" prefWidth="762.0">
                <children>
                   <Button fx:id="btn_AddCustomerSave" layoutX="493.0" layoutY="69.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="98.0" text="Save">
                      <font>
