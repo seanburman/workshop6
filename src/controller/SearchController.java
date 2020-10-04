@@ -18,12 +18,15 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import model.BookingDetail;
 import model.Customer;
 
 public class SearchController {
+    public Customer customer;
+    public BookingDetail bd;
 
     @FXML
     private ResourceBundle resources;
@@ -95,6 +98,9 @@ public class SearchController {
     private Button btnBookEdit;
 
     @FXML
+    private AnchorPane mainPane;
+
+    @FXML
     void initialize() {
         assert tfEmail != null : "fx:id=\"tfEmail\" was not injected: check your FXML file 'SearchView.fxml'.";
         assert tfFirstName != null : "fx:id=\"tfFirstName\" was not injected: check your FXML file 'SearchView.fxml'.";
@@ -119,10 +125,8 @@ public class SearchController {
 
 
         Connection conn = connectDB();
-        final Customer[] customer = new Customer[1];
-        ObservableList<BookingDetail> bookingList = FXCollections.observableArrayList();
-        final BookingDetail[] bd = new BookingDetail[1];
 
+        ObservableList<BookingDetail> bookingList = FXCollections.observableArrayList();
 
         btnSearch.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
@@ -149,24 +153,24 @@ public class SearchController {
                             Statement statement = conn.createStatement();
                             ResultSet rs = statement.executeQuery(sql);
                             rs.first();
-                            customer[0] = new Customer(rs.getInt(1),rs.getString(2),rs.getString(3),
+                            customer = new Customer(rs.getInt(1),rs.getString(2),rs.getString(3),
                                     rs.getString(4),rs.getString(5),rs.getString(6),rs.getString(7)
                                     ,rs.getString(8),rs.getString(9),rs.getString(10),rs.getString(11),rs.getInt(12));
 
-                            tfEmail.setText((customer[0].getCustEmail()));
-                            tfPhone.setText(customer[0].getCustHomePhone());
-                            tfFirstName.setText(customer[0].getCustFirstName());
-                            tfLastName.setText(customer[0].getCustLastName());
-                            tfCity.setText(customer[0].getCustCity());
-                            tfAddress.setText(customer[0].getCustAddress());
-                            tfCountry.setText(customer[0].getCustCountry());
-                            tfPostal.setText(customer[0].getCustPostal());
+                            tfEmail.setText((customer.getCustEmail()));
+                            tfPhone.setText(customer.getCustHomePhone());
+                            tfFirstName.setText(customer.getCustFirstName());
+                            tfLastName.setText(customer.getCustLastName());
+                            tfCity.setText(customer.getCustCity());
+                            tfAddress.setText(customer.getCustAddress());
+                            tfCountry.setText(customer.getCustCountry());
+                            tfPostal.setText(customer.getCustPostal());
 
                             if (tfEmail.getText().isEmpty()){
                                 tfEmail.setDisable(true);
                             }
 
-                            int customerId = customer[0].getCustomerId();
+                            int customerId = customer.getCustomerId();
                             System.out.println(customerId);
                             String sqlBooking = "SELECT ItineraryNo, Destination, TripStart, TripEnd, Description, " +
                                     "BasePrice, bookings.bookingId FROM `bookingdetails` JOIN bookings on bookingdetails.BookingId" +
@@ -194,6 +198,9 @@ public class SearchController {
                             btnBookAdd.setDisable(false);
 
                         } catch (SQLException throwables) {
+
+                            //If no customer is found create alert to suggest making new customer and open add customer page
+
                             throwables.printStackTrace();
                         }
                     }
@@ -214,14 +221,14 @@ public class SearchController {
             public void handle(MouseEvent mouseEvent) {
                 Stage stage = new Stage();
                 try {
-                    FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("views/AddCustomer.fxml"), resources);
-                    Parent mainLoader = (Parent) loader.load();
-                    stage.setScene(new Scene(mainLoader, 800, 600));
-                    stage.setTitle("Edit Customer");
+                    FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("views/AddCustomer.fxml"));
+                    Parent root = (Parent) loader.load();
+                    mainPane.getChildren().setAll(root);
+
+
                     AddCustomerController addCustomerController = loader.getController();
-                    addCustomerController.GetCustomerInfo(customer[0]);
+                    addCustomerController.GetCustomerInfo(customer);
                     addCustomerController.EditPage();
-                    stage.show();
 
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -242,14 +249,13 @@ public class SearchController {
             public void handle(MouseEvent mouseEvent) {
                 Stage stage = new Stage();
                 try {
-                    FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("views/booking.fxml"), resources);
-                    Parent mainLoader = (Parent) loader.load();
-                    stage.setTitle("Add a Booking!");
-                    stage.setScene(new Scene(mainLoader, 800, 600));
-                    BookingController bookingController = loader.getController();
-                    bookingController.SetCustomerInfo(customer[0]);
 
-                    stage.show();
+                    FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("views/booking.fxml"));
+                    Parent root = (Parent) loader.load();
+                    mainPane.getChildren().setAll(root);
+
+                    BookingController bookingController = loader.getController();
+                    bookingController.SetCustomerInfo(customer);
 
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -260,7 +266,7 @@ public class SearchController {
 
         tvBookings.getSelectionModel().selectedItemProperty().addListener((observableValue, bookingDetail, t1) -> {
             btnBookEdit.setDisable(false);
-            bd[0] = t1;
+            bd = t1;
         });
         
         btnBookEdit.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -268,14 +274,13 @@ public class SearchController {
             public void handle(MouseEvent mouseEvent) {
                 Stage stage = new Stage();
                 try {
-                    FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("views/booking.fxml"), resources);
-                    Parent mainLoader = (Parent) loader.load();
-                    stage.setTitle("Edit Booking!");
-                    stage.setScene(new Scene(mainLoader, 800, 600));
-                    BookingController bookingController = loader.getController();
-                    bookingController.GetBookingDetailInfo(bd[0]);
+                    FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("views/booking.fxml"));
+                    Parent root = (Parent) loader.load();
+                    mainPane.getChildren().setAll(root);
 
-                    stage.show();
+                    BookingController bookingController = loader.getController();
+                    bookingController.SetCustomerInfo(customer);
+                    bookingController.GetBookingDetailInfo(bd);
 
                 } catch (IOException e) {
                     e.printStackTrace();
