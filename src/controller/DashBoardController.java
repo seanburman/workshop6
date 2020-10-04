@@ -72,8 +72,15 @@ public class DashBoardController {
 
     @FXML
     void dash(MouseEvent event) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("views/main.fxml"));
+        Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("views/Dashboard.fxml"));
         dynamicPane.getChildren().setAll(root);
+        System.out.println("DashBoard Loaded...");
+    }
+
+    @FXML
+    void login(MouseEvent event) throws IOException {
+        Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("views/AgentLogin.fxml"));
+        mainPane.getChildren().setAll(root);
         System.out.println("DashBoard Loaded...");
     }
 

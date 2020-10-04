@@ -1,3 +1,12 @@
+/*@font-face {
+  font-family: BalooTamma2-Regular;
+  src: url(BalooTamma2-Regular.ttf);
+}*/
+
+#bookDescription {
+	-fx-border-color: "#FFFFFF";
+}
+
 Button.dashboard {
 	-fx-background-color: "#FDF344";
 	-fx-pref-height: 50;
@@ -16,12 +25,6 @@ Button:hover {
 	-fx-background-color: "#F0E637";
 }
 
-TextField {
-	-fx-background-color: "#FFFFFF";
-	-fx-border-color: "#000000";
-	-fx-border-radius: 4;
-	-fx-border-width: 2;
-}
 
 ComboBox {
 	-fx-background-color: "#FFFFFF";
@@ -30,11 +33,49 @@ ComboBox {
 	-fx-border-width: 2;
 }
 
-#logo {
-	-fx-fitHeight: 100;
+#addCust {
+	-fx-background-color: "#A4C2F4";
 }
+
+.borderRadius {
+	-fx-border-radius: 40;
+}
+
+.margin {
+	-fx-margin-bottom: 20;
+}
+
+#addCustLeft {
+	-fx-border-radius: 6;
+	-fx-background-color: "#FFFFFF";
+}
+
+#addCustRight {
+	-fx-border-radius: 6;
+	-fx-background-color: "#FFFFFF";
+}
+
+/*Label {
+	-fx-border-color: black;
+	-fx-border-width: 1;
+}*/
 
 ImageView:hover {
 	-fx-opacity: 0.8;
 	transition: opacity .25s ease-in-out;
 }
+
+#logo {
+	-fx-fitHeight: 100;
+}
+
+TextField {
+	-fx-background-color: "#FFFFFF";
+	-fx-border-color: "#000000";
+	-fx-border-radius: 4;
+	-fx-border-width: 2;
+}
+
+
+
+
