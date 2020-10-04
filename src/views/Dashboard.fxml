@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane prefHeight="475.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.DashBoardController">
+   <children>
+      <AnchorPane fx:id="dynamicPane" layoutX="9.0" layoutY="136.0" prefHeight="475.0" prefWidth="800.0" style="-fx-background-color: #A4C2F4;" stylesheets="@../styles.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <Button fx:id="btnAgent" layoutX="274.0" layoutY="108.0" mnemonicParsing="false" onMouseClicked="#agent" styleClass="dashboard" text="Agent Profile" AnchorPane.topAnchor="108.0">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Button>
+            <Button fx:id="btnAdd" layoutX="284.0" layoutY="118.0" mnemonicParsing="false" onMouseClicked="#add" styleClass="dashboard" text="Add Customer" AnchorPane.rightAnchor="226.0" AnchorPane.topAnchor="178.0">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Button>
+            <Button fx:id="btnSearch" layoutX="294.0" layoutY="128.0" mnemonicParsing="false" onMouseClicked="#search" styleClass="dashboard" text="Search Customer" AnchorPane.rightAnchor="226.0" AnchorPane.topAnchor="250.0">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Button>
+            <Button fx:id="btnBook" layoutX="304.0" layoutY="138.0" mnemonicParsing="false" onMouseClicked="#book" styleClass="dashboard" text="Customer Booking" AnchorPane.rightAnchor="226.0" AnchorPane.topAnchor="325.0">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Button>
+         </children>
+      </AnchorPane>
+   </children>
+</AnchorPane>
