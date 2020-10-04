@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<FlowPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="475.0" prefWidth="800.0" stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AddCustomerController">
+<FlowPane fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="475.0" prefWidth="800.0" stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AddCustomerController">
    <children>
       <VBox id="addCust" prefHeight="475.0" prefWidth="800.0">
          <children>
@@ -43,16 +43,22 @@
                         <TextField fx:id="txt_CustLName" layoutX="201.0" layoutY="106.0" prefHeight="25.0" prefWidth="142.0" />
                         <Button fx:id="btn_CustAddPhone" layoutX="324.0" layoutY="153.0" mnemonicParsing="false" text="+">
                            <tooltip>
-                              <Tooltip text="Add Home Phone" />
+                              <Tooltip fx:id="tt_AddHomePhone" text="Add Home Phone" />
                            </tooltip>
                         </Button>
-                        <TextField fx:id="txt_CustBusPhone" layoutX="201.0" layoutY="151.0" prefHeight="25.0" prefWidth="118.0" />
+                        <TextField fx:id="txt_CustBusPhone" layoutX="201.0" layoutY="151.0" prefHeight="25.0" prefWidth="118.0">
+                           <tooltip>
+                              <Tooltip fx:id="tt_busPhoneFormat" text="ex: (403) 210-0000" />
+                           </tooltip></TextField>
                         <Label alignment="CENTER_RIGHT" layoutX="64.0" layoutY="152.0" prefHeight="25.0" prefWidth="126.0" text="Business Phone">
                            <font>
                               <Font size="16.0" />
                            </font>
                         </Label>
-                        <TextField fx:id="txt_CustEmail" layoutX="200.0" layoutY="239.0" prefHeight="25.0" prefWidth="142.0" />
+                        <TextField fx:id="txt_CustEmail" layoutX="200.0" layoutY="239.0" prefHeight="25.0" prefWidth="142.0">
+                           <tooltip>
+                              <Tooltip text="ex: email@email.com" />
+                           </tooltip></TextField>
                         <Label alignment="CENTER_RIGHT" layoutX="107.0" layoutY="241.0" prefHeight="17.0" prefWidth="82.0" text="Email">
                            <font>
                               <Font size="16.0" />
@@ -65,9 +71,13 @@
                                     <Font size="16.0" />
                                  </font>
                               </Label>
-                              <TextField fx:id="txt_CustHomePhone" layoutX="115.0" prefHeight="25.0" prefWidth="118.0" />
+                              <TextField fx:id="txt_CustHomePhone" layoutX="115.0" prefHeight="25.0" prefWidth="118.0">
+                                 <tooltip>
+                                    <Tooltip fx:id="tt_homePhoneFormat" text="ex: (403) 210-0000" />
+                                 </tooltip></TextField>
                            </children>
                         </Pane>
+                        <Label fx:id="lbl_Validation" layoutX="30.0" layoutY="14.0" prefHeight="29.0" prefWidth="386.0" textFill="RED" />
                      </children>
                      <HBox.margin>
                         <Insets />
@@ -122,7 +132,10 @@
                         <TextField fx:id="txt_CustPostal" layoutX="123.0" layoutY="104.0" prefHeight="25.0" prefWidth="118.0">
                            <opaqueInsets>
                               <Insets />
-                           </opaqueInsets></TextField>
+                           </opaqueInsets>
+                           <tooltip>
+                              <Tooltip text="ex: A1A 1A1" />
+                           </tooltip></TextField>
                         <TextField fx:id="txt_CustCity" layoutX="123.0" layoutY="193.0" prefHeight="25.0" prefWidth="118.0">
                            <opaqueInsets>
                               <Insets />

@@ -8,11 +8,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import model.Customer;
@@ -29,21 +27,10 @@ import java.util.regex.Pattern;
 public class AddCustomerController {
     public boolean isSavePage = true;
     private boolean testToken;
-    int custID = 0; //CHANGE THIS TO THE CUSTOMER YOU WANT TO EDIT -- NOT YET WORKING <3
-//    public AddCustomerController(boolean testToken) {
-//        this.testToken = testToken;
-//    }
-//
-//    public boolean isTestToken() {
-//        return testToken;
-//    }
-//
-//    public void setTestToken(boolean testToken) {
-//        this.testToken = testToken;
-//    }
+    int custID = 0;
 
     @FXML
-    private Label lbl_Title;
+    private FlowPane mainPane;
 
     @FXML
     private ResourceBundle resources;
@@ -52,25 +39,40 @@ public class AddCustomerController {
     private URL location;
 
     @FXML
+    private Label lbl_Title;
+
+    @FXML
     private TextField txt_CustFName;
 
     @FXML
     private TextField txt_CustLName;
 
     @FXML
+    private Button btn_CustAddPhone;
+
+    @FXML
+    private Tooltip tt_AddHomePhone;
+
+    @FXML
     private TextField txt_CustBusPhone;
 
     @FXML
-    private TextField txt_CustEmail;
+    private Tooltip tt_busPhoneFormat;
 
     @FXML
-    private Button btn_CustAddPhone;
+    private TextField txt_CustEmail;
 
     @FXML
     private Pane pnl_CustHomePhone;
 
     @FXML
     private TextField txt_CustHomePhone;
+
+    @FXML
+    private Tooltip tt_homePhoneFormat;
+
+    @FXML
+    private Label lbl_Validation;
 
     @FXML
     private TextField txt_CustAddress;
@@ -98,14 +100,19 @@ public class AddCustomerController {
 
     @FXML
     void initialize() {
+        assert mainPane != null : "fx:id=\"mainPane\" was not injected: check your FXML file 'AddCustomer.fxml'.";
         assert lbl_Title != null : "fx:id=\"lbl_Title\" was not injected: check your FXML file 'AddCustomer.fxml'.";
         assert txt_CustFName != null : "fx:id=\"txt_CustFName\" was not injected: check your FXML file 'AddCustomer.fxml'.";
         assert txt_CustLName != null : "fx:id=\"txt_CustLName\" was not injected: check your FXML file 'AddCustomer.fxml'.";
-        assert txt_CustBusPhone != null : "fx:id=\"txt_CustBusPhone\" was not injected: check your FXML file 'AddCustomer.fxml'.";
-        assert txt_CustEmail != null : "fx:id=\"txt_CustEmail\" was not injected: check your FXML file 'AddCustomer.fxml'.";
         assert btn_CustAddPhone != null : "fx:id=\"btn_CustAddPhone\" was not injected: check your FXML file 'AddCustomer.fxml'.";
+        assert tt_AddHomePhone != null : "fx:id=\"tt_AddHomePhone\" was not injected: check your FXML file 'AddCustomer.fxml'.";
+        assert txt_CustBusPhone != null : "fx:id=\"txt_CustBusPhone\" was not injected: check your FXML file 'AddCustomer.fxml'.";
+        assert tt_busPhoneFormat != null : "fx:id=\"tt_busPhoneFormat\" was not injected: check your FXML file 'AddCustomer.fxml'.";
+        assert txt_CustEmail != null : "fx:id=\"txt_CustEmail\" was not injected: check your FXML file 'AddCustomer.fxml'.";
         assert pnl_CustHomePhone != null : "fx:id=\"pnl_CustHomePhone\" was not injected: check your FXML file 'AddCustomer.fxml'.";
         assert txt_CustHomePhone != null : "fx:id=\"txt_CustHomePhone\" was not injected: check your FXML file 'AddCustomer.fxml'.";
+        assert tt_homePhoneFormat != null : "fx:id=\"tt_homePhoneFormat\" was not injected: check your FXML file 'AddCustomer.fxml'.";
+        assert lbl_Validation != null : "fx:id=\"lbl_Validation\" was not injected: check your FXML file 'AddCustomer.fxml'.";
         assert txt_CustAddress != null : "fx:id=\"txt_CustAddress\" was not injected: check your FXML file 'AddCustomer.fxml'.";
         assert txt_CustPostal != null : "fx:id=\"txt_CustPostal\" was not injected: check your FXML file 'AddCustomer.fxml'.";
         assert txt_CustCity != null : "fx:id=\"txt_CustCity\" was not injected: check your FXML file 'AddCustomer.fxml'.";
@@ -120,17 +127,7 @@ public class AddCustomerController {
                 // Variables should be camelCase
                 // Constants are all UPPERCASE
 
-
-
-        //boolean isSavePage = true; // TRUE = ADD CUSTOMER PAGE, (FALSE = EDIT PAGE)
-        //boolean isSavePage = true   - like a switch for add and edit page, DEFAULT Add page ,
-        //ehsans page will send a token that changes this to true, rendering it an edit page
-        //throughout this code anything that specifically applies to the save page will be wrapped
-        //in a conditional statement with that boolean value to check for true (edit page)
-//        if(testToken){
-//            isSavePage = true;
-//        }
-
+        final Customer[] customer = new Customer[1];
         if(isSavePage == false){
             btn_AddCustomerRefresh.setVisible(false);
             lbl_Title.setText("Edit Customer");
@@ -261,7 +258,7 @@ public class AddCustomerController {
 
         ///-------------CUSTOMER HOME PHONE-------------///
         txt_CustHomePhone.focusedProperty().addListener((ov, oldV, newV) -> {
-            if (Validator.isValidPhoneNoAlert(txt_CustHomePhone)) {
+            if (Validator.isValidPhoneNoAlert(txt_CustHomePhone) || txt_CustHomePhone.getText().isEmpty()) {
                 txt_CustHomePhone.setStyle("-fx-border-color: null");
             }
             else {
@@ -319,8 +316,8 @@ public class AddCustomerController {
 
         ///-------------CUSTOMER CITY-------------///
         txt_CustCity.focusedProperty().addListener((ov, oldV, newV) -> {
-            if (!newV){
-                if (!txt_CustCity.getText().isEmpty()){
+            if (!newV){//on not focus
+                if (!txt_CustCity.getText().isEmpty()){ //if cust city is not null
                     txt_CustCity.setStyle("-fx-border-color: null");
                 }
                 else {
@@ -329,30 +326,75 @@ public class AddCustomerController {
             }
         });
 
-
-
+        ///-------------COUNTRY-------------///
+        cb_CustCountry.focusedProperty().addListener((ov, oldV, newV) -> {
+            if (!newV){//on not focus
+                if (!cb_CustCountry.getSelectionModel().isEmpty()){
+                    cb_CustCountry.setStyle("-fx-border-color: null");
+                }
+                else {
+                    cb_CustCountry.setStyle("-fx-border-color: red");
+                }
+            }
+        });
+        ///-------------COUNTRY-------------///
+        cb_CustProvince.focusedProperty().addListener((ov, oldV, newV) -> {
+            if (!newV){//on not focus
+                if (!cb_CustProvince.getSelectionModel().isEmpty()){
+                    cb_CustProvince.setStyle("-fx-border-color: null");
+                }
+                else {
+                    cb_CustProvince.setStyle("-fx-border-color: red");
+                }
+            }
+        });
 
         ////-------------------------------------- ADD HOME PHONE BUTTON ------------------------------------------------////
 
         btn_CustAddPhone.setOnMouseClicked(new EventHandler<MouseEvent>() {//when the user click the [+] button,
             @Override
             public void handle(MouseEvent mouseEvent) {
-                if (!pnl_CustHomePhone.isVisible()) {                //IF the home phone panel is not visible
-                    pnl_CustHomePhone.setVisible(true);                     //Make the home phone panel visible
-                    btn_CustAddPhone.setText("-");                          //Also, Change the button to a 'minimize' symbol
+                if(isSavePage){
+                    if (!pnl_CustHomePhone.isVisible()) {                //IF the home phone panel is not visible
+                        pnl_CustHomePhone.setVisible(true);                     //Make the home phone panel visible
+                        btn_CustAddPhone.setText("-");                          //Also, Change the button to a 'minimize' symbol
+                        tt_AddHomePhone.setText("Remove Home Phone");
 
-                } else if (pnl_CustHomePhone.isVisible()) {          //ELSE IF,  the home phone panel is visible,
-                    //then we need to check another condition,
+                    } else if (pnl_CustHomePhone.isVisible()) {          //ELSE IF,  the home phone panel is visible,
+                        //then we need to check another condition,
+                        if (txt_CustHomePhone.getText().isEmpty()) {      //IF the home phone text box is empty
+                            pnl_CustHomePhone.setVisible(false);                //then clicking the button when the panel is visible, should make it invisible
+                            btn_CustAddPhone.setText("+");                      //and also restore the ' + ' sign as the text for the button
+                            tt_AddHomePhone.setText("Add Home Phone");
 
-                    if (txt_CustHomePhone.getText().isEmpty()) {      //IF the home phone text box is empty
-                        pnl_CustHomePhone.setVisible(false);                //then clicking the button when the panel is visible, should make it invisible
-                        btn_CustAddPhone.setText("+");                      //and also restore the ' + ' sign as the text for the button
+                        } else{                                      //Else the text box has text
+                            txt_CustHomePhone.clear();
+                            pnl_CustHomePhone.setVisible(false);                //then clicking the button when the panel is visible, should make it invisible
+                            btn_CustAddPhone.setText("+");                      //and also restore the ' + ' sign as the text for the button
+                            tt_AddHomePhone.setText("Add Home Phone");
+                        }
+                    }
+                } else { //if loaded as an edit page
+                    if (!pnl_CustHomePhone.isVisible()) {                //IF the home phone panel is not visible
+                        pnl_CustHomePhone.setVisible(true);                     //Make the home phone panel visible
+                        btn_CustAddPhone.setText("-");                          //Also, Change the button to a 'minimize' symbol
+                        tt_AddHomePhone.setText("Remove Home Phone");
 
-                    } else if (!txt_CustHomePhone.getText().isEmpty()) {                                      //ELSE IF , the text box is not empty
-                        JOptionPane.showMessageDialog(null, "Clear Home Phone to minimize",   //present the user with a message box
-                                "Home Phone : Warning", JOptionPane.CLOSED_OPTION);                              //requiring the field to be empty to minimize
+                    } else if (pnl_CustHomePhone.isVisible()) {          //ELSE IF,  the home phone panel is visible,
+                        //then we need to check another condition,
+                        if (txt_CustHomePhone.getText().isEmpty()) {      //IF the home phone text box is empty
+                            pnl_CustHomePhone.setVisible(false);                //then clicking the button when the panel is visible, should make it invisible
+                            btn_CustAddPhone.setText("+");                      //and also restore the ' + ' sign as the text for the button
+                            tt_AddHomePhone.setText("Add Home Phone");
+
+                        } else{                                      //Else the text box has text
+                            pnl_CustHomePhone.setVisible(false);                //then clicking the button when the panel is visible, should make it invisible
+                            btn_CustAddPhone.setText("+");                      //and also restore the ' + ' sign as the text for the button
+                            tt_AddHomePhone.setText("Add Home Phone");
+                        }
                     }
                 }
+
             }
         });
 
@@ -371,17 +413,25 @@ public class AddCustomerController {
         btn_AddCustomerCancel.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                try {
-                    Stage stage = (Stage) btn_AddCustomerCancel.getScene().getWindow();
-                    stage.close();
-                    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../views/Main.fxml"));
-                    Parent root1 = (Parent) fxmlLoader.load();
-                    stage = new Stage();
-                    stage.setScene((new Scene(root1)));
-                    stage.show();
+                if (isSavePage) {
+                    try {
+                        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../views/Main.fxml"));
+                        Parent root1 = (Parent) fxmlLoader.load();
+                        mainPane.getChildren().setAll(root1);
 
-                } catch (IOException e) {
-                    e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    try {
+                        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../views/SearchView.fxml"));
+                        Parent root1 = (Parent) fxmlLoader.load();
+                        mainPane.getChildren().setAll(root1);
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
                 }
             }
         });
@@ -392,7 +442,7 @@ public class AddCustomerController {
         btn_AddCustomerSave.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                if(!isSavePage){ //if this page was loaded as EDIT PAGE  // IDEA - if the customer exi
+                if(!isSavePage){ //if this page was loaded as EDIT PAGE
                     //if all fields are filled
                     if (allArePresent() && IsValidData()) {
                         //establish connection to insert new customer into DB
@@ -420,17 +470,13 @@ public class AddCustomerController {
                             } else {
                                 System.out.println("save was successful! WOOHOO");
                             }
+
+                            lbl_Validation.setText("");
                             conn.close();
                             try {
-                                Stage stage = (Stage) btn_AddCustomerSave.getScene().getWindow();
-                                stage.close();
-                                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../views/booking.fxml"));
+                                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../views/SearchView.fxml"));
                                 Parent root1 = (Parent) fxmlLoader.load();
-                                stage = new Stage();
-                                stage.setScene((new Scene(root1)));
-                                stage.show();
-                                JOptionPane.showMessageDialog(null, "Redirecting to (view name) page",
-                                        "Redirecting : Warning", JOptionPane.CLOSED_OPTION);
+                                mainPane.getChildren().setAll(root1);
 
                             } catch (IOException e) {
                                 e.printStackTrace();
@@ -439,18 +485,22 @@ public class AddCustomerController {
                             throwables.printStackTrace();
                         }
                     } else {
-                        JOptionPane.showMessageDialog(null, "Missing field data or incorrect format, please try again.",
-                                "Warning", JOptionPane.CLOSED_OPTION);
+                        //////////////////////////////////////--------INSERT VALIDATION STUFF FOR SAVE BUTTON ON EDIT PAGE
+                        lbl_Validation.setText("Please fill in all required fields");
+                        MonsterValidation();
+
                     }
-                }else{
-                    //if all fields are filled
+                }else{ //if this page was loaded as SAVE PAGE
+                    //if all fields are filled and valid data - allow save
                     if (allArePresent() && IsValidData()) {
 
-                        //establish connection to insert new customer into DB
-                        Connection conn = connectDB();
-                        //SQL string for insertion
-                        String sql = "INSERT INTO `customers` SET `CustFirstName`=?, `CustLastName`=?, `CustAddress`=?, `CustCity`=?, `CustProv`=?, `CustPostal`=?, `CustCountry`=?, `CustHomePhone`=?, `CustBusPhone`=?, `CustEmail`=?";
                         try {
+                            //establish connection to insert new customer into DB
+                            Connection conn = connectDB();
+                            Statement statement = conn.createStatement();
+                            //SQL string for insertion
+                            String sql = "INSERT INTO `customers` SET `CustFirstName`=?, `CustLastName`=?, `CustAddress`=?, `CustCity`=?, `CustProv`=?, `CustPostal`=?, `CustCountry`=?, `CustHomePhone`=?, `CustBusPhone`=?, `CustEmail`=?";
+
                             PreparedStatement stmt = conn.prepareStatement(sql);
                             stmt.setString(1, txt_CustFName.getText());         //assigns the text values from the form to the sql query
                             stmt.setString(2, txt_CustLName.getText());
@@ -469,18 +519,25 @@ public class AddCustomerController {
                             } else {
                                 System.out.println("save was successful! WOOHOO");
                             }
+
+                            //set the customer details to a customer object
+                            String email = txt_CustEmail.getText();
+                            String sqlBooking = "Select * from customers Where CustEmail= '" + email + "'"; //find the customer in the DB that matches the email
+                            ResultSet rs = statement.executeQuery(sqlBooking);
+                            rs.first();
+                            customer[0] = new Customer(rs.getInt(1),rs.getString(2),rs.getString(3),
+                                    rs.getString(4),rs.getString(5),rs.getString(6),rs.getString(7)
+                                    ,rs.getString(8),rs.getString(9),rs.getString(10),rs.getString(11),rs.getInt(12));
+
+
                             conn.close();
+                            Stage stage = new Stage();
                             try {
-                                Stage stage = (Stage) btn_AddCustomerSave.getScene().getWindow();
-                                stage.close();
                                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../views/booking.fxml"));
                                 Parent root1 = (Parent) fxmlLoader.load();
-                                stage = new Stage();
-                                stage.setScene((new Scene(root1)));
-                                stage.show();
-                                JOptionPane.showMessageDialog(null, "Redirecting to (view name) page",
-                                        "Redirecting : Warning", JOptionPane.CLOSED_OPTION);
-
+                                mainPane.getChildren().setAll(root1);
+                                BookingController bookingController = fxmlLoader.getController();
+                                bookingController.SetCustomerInfo(customer[0]);
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
@@ -488,8 +545,9 @@ public class AddCustomerController {
                             throwables.printStackTrace();
                         }
                     } else {
-                        JOptionPane.showMessageDialog(null, "FILL IN ALL FIELDS!!",
-                                "Warning", JOptionPane.CLOSED_OPTION);
+                        //////////////////////////////////////--------INSERT VALIDATION STUFF FOR SAVE BUTTON ON EDIT PAGE
+                        lbl_Validation.setText("Please fill in all required fields");
+                        MonsterValidation();
                     }
                 }
             }
@@ -544,14 +602,6 @@ public class AddCustomerController {
         btn_CustAddPhone.setDisable(false);
     }
 
-    ////----------------------------------------Validation Method-----------------------------////
-//    public void validateAllFields() {
-//        txt_CustFName.getText(); // Letter Values only, no numbers or special characters
-//        txt_CustLName.getText(); // Letter values only, no numbers or special characters
-//        txt_CustAddress.getText(); // Letter and number values, no special characters?
-//        txt_CustCity.getText(); //Letter values only no numbers or special characters
-//        txt_CustPostal.getText(); //canadian postal Regex
-//    }
 
     ////------------------------SEARCH / CONFIRM CUSTOMER DOES NOT ALREADY EXIST---------------------------------////
                                                                                         //    CUST EMAIL    //
@@ -653,10 +703,139 @@ public class AddCustomerController {
         initialize();
     }
 
+    public void MonsterValidation(){
+
+        lbl_Validation.setText("Please fill in all required fields");
+        //-----------CITY
+        if (!txt_CustCity.getText().isEmpty()){ //if cust city is not null
+            txt_CustCity.setStyle("-fx-border-color: null");
+        }
+        else {
+            txt_CustCity.setStyle("-fx-border-color: red");
+        }
+        //------------POSTAL
+        if (!txt_CustPostal.getText().isEmpty() && Validator.isValidPostalCodeNoAlert(txt_CustPostal)){
+            txt_CustPostal.setStyle("-fx-border-color: null");
+        }
+        else{
+            txt_CustPostal.setStyle("-fx-border-color: #ff0000");
+        }
+        //------------ADDRESS
+        if (!txt_CustAddress.getText().isEmpty() ){
+            txt_CustAddress.setStyle("-fx-border-color: null");
+        }
+        else {
+            txt_CustAddress.setStyle("-fx-border-color: red");
+        }
+        //----------LAST NAME
+        if (!txt_CustLName.getText().isEmpty()){
+            txt_CustLName.setStyle("-fx-border-color: null");
+        }
+        else {
+            txt_CustLName.setStyle("-fx-border-color: red");
+        }
+        //----------FIRST NAME
+        if (!txt_CustFName.getText().isEmpty()){
+            txt_CustFName.setStyle("-fx-border-color: null");
+        }
+        else {
+            txt_CustFName.setStyle("-fx-border-color: red");
+        }
+        //-----------HOME PHONE
+        if (Validator.isValidPhoneNoAlert(txt_CustHomePhone) || txt_CustHomePhone.getText().isEmpty()) {
+            txt_CustHomePhone.setStyle("-fx-border-color: null");
+        }
+        else {
+            txt_CustHomePhone.setStyle("-fx-border-color: red");
+        }
+        //----------BUSINESS PHONE
+        if (!isSavePage){ //if this page was loaded as EDIT PAGE
+            //check if valid phone using validator
+            if (Validator.isValidPhoneNoAlert(txt_CustBusPhone)) {                  //if it is valid do this stuff
+                if (!txt_CustBusPhone.getText().isEmpty() && !txt_CustBusPhone.getText().isEmpty()) {
+                    //if the fields are both filled, and subsequently both do not belong to other customers, then enable fields
+                    enableFields();
+                }
+                txt_CustBusPhone.setStyle("-fx-border-color: null");
+            }else if(!Validator.isValidEmailNoAlert(txt_CustBusPhone)) {           //if its not valid, lets indicate that to the user
+                txt_CustBusPhone.focusedProperty();
+                txt_CustBusPhone.setStyle("-fx-border-color: red");
+            }
+        }else{ //else isEditPage returns FALSE
+            //check if valid phone using validator
+            if (Validator.isValidPhoneNoAlert(txt_CustBusPhone)) {                  //if it is valid do this stuff
+                boolean checkExists = custPhoneExists();
+                if (checkExists) {
+//                    if the customer exists, show the agent a message
+                    JOptionPane.showMessageDialog(null, "Customer with this phone exists, do not add new customer",   //------ TESTING ONLY!!!!!!!!! REPLACE WITH REDIRECT ----------//
+                            "Warning", JOptionPane.CLOSED_OPTION);
+                } else {
+                    //if it DOESNT, then we want to allow the addition of this customer
+                    //FIRST check if cust email and cust phone are both not null4
+                    txt_CustBusPhone.setStyle("-fx-border-color: null");
+
+                    if (!txt_CustBusPhone.getText().isEmpty() && !txt_CustBusPhone.getText().isEmpty()) {
+                        //if the fields are both filled, and subsequently both do not belong to other customers, then enable fields
+                        enableFields();
+                    }
+                }
+            } else if(!Validator.isValidPhoneNoAlert(txt_CustBusPhone)) {           //if its not valid, lets indicate that to the user
+                txt_CustBusPhone.focusedProperty();
+                txt_CustBusPhone.setStyle("-fx-border-color: red");
+            }
+        }
+
+        //-------------EMAIL
+        if (!isSavePage){ //if this page was loaded as EDIT PAGE
+            //check if valid email address
+            if (Validator.isValidEmailNoAlert(txt_CustEmail)) {                  //if it is valid do this stuff
+                if (!txt_CustEmail.getText().isEmpty() && !txt_CustBusPhone.getText().isEmpty()) {
+                    //if the fields are both filled, and subsequently both do not belong to other customers, then enable fields
+                    enableFields();
+                }
+                txt_CustEmail.setStyle("-fx-border-color: null");
+            }else if(!Validator.isValidEmailNoAlert(txt_CustEmail)) {           //if its not valid, lets indicate that to the user
+                txt_CustEmail.focusedProperty();
+                txt_CustEmail.setStyle("-fx-border-color: red");
+            }
+        }else{ //else isEditPage returns FALSE
+            //check if valid email address
+            if (Validator.isValidEmailNoAlert(txt_CustEmail)) {                  //if it is valid do this stuff
+                boolean checkExists = custEmailExists();
+                if (checkExists) {
+//                    if the customer exists, show the agent a message
+                    JOptionPane.showMessageDialog(null, "Customer Email Exists, do not add new customer",   //------ TESTING ONLY!!!!!!!!! REPLACE WITH REDIRECT ----------/
+                            //change the token
+                            "Warning", JOptionPane.CLOSED_OPTION);
+                } else {
+                    //if it DOESNT, then we want to allow the addition of this customer
+                    //FIRST check if cust email and cust phone are both not null4
+                    txt_CustEmail.setStyle("-fx-border-color: null");
+
+                    if (!txt_CustEmail.getText().isEmpty() && !txt_CustBusPhone.getText().isEmpty()) {
+                        //if the fields are both filled, and subsequently both do not belong to other customers, then enable fields
+                        enableFields();
+                    }
+                }
+            } else if(!Validator.isValidEmailNoAlert(txt_CustEmail)) {           //if its not valid, lets indicate that to the user
+                txt_CustEmail.focusedProperty();
+                txt_CustEmail.setStyle("-fx-border-color: red");
+            }
+        }
+        //-------------COUNTRY
+        if (!cb_CustCountry.getSelectionModel().isEmpty()){
+            cb_CustCountry.setStyle("-fx-border-color: null");
+        }
+        else {
+            cb_CustCountry.setStyle("-fx-border-color: red");
+        }
+        //---------------PROVINCE
+        if (!cb_CustProvince.getSelectionModel().isEmpty()){
+            cb_CustProvince.setStyle("-fx-border-color: null");
+        }
+        else {
+            cb_CustProvince.setStyle("-fx-border-color: red");
+        }
+
+    }
 }//ends controller
-
-
-
-//Ehsans page gets a boolean value / method  that holds true or false token for my page
-//this method would be called in ehsans edit button click which changes the token to false on click ?
-//then this method could be taken and tested in my initialization to use within my page?
