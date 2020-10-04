@@ -379,8 +379,6 @@ public class AddCustomerController {
                     stage = new Stage();
                     stage.setScene((new Scene(root1)));
                     stage.show();
-                    JOptionPane.showMessageDialog(null, "Redirecting to (view name) page",
-                            "Redirecting : Warning", JOptionPane.CLOSED_OPTION);
 
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -618,7 +616,9 @@ public class AddCustomerController {
 
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(phone);
-        if (!matcher.matches() || txt_CustHomePhone.getText().isEmpty()) {
+        if (matcher.matches() || txt_CustHomePhone.getText().isEmpty()){
+            isValid = true;
+        } else {
             isValid = false;
         }
         return isValid;
