@@ -10,9 +10,11 @@ import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.text.Text;
+import model.Agent;
 
 public class DashBoardController {
-
+    public Integer agentIdPassed;
     @FXML
     private ResourceBundle resources;
 
@@ -48,6 +50,9 @@ public class DashBoardController {
 
     @FXML
     private Button btnBook;
+
+    @FXML
+    private Text txtAgentName;
 
     @FXML
     void add(MouseEvent event) throws IOException {
@@ -104,5 +109,15 @@ public class DashBoardController {
         assert btnSearch != null : "fx:id=\"btnSearch\" was not injected: check your FXML file 'main.fxml'.";
         assert btnBook != null : "fx:id=\"btnBook\" was not injected: check your FXML file 'main.fxml'.";
 
+    }
+
+    Agent currentAgent;
+    public void GetAgentInfo(Agent agt) {
+
+        currentAgent = new Agent(agt.getAgentId(),agt.getFirstName(),agt.getMiddleInitial(),agt.getLastName(),agt.getBusinessPhone(),agt.getEmail(),agt.getPosition(),agt.getAgencyId());
+
+        txtAgentName.setText(currentAgent.getFirstName() + " " + currentAgent.getLastName());
+        agentIdPassed = agt.getAgentId();
+        AgentProfileController.getAgentForQuery(currentAgent);
     }
 }
