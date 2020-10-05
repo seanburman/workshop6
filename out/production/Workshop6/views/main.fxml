@@ -33,7 +33,7 @@
                         <Image url="@../images/agent.png" />
                      </image>
                   </ImageView>
-                  <Text onMouseClicked="#agent" strokeType="OUTSIDE" strokeWidth="0.0" text="Travel Agent">
+                  <Text fx:id="txtAgentName" onMouseClicked="#agent" strokeType="OUTSIDE" strokeWidth="0.0" text="Travel Agent">
                      <font>
                         <Font size="16.0" />
                      </font>

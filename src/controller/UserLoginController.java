@@ -16,16 +16,21 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.FlowPane;
 import javafx.stage.Stage;
 import model.Agent;
 
 public class UserLoginController {
 
+    public Agent a;
     @FXML
     private ResourceBundle resources;
 
     @FXML
     private URL location;
+
+    @FXML
+    private FlowPane mainPane;
 
     @FXML
     private Label lbl_Username;
@@ -88,8 +93,7 @@ public class UserLoginController {
                                 stage.setScene(new Scene(mainLoader, 800, 600));
                                 stage.setTitle("Agent Portal");
                                 DashBoardController addDashBoardController = loader.getController();
-                                //addDashBoardController.GetAgentInfo(a);
-                                //addCustomerController.EditPage();
+                                addDashBoardController.GetAgentInfo(a);
                                 stage.show();
 
 

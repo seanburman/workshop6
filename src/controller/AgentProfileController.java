@@ -22,6 +22,8 @@ import model.Agent;
 
 public class AgentProfileController {
 
+    public static Agent agentNew;
+    Integer agentIdForQuery = agentNew.getAgentId();
     @FXML
     private ResourceBundle resources;
 
@@ -134,7 +136,7 @@ public class AgentProfileController {
             public void handle(MouseEvent mouseEvent) {
                 Connection conn = connectDB(); //set a new db connection
                 //prepare the sql update statement
-                String sql = "UPDATE `agents` SET `AgtFirstName`=?,`AgtMiddleInitial`=?,`AgtLastName`=?,`AgtBusPhone`=?,`AgtEmail`=?,`AgtPosition`=?,`AgencyId`=? WHERE AgentId=3";
+                String sql = "UPDATE `agents` SET `AgtFirstName`=?,`AgtMiddleInitial`=?,`AgtLastName`=?,`AgtBusPhone`=?,`AgtEmail`=?,`AgtPosition`=?,`AgencyId`=? WHERE AgentId ="+ agentIdForQuery;
 
                 Validator v = new Validator();
                 if (v.isPresent(txtAgtFirstName, "First Name", " must not be empty") &&
@@ -196,9 +198,10 @@ public class AgentProfileController {
     private void initialLoad(Connection conn, ObservableList<Agency> agenciesList) {
         Statement stmtAgencyID;
         Statement stmt;
+
         try {
             stmt = conn.createStatement();
-            String sql = "select * from agents where AgentId = 3"; //create the select sql string
+            String sql = "select * from agents where AgentId ="+ agentIdForQuery; //create the select sql string
             ResultSet rs = stmt.executeQuery(sql); //execute the query and get data
 
 
@@ -258,5 +261,11 @@ public class AgentProfileController {
         alert.setContentText(message);
         alert.showAndWait();
         }
+    public static void getAgentForQuery(Agent agt)
+    {
+
+        agentNew = agt;
+
+    }
 }
 
