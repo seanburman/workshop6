@@ -15,15 +15,10 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.DatePicker;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import model.*;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
 
 
 public class BookingController {
@@ -74,6 +69,9 @@ public class BookingController {
     private Label lblCustomer;
 
     @FXML
+    private TextField txtItineraryNo;
+
+    @FXML
     void initialize() {
         assert pageBookings != null : "fx:id=\"pageBookings\" was not injected: check your FXML file 'booking.fxml'.";
 //        assert cbCustomer != null : "fx:id=\"cbCustomer\" was not injected: check your FXML file 'booking.fxml'.";
@@ -88,6 +86,7 @@ public class BookingController {
         assert txtPackageName != null : "fx:id=\"txtPackageName\" was not injected: check your FXML file 'booking.fxml'.";
         assert txtPackagePrice != null : "fx:id=\"txtPackagePrice\" was not injected: check your FXML file 'booking.fxml'.";
         assert lblCustomer != null : "fx:id=\"lblCustomer\" was not injected: check your FXML file 'booking.fxml'.";
+        assert txtItineraryNo != null : "fx:id=\"txtItineraryNo\" was not injected: check your FXML file 'booking.fxml'.";
 
 
         Connection conn = connectDB();
@@ -133,6 +132,48 @@ public class BookingController {
                 txtPackageDescription.setText(t1.getPkgDesc());
             }
         });
+
+//        btnSubmit.setOnMouseClicked(new EventHandler<MouseEvent>() {
+//            @Override
+//            public void handle(MouseEvent event) {
+//                Connection conn = connectDB();
+//                String sql = "UPDATE ItineraryNo, Destination, TripStart, TripEnd, Description, " +
+//                        "BasePrice, bookings.bookingId FROM `bookingdetails` JOIN bookings on bookingdetails.BookingId" +
+//                        " = bookings.BookingId WHERE bookings.CustomerId = " + ;
+//
+////                this.itineraryNo = itineraryNo;
+////                this.destination = destination;
+////                this.tripStart = tripStart;
+////                this.tripEnd = tripEnd;
+////                this.description = description;
+////                this.basePrice = basePrice;
+////                this.bookingId = bookingId;
+//
+//                try {
+//                    PreparedStatement stmt = conn.prepareStatement(sql);
+//                    stmt.setString(1, txtItineraryNo.getText());
+//                    stmt.setString(2, cbPackage.getItems());
+//                    stmt.setString(3, txtAgtLastName.getText());
+//                    stmt.setString(4, txtAgtBusPhone.getText());
+//                    stmt.setString(5, txtAgtEmail.getText());
+//                    stmt.setString(6, txtAgtPosition.getText());
+//                    stmt.setInt(7, Integer.parseInt(txtAgencyId.getText()));
+//                    stmt.setInt(8, Integer.parseInt(txtAgentId.getText()));
+//                    int numRows = stmt.executeUpdate();
+//                    if (numRows == 0)
+//                    {
+//                        System.out.println("failed");
+//                    }
+//                    else
+//                    {
+//                        System.out.println("Updated Successfully");
+//                    }
+//                    conn.close();
+//                } catch (SQLException throwables) {
+//                    throwables.printStackTrace();
+//                }
+//            }
+//        });
     }
 
     private Connection connectDB() {
@@ -155,6 +196,6 @@ public class BookingController {
     }
 
     public void GetBookingDetailInfo(BookingDetail bd){
-
+//        int CustomerId = bd
     }
 }
