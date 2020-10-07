@@ -192,5 +192,6 @@
       </Label>
       <Button fx:id="btnBookAdd" disable="true" layoutX="189.0" layoutY="243.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="52.0" text="Add" AnchorPane.leftAnchor="189.0" />
       <Button fx:id="btnBookEdit" disable="true" layoutX="241.0" layoutY="243.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="52.0" text="Edit" AnchorPane.leftAnchor="251.0" />
+      <Button fx:id="btnBookDelete" disable="true" layoutX="313.0" layoutY="243.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="52.0" text="Delete" />
    </children>
 </AnchorPane>

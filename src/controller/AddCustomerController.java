@@ -698,6 +698,11 @@ public class AddCustomerController {
         custID = c.getCustomerId();
     }
 
+    public void AddANewCustomer(String email, String phone){
+        txt_CustEmail.setText(email);
+        txt_CustBusPhone.setText(phone);
+    }
+
     public void EditPage(){
         isSavePage = false;
         initialize();
