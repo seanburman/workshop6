@@ -192,15 +192,18 @@ public class BookingController {
                     int numRows = stmt.executeUpdate();
 
                     java.sql.Statement bookingStmt = conn.createStatement();
-                    String bookingQuery = "select `BookingId` from `bookings`";
+                    String bookingQuery = "select * from `bookings`";
                     ResultSet brs = bookingStmt.executeQuery(bookingQuery);
 //                    int column_index = brs.findColumn("BookingId");
 //                    System.out.println(column_index);
                     while (brs.next())
                     {
-                        bookingList.add(new Booking(brs.getInt(1), brs.getDate(null), brs.getString(null), brs.getInt(null), brs.getInt(null), brs.getString(null), brs.getInt(null)));
+                        bookingList.add(new Booking(brs.getInt(1), brs.getDate(2), brs.getString(3), brs.getInt(4), brs.getInt(5), brs.getString(6), brs.getInt(7)));
                     }
-//                    bookingId = bookingList;
+                    for(int i = 0; i < 8; i ++)
+                    {
+
+                    }
 
                     if (numRows == 0)
                     {
