@@ -4,11 +4,20 @@ import java.net.URL;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
+import java.util.Locale;
 import java.util.ResourceBundle;
 
 import com.mysql.jdbc.Statement;
 import java.sql.*;
 
+import com.sun.javafx.scene.control.DatePickerContent;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -22,6 +31,8 @@ import model.*;
 
 
 public class BookingController {
+    public static final String SQL_DATE_FORMAT = "yyyy-MM-dd";
+//    Booking booking;
 
     @FXML
     private ResourceBundle resources;
@@ -72,6 +83,15 @@ public class BookingController {
     private TextField txtItineraryNo;
 
     @FXML
+    private TextField txtDestination;
+
+    @FXML
+    private TextField hiddenCustId;
+
+    @FXML
+    private TextField hiddenBookingId;
+
+    @FXML
     void initialize() {
         assert pageBookings != null : "fx:id=\"pageBookings\" was not injected: check your FXML file 'booking.fxml'.";
 //        assert cbCustomer != null : "fx:id=\"cbCustomer\" was not injected: check your FXML file 'booking.fxml'.";
@@ -87,7 +107,9 @@ public class BookingController {
         assert txtPackagePrice != null : "fx:id=\"txtPackagePrice\" was not injected: check your FXML file 'booking.fxml'.";
         assert lblCustomer != null : "fx:id=\"lblCustomer\" was not injected: check your FXML file 'booking.fxml'.";
         assert txtItineraryNo != null : "fx:id=\"txtItineraryNo\" was not injected: check your FXML file 'booking.fxml'.";
-
+        assert txtDestination != null : "fx:id=\"txtDestination\" was not injected: check your FXML file 'booking.fxml'.";
+        assert hiddenCustId != null : "fx:id=\"hiddenCustId\" was not injected: check your FXML file 'booking.fxml'.";
+        assert hiddenBookingId != null : "fx:id=\"hiddenBookingId\" was not injected: check your FXML file 'booking.fxml'.";
 
         Connection conn = connectDB();
         ObservableList<TravelPackage> packageList = FXCollections.observableArrayList();
@@ -133,47 +155,57 @@ public class BookingController {
             }
         });
 
-//        btnSubmit.setOnMouseClicked(new EventHandler<MouseEvent>() {
-//            @Override
-//            public void handle(MouseEvent event) {
-//                Connection conn = connectDB();
-//                String sql = "UPDATE ItineraryNo, Destination, TripStart, TripEnd, Description, " +
-//                        "BasePrice, bookings.bookingId FROM `bookingdetails` JOIN bookings on bookingdetails.BookingId" +
-//                        " = bookings.BookingId WHERE bookings.CustomerId = " + ;
-//
-////                this.itineraryNo = itineraryNo;
-////                this.destination = destination;
-////                this.tripStart = tripStart;
-////                this.tripEnd = tripEnd;
-////                this.description = description;
-////                this.basePrice = basePrice;
-////                this.bookingId = bookingId;
-//
-//                try {
-//                    PreparedStatement stmt = conn.prepareStatement(sql);
-//                    stmt.setString(1, txtItineraryNo.getText());
-//                    stmt.setString(2, cbPackage.getItems());
-//                    stmt.setString(3, txtAgtLastName.getText());
-//                    stmt.setString(4, txtAgtBusPhone.getText());
-//                    stmt.setString(5, txtAgtEmail.getText());
-//                    stmt.setString(6, txtAgtPosition.getText());
-//                    stmt.setInt(7, Integer.parseInt(txtAgencyId.getText()));
-//                    stmt.setInt(8, Integer.parseInt(txtAgentId.getText()));
-//                    int numRows = stmt.executeUpdate();
-//                    if (numRows == 0)
-//                    {
-//                        System.out.println("failed");
-//                    }
-//                    else
-//                    {
-//                        System.out.println("Updated Successfully");
-//                    }
-//                    conn.close();
-//                } catch (SQLException throwables) {
-//                    throwables.printStackTrace();
-//                }
-//            }
-//        });
+
+        btnSubmit.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+
+                long date = System.currentTimeMillis();
+                java.sql.Date today = new java.sql.Date(date);
+
+                LocalDate bookingStartRaw = LocalDate.from(dtBookingStart.getValue());
+                java.sql.Date bookingStart = Date.valueOf(bookingStartRaw);
+
+                LocalDate bookingEndRaw = LocalDate.from(dtBookingEnd.getValue());
+                java.sql.Date bookingEnd = Date.valueOf(bookingEndRaw);
+
+
+                Connection conn = connectDB();
+                String sql = "INSERT INTO `bookings` SET `BookingDate`=?, `CustomerId`=?, `TripTypeId`=?, `PackageId`=?";
+                String sqlbd = "INSERT INTO `bookingdetails bd` SET `ItineraryNo`=?, `TripStart`=?, `TripEnd`=?, `Description`=?, `Destination`=?," +
+                                "`BasePrice`=?, `BookingId`=? SELECT `bd.BookingId` FROM `bookings b` INNER JOIN `bookingdetails bd` ON `bd.BookingId` = `b.BookingId`";
+                //NOT WORKING FOR SOME REASON^^(maybe bookingId?)
+
+
+                try {
+                    PreparedStatement stmt = conn.prepareStatement(sql);
+                    PreparedStatement stmtbd = conn.prepareStatement(sqlbd);
+                    stmt.setDate(1, today); // todays date formatted to sql
+                    stmt.setInt(2, Integer.parseInt(hiddenCustId.getText())); // customerId pulled from a hidden field in the app.
+                    stmt.setString(3, cbTripType.getValue().getTripTypeId());
+                    stmt.setInt(4, cbPackage.getValue().getPackageId());
+                    stmtbd.setDouble(1, Double.parseDouble(txtItineraryNo.getText()));
+                    stmtbd.setDate(2, bookingStart);
+                    stmtbd.setDate(3, bookingEnd);
+                    stmtbd.setString(4, txtPackageDescription.getText());
+                    stmtbd.setString(5, txtDestination.getText());
+                    stmtbd.setDouble(5, Double.parseDouble(txtPackagePrice.getText()));
+//                    stmtbd.setInt(6, Integer.parseInt(hiddenBookingId.getText()));
+                    int numRows = stmt.executeUpdate();
+                    if (numRows == 0)
+                    {
+                        System.out.println("failed");
+                    }
+                    else
+                    {
+                        System.out.println("Updated Successfully");
+                    }
+                    conn.close();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+            }
+        });
     }
 
     private Connection connectDB() {
@@ -192,10 +224,23 @@ public class BookingController {
     // <3
     public void SetCustomerInfo(Customer c){
         String CustomerName = c.getCustFirstName() + " " + c.getCustLastName();
+        int customerId = c.getCustomerId();
         lblCustomer.setText(CustomerName);
+        hiddenCustId.setText(String.valueOf(customerId));
     }
 
     public void GetBookingDetailInfo(BookingDetail bd){
-//        int CustomerId = bd
     }
+
+//    public void getBookingInfo(Booking booking) {
+//        int bookingId = booking.getBookingId();
+//        hiddenBookingId.setText(String.valueOf(bookingId));
+//    }
+
+//    public void getCustomerInfo(Customer customer){
+//        int customerId = customer.getCustomerId();
+////        int custID = Integer.parseInt(lblCustomer.getId());
+//        hiddenCustId.setText(String.valueOf(customerId));
+//        System.out.println("customerID: " + customerId);
+//    }
 }

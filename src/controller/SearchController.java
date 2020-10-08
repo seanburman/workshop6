@@ -21,6 +21,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import model.Booking;
 import model.BookingDetail;
 import model.Customer;
 
@@ -30,6 +31,7 @@ import javax.swing.*;
 public class SearchController {
     public Customer customer;
     public BookingDetail bd;
+    public Booking booking;
     JFrame f;
 
     @FXML

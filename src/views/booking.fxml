@@ -43,11 +43,11 @@
             </Text>
          </children>
       </HBox>
-      <ComboBox fx:id="cbTripType" layoutX="232.0" layoutY="186.0" prefWidth="150.0" promptText="Trip Type" AnchorPane.leftAnchor="232.0" />
-      <ComboBox fx:id="cbPackage" layoutX="416.4" layoutY="186.0" prefWidth="150.0" promptText="Package" AnchorPane.leftAnchor="416.4" />
-      <DatePicker fx:id="dtBookingStart" layoutX="232.0" layoutY="149.00000000000003" promptText="Booking Start Date:" AnchorPane.bottomAnchor="300.4" AnchorPane.leftAnchor="232.0" />
-      <DatePicker fx:id="dtBookingEnd" layoutX="416.4" layoutY="149.0" promptText="Booking End Date:" AnchorPane.leftAnchor="416.4" />
-      <TextArea id="bookingDescription" fx:id="txtPackageDescription" layoutX="416.0" layoutY="253.0" prefHeight="90.0" prefWidth="215.0" style="-fx-background-color: FFFFFF;" />
+      <ComboBox fx:id="cbTripType" layoutX="159.0" layoutY="185.0" prefWidth="150.0" promptText="Trip Type" AnchorPane.leftAnchor="159.0" />
+      <ComboBox fx:id="cbPackage" layoutX="481.0" layoutY="185.0" prefWidth="150.0" promptText="Package" AnchorPane.leftAnchor="481.0" />
+      <DatePicker fx:id="dtBookingStart" layoutX="159.0" layoutY="148.0" promptText="Booking Start Date:" AnchorPane.bottomAnchor="302.0" AnchorPane.leftAnchor="159.0" />
+      <DatePicker fx:id="dtBookingEnd" layoutX="481.0" layoutY="148.0" promptText="Booking End Date:" AnchorPane.leftAnchor="481.0" />
+      <TextArea id="bookingDescription" fx:id="txtPackageDescription" layoutX="481.0" layoutY="252.0" prefHeight="90.0" prefWidth="215.0" style="-fx-background-color: FFFFFF;" />
       <Label layoutX="159.39999999999998" layoutY="267.0" prefHeight="26.0" prefWidth="62.0" text="Trip Type:" AnchorPane.rightAnchor="578.6">
          <font>
             <Font size="14.0" />
@@ -78,7 +78,7 @@
             <Font size="14.0" />
          </font>
       </Label>
-      <Label layoutX="416.0" layoutY="224.0" prefHeight="26.0" prefWidth="150.0" text="Package Description:">
+      <Label layoutX="481.0" layoutY="223.0" prefHeight="26.0" prefWidth="150.0" text="Package Description:">
          <font>
             <Font size="14.0" />
          </font>
@@ -88,6 +88,9 @@
             <Font size="14.0" />
          </font>
       </Label>
-      <TextField fx:id="txtItineraryNo" layoutX="233.0" layoutY="225.0" promptText="Itinerary Number:" />
+      <TextField fx:id="txtItineraryNo" layoutX="160.0" layoutY="224.0" promptText="Itinerary Number:" />
+      <TextField fx:id="txtDestination" layoutX="319.0" layoutY="185.0" promptText="Destination:" />
+      <TextField fx:id="hiddenCustId" disable="false" editable="false" layoutX="14.0" layoutY="93.0" prefHeight="29.0" prefWidth="45.0" visible="true" />
+      <TextField fx:id="hiddenBookingId" disable="false" editable="false" layoutX="71.0" layoutY="93.0" prefHeight="29.0" prefWidth="45.0" visible="true" />
    </children>
 </AnchorPane>
