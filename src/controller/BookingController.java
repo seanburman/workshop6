@@ -35,7 +35,8 @@ import model.*;
 
 public class BookingController {
     public static final String SQL_DATE_FORMAT = "yyyy-MM-dd";
-//    Booking booking;
+    Booking booking;
+    int bookingId;
 
     @FXML
     private ResourceBundle resources;
@@ -113,7 +114,7 @@ public class BookingController {
         assert txtDestination != null : "fx:id=\"txtDestination\" was not injected: check your FXML file 'booking.fxml'.";
         assert hiddenCustId != null : "fx:id=\"hiddenCustId\" was not injected: check your FXML file 'booking.fxml'.";
         assert hiddenBookingId != null : "fx:id=\"hiddenBookingId\" was not injected: check your FXML file 'booking.fxml'.";
-        int bookingId;
+
         Connection conn = connectDB();
         ObservableList<TravelPackage> packageList = FXCollections.observableArrayList();
         ObservableList<TripType> tripTypeList = FXCollections.observableArrayList();
@@ -198,11 +199,8 @@ public class BookingController {
 //                    System.out.println(column_index);
                     while (brs.next())
                     {
-                        bookingList.add(new Booking(brs.getInt(1), brs.getDate(2), brs.getString(3), brs.getInt(4), brs.getInt(5), brs.getString(6), brs.getInt(7)));
-                    }
-                    for(int i = 0; i < 8; i ++)
-                    {
-
+                        booking = new Booking(brs.getInt(1), brs.getDate(2), brs.getString(3), brs.getInt(4), brs.getInt(5), brs.getString(6), brs.getInt(7));
+                        bookingId = booking.getBookingId();
                     }
 
                     if (numRows == 0)
@@ -212,7 +210,37 @@ public class BookingController {
                     else
                     {
                         System.out.println("Updated Successfully");
-                        System.out.println(bookingList);
+                        System.out.println(bookingId);
+//                        FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("views/SearchView.fxml"));
+//                        Parent root = (Parent) loader.load();
+//                        mainPane.getChildren().setAll(root);
+//                        BookingController bookingController = loader.getController();
+                    }
+
+                } catch (SQLException throwables) { //  | IOException
+                    throwables.printStackTrace();
+                }
+
+
+                String sqlbd = "INSERT INTO `bookingdetails` SET `ItineraryNo`=?, `TripStart`=?, `TripEnd`=?, `Description`=?, `Destination`=?," +
+                        "`BasePrice`=?, `BookingId`=? ";
+                try {
+                    PreparedStatement stmtbd = conn.prepareStatement(sqlbd);
+                    stmtbd.setDouble(1, Double.parseDouble(txtItineraryNo.getText()));
+                    stmtbd.setDate(2, bookingStart);
+                    stmtbd.setDate(3, bookingEnd);
+                    stmtbd.setString(4, txtPackageDescription.getText());
+                    stmtbd.setString(5, txtDestination.getText());
+                    stmtbd.setDouble(6, Double.parseDouble(txtPackagePrice.getText()));
+                    stmtbd.setInt(7, bookingId);
+                    int numRowsbd = stmtbd.executeUpdate();
+                    if (numRowsbd == 0)
+                    {
+                        System.out.println("failed");
+                    }
+                    else
+                    {
+                        System.out.println("Updated Successfully");
 //                        FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("views/SearchView.fxml"));
 //                        Parent root = (Parent) loader.load();
 //                        mainPane.getChildren().setAll(root);
@@ -222,40 +250,6 @@ public class BookingController {
                 } catch (SQLException throwables) { //  | IOException
                     throwables.printStackTrace();
                 }
-
-//                Connection conn2 = connectDB();
-//                String sqlbd = "INSERT INTO `bookingdetails` SET `ItineraryNo`=?, `TripStart`=?, `TripEnd`=?, `Description`=?, `Destination`=?," +
-//                        "`BasePrice`=?, `BookingId` ";
-//                try {
-//
-//
-//
-//                    PreparedStatement stmtbd = conn.prepareStatement(sqlbd);
-//
-//                    stmtbd.setDouble(1, Double.parseDouble(txtItineraryNo.getText()));
-//                    stmtbd.setDate(2, bookingStart);
-//                    stmtbd.setDate(3, bookingEnd);
-//                    stmtbd.setString(4, txtPackageDescription.getText());
-//                    stmtbd.setString(5, txtDestination.getText());
-//                    stmtbd.setDouble(6, Double.parseDouble(txtPackagePrice.getText()));
-////                    stmtbd.setInt(6, Integer.parseInt(hiddenBookingId.getText()));
-//                    int numRowsbd = stmtbd.executeUpdate();
-//                    if (numRowsbd == 0)
-//                    {
-//                        System.out.println("failed");
-//                    }
-//                    else
-//                    {
-//                        System.out.println("Updated Successfully");
-////                        FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("views/SearchView.fxml"));
-////                        Parent root = (Parent) loader.load();
-////                        mainPane.getChildren().setAll(root);
-////                        BookingController bookingController = loader.getController();
-//                    }
-//                    conn.close();
-//                } catch (SQLException throwables) { //  | IOException
-//                    throwables.printStackTrace();
-//                }
             }
         });
     }
