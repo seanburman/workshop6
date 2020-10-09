@@ -8,10 +8,10 @@ public class Booking {
     private String bookingNo;
     private int travelerCount;
     private int customerId;
-    private Character tripTypeId;
+    private String tripTypeId;
     private int packageId;
 
-    public Booking(int bookingId, Date bookingDate, String bookingNo, int travelerCount, int customerId, Character tripTypeId, int packageId) {
+    public Booking(int bookingId, Date bookingDate, String bookingNo, int travelerCount, int customerId, String tripTypeId, int packageId) {
         this.bookingId = bookingId;
         this.bookingDate = bookingDate;
         this.bookingNo = bookingNo;
@@ -61,11 +61,11 @@ public class Booking {
         this.customerId = customerId;
     }
 
-    public Character getTripTypeId() {
+    public String getTripTypeId() {
         return tripTypeId;
     }
 
-    public void setTripTypeId(Character tripTypeId) {
+    public void setTripTypeId(String tripTypeId) {
         this.tripTypeId = tripTypeId;
     }
 
@@ -77,4 +77,8 @@ public class Booking {
         this.packageId = packageId;
     }
 
+    @Override
+    public String toString() {
+        return bookingId + "";
+    }
 }

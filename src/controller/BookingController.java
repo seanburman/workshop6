@@ -1,32 +1,43 @@
 package controller;
 
+import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
+import java.util.Locale;
 import java.util.ResourceBundle;
 
 import com.mysql.jdbc.Statement;
 import java.sql.*;
 
+import com.sun.javafx.scene.control.DatePickerContent;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.DatePicker;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import model.*;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
 
 
 public class BookingController {
+    public static final String SQL_DATE_FORMAT = "yyyy-MM-dd";
+    Booking booking;
+    int bookingId;
+    int custID;
 
     @FXML
     private ResourceBundle resources;
@@ -74,6 +85,12 @@ public class BookingController {
     private Label lblCustomer;
 
     @FXML
+    private TextField txtItineraryNo;
+
+    @FXML
+    private TextField txtDestination;
+
+    @FXML
     void initialize() {
         assert pageBookings != null : "fx:id=\"pageBookings\" was not injected: check your FXML file 'booking.fxml'.";
 //        assert cbCustomer != null : "fx:id=\"cbCustomer\" was not injected: check your FXML file 'booking.fxml'.";
@@ -88,7 +105,8 @@ public class BookingController {
         assert txtPackageName != null : "fx:id=\"txtPackageName\" was not injected: check your FXML file 'booking.fxml'.";
         assert txtPackagePrice != null : "fx:id=\"txtPackagePrice\" was not injected: check your FXML file 'booking.fxml'.";
         assert lblCustomer != null : "fx:id=\"lblCustomer\" was not injected: check your FXML file 'booking.fxml'.";
-
+        assert txtItineraryNo != null : "fx:id=\"txtItineraryNo\" was not injected: check your FXML file 'booking.fxml'.";
+        assert txtDestination != null : "fx:id=\"txtDestination\" was not injected: check your FXML file 'booking.fxml'.";
 
         Connection conn = connectDB();
         ObservableList<TravelPackage> packageList = FXCollections.observableArrayList();
@@ -133,6 +151,93 @@ public class BookingController {
                 txtPackageDescription.setText(t1.getPkgDesc());
             }
         });
+
+
+        btnSubmit.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+
+                long date = System.currentTimeMillis();
+                java.sql.Date today = new java.sql.Date(date);
+
+                LocalDate bookingStartRaw = LocalDate.from(dtBookingStart.getValue());
+                java.sql.Date bookingStart = Date.valueOf(bookingStartRaw);
+
+                LocalDate bookingEndRaw = LocalDate.from(dtBookingEnd.getValue());
+                java.sql.Date bookingEnd = Date.valueOf(bookingEndRaw);
+
+                ObservableList<Booking> bookingList = FXCollections.observableArrayList();
+                Connection conn = connectDB();
+                String sql = "INSERT INTO `bookings` SET `BookingDate`=?, `CustomerId`=?, `TripTypeId`=?, `PackageId`=?";
+
+                try {
+                    PreparedStatement stmt = conn.prepareStatement(sql);
+                    stmt.setDate(1, today); // todays date formatted to sql
+                    stmt.setInt(2, custID);
+                    stmt.setString(3, cbTripType.getValue().getTripTypeId());
+                    stmt.setInt(4, cbPackage.getValue().getPackageId());
+                    int numRows = stmt.executeUpdate();
+
+                    java.sql.Statement bookingStmt = conn.createStatement();
+                    String bookingQuery = "select * from `bookings`";
+                    ResultSet brs = bookingStmt.executeQuery(bookingQuery);
+//                    int column_index = brs.findColumn("BookingId");
+//                    System.out.println(column_index);
+                    while (brs.next())
+                    {
+                        booking = new Booking(brs.getInt(1), brs.getDate(2), brs.getString(3), brs.getInt(4), brs.getInt(5), brs.getString(6), brs.getInt(7));
+                        bookingId = booking.getBookingId();
+                    }
+
+                    if (numRows == 0)
+                    {
+                        System.out.println("failed");
+                    }
+                    else
+                    {
+                        System.out.println("Updated Successfully");
+                        System.out.println(bookingId);
+//                        FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("views/SearchView.fxml"));
+//                        Parent root = (Parent) loader.load();
+//                        mainPane.getChildren().setAll(root);
+//                        BookingController bookingController = loader.getController();
+                    }
+
+                } catch (SQLException throwables) { //  | IOException
+                    throwables.printStackTrace();
+                }
+
+
+                String sqlbd = "INSERT INTO `bookingdetails` SET `ItineraryNo`=?, `TripStart`=?, `TripEnd`=?, `Description`=?, `Destination`=?," +
+                        "`BasePrice`=?, `BookingId`=? ";
+                try {
+                    PreparedStatement stmtbd = conn.prepareStatement(sqlbd);
+                    stmtbd.setDouble(1, Double.parseDouble(txtItineraryNo.getText()));
+                    stmtbd.setDate(2, bookingStart);
+                    stmtbd.setDate(3, bookingEnd);
+                    stmtbd.setString(4, txtPackageDescription.getText());
+                    stmtbd.setString(5, txtDestination.getText());
+                    stmtbd.setDouble(6, Double.parseDouble(txtPackagePrice.getText()));
+                    stmtbd.setInt(7, bookingId);
+                    int numRowsbd = stmtbd.executeUpdate();
+                    if (numRowsbd == 0)
+                    {
+                        System.out.println("failed");
+                    }
+                    else
+                    {
+                        System.out.println("Updated Successfully");
+//                        FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("views/SearchView.fxml"));
+//                        Parent root = (Parent) loader.load();
+//                        mainPane.getChildren().setAll(root);
+//                        BookingController bookingController = loader.getController();
+                    }
+                    conn.close();
+                } catch (SQLException throwables) { //  | IOException
+                    throwables.printStackTrace();
+                }
+            }
+        });
     }
 
     private Connection connectDB() {
@@ -151,10 +256,8 @@ public class BookingController {
     // <3
     public void SetCustomerInfo(Customer c){
         String CustomerName = c.getCustFirstName() + " " + c.getCustLastName();
+        int customerId = c.getCustomerId();
         lblCustomer.setText(CustomerName);
-    }
-
-    public void GetBookingDetailInfo(BookingDetail bd){
-
+        custID = customerId;
     }
 }
