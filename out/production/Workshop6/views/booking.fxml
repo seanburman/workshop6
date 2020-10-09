@@ -90,7 +90,5 @@
       </Label>
       <TextField fx:id="txtItineraryNo" layoutX="160.0" layoutY="224.0" promptText="Itinerary Number:" />
       <TextField fx:id="txtDestination" layoutX="319.0" layoutY="185.0" promptText="Destination:" />
-      <TextField fx:id="hiddenCustId" disable="false" editable="false" layoutX="14.0" layoutY="93.0" prefHeight="29.0" prefWidth="45.0" visible="true" />
-      <TextField fx:id="hiddenBookingId" disable="false" editable="false" layoutX="71.0" layoutY="93.0" prefHeight="29.0" prefWidth="45.0" visible="true" />
    </children>
 </AnchorPane>

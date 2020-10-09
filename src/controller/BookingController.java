@@ -37,6 +37,7 @@ public class BookingController {
     public static final String SQL_DATE_FORMAT = "yyyy-MM-dd";
     Booking booking;
     int bookingId;
+    int custID;
 
     @FXML
     private ResourceBundle resources;
@@ -90,12 +91,6 @@ public class BookingController {
     private TextField txtDestination;
 
     @FXML
-    private TextField hiddenCustId;
-
-    @FXML
-    private TextField hiddenBookingId;
-
-    @FXML
     void initialize() {
         assert pageBookings != null : "fx:id=\"pageBookings\" was not injected: check your FXML file 'booking.fxml'.";
 //        assert cbCustomer != null : "fx:id=\"cbCustomer\" was not injected: check your FXML file 'booking.fxml'.";
@@ -112,8 +107,6 @@ public class BookingController {
         assert lblCustomer != null : "fx:id=\"lblCustomer\" was not injected: check your FXML file 'booking.fxml'.";
         assert txtItineraryNo != null : "fx:id=\"txtItineraryNo\" was not injected: check your FXML file 'booking.fxml'.";
         assert txtDestination != null : "fx:id=\"txtDestination\" was not injected: check your FXML file 'booking.fxml'.";
-        assert hiddenCustId != null : "fx:id=\"hiddenCustId\" was not injected: check your FXML file 'booking.fxml'.";
-        assert hiddenBookingId != null : "fx:id=\"hiddenBookingId\" was not injected: check your FXML file 'booking.fxml'.";
 
         Connection conn = connectDB();
         ObservableList<TravelPackage> packageList = FXCollections.observableArrayList();
@@ -174,22 +167,15 @@ public class BookingController {
                 java.sql.Date bookingEnd = Date.valueOf(bookingEndRaw);
 
                 ObservableList<Booking> bookingList = FXCollections.observableArrayList();
-                int custId = Integer.parseInt(hiddenCustId.getText());
-                int customerId = custId;
                 Connection conn = connectDB();
                 String sql = "INSERT INTO `bookings` SET `BookingDate`=?, `CustomerId`=?, `TripTypeId`=?, `PackageId`=?";
-
-//                        "SELECT `bookings.BookingId` FROM `bookings` JOIN bookingdetails on bookings.BookingId" +
-//                        " = bookingdetails.BookingId WHERE bookingdetails.BookingId = bookings.BookingId";
-                //NOT WORKING FOR SOME REASON^^(maybe bookingId?)
 
                 try {
                     PreparedStatement stmt = conn.prepareStatement(sql);
                     stmt.setDate(1, today); // todays date formatted to sql
-                    stmt.setInt(2, Integer.parseInt(hiddenCustId.getText())); // customerId pulled from a hidden field in the app.
+                    stmt.setInt(2, custID);
                     stmt.setString(3, cbTripType.getValue().getTripTypeId());
                     stmt.setInt(4, cbPackage.getValue().getPackageId());
-//                    stmtbd.setInt(6, Integer.parseInt(hiddenBookingId.getText()));
                     int numRows = stmt.executeUpdate();
 
                     java.sql.Statement bookingStmt = conn.createStatement();
@@ -272,21 +258,6 @@ public class BookingController {
         String CustomerName = c.getCustFirstName() + " " + c.getCustLastName();
         int customerId = c.getCustomerId();
         lblCustomer.setText(CustomerName);
-        hiddenCustId.setText(String.valueOf(customerId));
+        custID = customerId;
     }
-
-    public void GetBookingDetailInfo(BookingDetail bd){
-    }
-
-//    public void getBookingInfo(Booking booking) {
-//        int bookingId = booking.getBookingId();
-//        hiddenBookingId.setText(String.valueOf(bookingId));
-//    }
-
-//    public void getCustomerInfo(Customer customer){
-//        int customerId = customer.getCustomerId();
-////        int custID = Integer.parseInt(lblCustomer.getId());
-//        hiddenCustId.setText(String.valueOf(customerId));
-//        System.out.println("customerID: " + customerId);
-//    }
 }
