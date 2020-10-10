@@ -297,7 +297,7 @@ public class SearchController {
 
                     BookingController bookingController = loader.getController();
                     bookingController.SetCustomerInfo(customer);
-                    bookingController.GetBookingDetailInfo(bd);
+//                    bookingController.GetBookingDetailInfo(bd);
 
                 } catch (IOException e) {
                     e.printStackTrace();

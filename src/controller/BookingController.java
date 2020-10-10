@@ -32,12 +32,15 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import model.*;
 
+import javax.swing.*;
+
 
 public class BookingController {
     public static final String SQL_DATE_FORMAT = "yyyy-MM-dd";
     Booking booking;
     int bookingId;
     int custID;
+    JFrame f;
 
     @FXML
     private ResourceBundle resources;
@@ -91,6 +94,9 @@ public class BookingController {
     private TextField txtDestination;
 
     @FXML
+    private Label txtAlert;
+
+    @FXML
     void initialize() {
         assert pageBookings != null : "fx:id=\"pageBookings\" was not injected: check your FXML file 'booking.fxml'.";
 //        assert cbCustomer != null : "fx:id=\"cbCustomer\" was not injected: check your FXML file 'booking.fxml'.";
@@ -107,7 +113,9 @@ public class BookingController {
         assert lblCustomer != null : "fx:id=\"lblCustomer\" was not injected: check your FXML file 'booking.fxml'.";
         assert txtItineraryNo != null : "fx:id=\"txtItineraryNo\" was not injected: check your FXML file 'booking.fxml'.";
         assert txtDestination != null : "fx:id=\"txtDestination\" was not injected: check your FXML file 'booking.fxml'.";
+        assert txtAlert != null : "fx:id=\"txtAlert\" was not injected: check your FXML file 'booking.fxml'.";
 
+        txtAlert.setText("");
         Connection conn = connectDB();
         ObservableList<TravelPackage> packageList = FXCollections.observableArrayList();
         ObservableList<TripType> tripTypeList = FXCollections.observableArrayList();
@@ -157,85 +165,99 @@ public class BookingController {
             @Override
             public void handle(MouseEvent event) {
 
-                long date = System.currentTimeMillis();
-                java.sql.Date today = new java.sql.Date(date);
+                if (custID > 0)
+                {
+                    long date = System.currentTimeMillis();
+                    java.sql.Date today = new java.sql.Date(date);
 
-                LocalDate bookingStartRaw = LocalDate.from(dtBookingStart.getValue());
-                java.sql.Date bookingStart = Date.valueOf(bookingStartRaw);
+                    ObservableList<Booking> bookingList = FXCollections.observableArrayList();
+                    Connection conn = connectDB();
+                    String sql = "INSERT INTO `bookings` SET `BookingDate`=?, `CustomerId`=?, `TripTypeId`=?, `PackageId`=?";
 
-                LocalDate bookingEndRaw = LocalDate.from(dtBookingEnd.getValue());
-                java.sql.Date bookingEnd = Date.valueOf(bookingEndRaw);
+                    if (!cbTripType.getSelectionModel().isEmpty() && !cbPackage.getSelectionModel().isEmpty() && dtBookingStart.getValue() != null && dtBookingEnd.getValue() != null && !txtDestination.getText().equals("") && !txtItineraryNo.getText().equals(""))
+                    {
+                        txtAlert.setText("");
+                        try {
+                            PreparedStatement stmt = conn.prepareStatement(sql);
+                            stmt.setDate(1, today); // todays date formatted to sql
+                            stmt.setInt(2, custID);
+                            stmt.setString(3, cbTripType.getValue().getTripTypeId());
+                            stmt.setInt(4, cbPackage.getValue().getPackageId());
+                            int numRows = stmt.executeUpdate();
 
-                ObservableList<Booking> bookingList = FXCollections.observableArrayList();
-                Connection conn = connectDB();
-                String sql = "INSERT INTO `bookings` SET `BookingDate`=?, `CustomerId`=?, `TripTypeId`=?, `PackageId`=?";
-
-                try {
-                    PreparedStatement stmt = conn.prepareStatement(sql);
-                    stmt.setDate(1, today); // todays date formatted to sql
-                    stmt.setInt(2, custID);
-                    stmt.setString(3, cbTripType.getValue().getTripTypeId());
-                    stmt.setInt(4, cbPackage.getValue().getPackageId());
-                    int numRows = stmt.executeUpdate();
-
-                    java.sql.Statement bookingStmt = conn.createStatement();
-                    String bookingQuery = "select * from `bookings`";
-                    ResultSet brs = bookingStmt.executeQuery(bookingQuery);
+                            java.sql.Statement bookingStmt = conn.createStatement();
+                            String bookingQuery = "select * from `bookings`";
+                            ResultSet brs = bookingStmt.executeQuery(bookingQuery);
 //                    int column_index = brs.findColumn("BookingId");
 //                    System.out.println(column_index);
-                    while (brs.next())
-                    {
-                        booking = new Booking(brs.getInt(1), brs.getDate(2), brs.getString(3), brs.getInt(4), brs.getInt(5), brs.getString(6), brs.getInt(7));
-                        bookingId = booking.getBookingId();
-                    }
+                            while (brs.next())
+                            {
+                                booking = new Booking(brs.getInt(1), brs.getDate(2), brs.getString(3), brs.getInt(4), brs.getInt(5), brs.getString(6), brs.getInt(7));
+                                bookingId = booking.getBookingId();
+                            }
 
-                    if (numRows == 0)
-                    {
-                        System.out.println("failed");
-                    }
-                    else
-                    {
-                        System.out.println("Updated Successfully");
-                        System.out.println(bookingId);
+                            if (numRows == 0)
+                            {
+                                System.out.println("failed");
+                            }
+                            else
+                            {
+                                System.out.println("Updated Successfully");
+                                System.out.println(bookingId);
 //                        FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("views/SearchView.fxml"));
 //                        Parent root = (Parent) loader.load();
 //                        mainPane.getChildren().setAll(root);
 //                        BookingController bookingController = loader.getController();
-                    }
+                            }
 
-                } catch (SQLException throwables) { //  | IOException
-                    throwables.printStackTrace();
+                        } catch (SQLException throwables) { //  | IOException
+                            throwables.printStackTrace();
+                        }
+
+                        txtAlert.setText("");
+                        LocalDate bookingStartRaw = LocalDate.from(dtBookingStart.getValue());
+                        LocalDate bookingEndRaw = LocalDate.from(dtBookingEnd.getValue());
+                        java.sql.Date bookingStart = Date.valueOf(bookingStartRaw);
+                        java.sql.Date bookingEnd = Date.valueOf(bookingEndRaw);
+                        String sqlbd = "INSERT INTO `bookingdetails` SET `ItineraryNo`=?, `TripStart`=?, `TripEnd`=?, `Description`=?, `Destination`=?," +
+                                "`BasePrice`=?, `BookingId`=? ";
+                        try {
+                            PreparedStatement stmtbd = conn.prepareStatement(sqlbd);
+                            stmtbd.setDouble(1, Double.parseDouble(txtItineraryNo.getText()));
+                            stmtbd.setDate(2, bookingStart);
+                            stmtbd.setDate(3, bookingEnd);
+                            stmtbd.setString(4, txtPackageDescription.getText());
+                            stmtbd.setString(5, txtDestination.getText());
+                            stmtbd.setDouble(6, Double.parseDouble(txtPackagePrice.getText()));
+                            stmtbd.setInt(7, bookingId);
+                            int numRowsbd = stmtbd.executeUpdate();
+                            if (numRowsbd == 0)
+                            {
+                                System.out.println("failed");
+                            }
+                            else
+                            {
+                                f = new JFrame();
+                                JOptionPane.showMessageDialog(f, "Booking Added Successfully");
+
+                                FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("views/SearchView.fxml"));
+                                Parent root = (Parent) loader.load();
+                                pageBookings.getChildren().setAll(root);
+                            }
+                            conn.close();
+                        } catch (SQLException  | IOException throwables) { //
+                            throwables.printStackTrace();
+                        }
+
+                    } else {
+                        txtAlert.setText("Please fill out all fields");
+                    }
+                }
+                else {
+                    txtAlert.setText("ERROR: No customers have been loaded");
                 }
 
 
-                String sqlbd = "INSERT INTO `bookingdetails` SET `ItineraryNo`=?, `TripStart`=?, `TripEnd`=?, `Description`=?, `Destination`=?," +
-                        "`BasePrice`=?, `BookingId`=? ";
-                try {
-                    PreparedStatement stmtbd = conn.prepareStatement(sqlbd);
-                    stmtbd.setDouble(1, Double.parseDouble(txtItineraryNo.getText()));
-                    stmtbd.setDate(2, bookingStart);
-                    stmtbd.setDate(3, bookingEnd);
-                    stmtbd.setString(4, txtPackageDescription.getText());
-                    stmtbd.setString(5, txtDestination.getText());
-                    stmtbd.setDouble(6, Double.parseDouble(txtPackagePrice.getText()));
-                    stmtbd.setInt(7, bookingId);
-                    int numRowsbd = stmtbd.executeUpdate();
-                    if (numRowsbd == 0)
-                    {
-                        System.out.println("failed");
-                    }
-                    else
-                    {
-                        System.out.println("Updated Successfully");
-//                        FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("views/SearchView.fxml"));
-//                        Parent root = (Parent) loader.load();
-//                        mainPane.getChildren().setAll(root);
-//                        BookingController bookingController = loader.getController();
-                    }
-                    conn.close();
-                } catch (SQLException throwables) { //  | IOException
-                    throwables.printStackTrace();
-                }
             }
         });
     }
