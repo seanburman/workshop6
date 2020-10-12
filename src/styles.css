@@ -55,10 +55,6 @@ ComboBox {
 	-fx-background-color: "#FFFFFF";
 }
 
-/*Label {
-	-fx-border-color: black;
-	-fx-border-width: 1;
-}*/
 
 ImageView:hover {
 	-fx-opacity: 0.8;
@@ -69,11 +65,15 @@ ImageView:hover {
 	-fx-fitHeight: 100;
 }
 
-TextField {
+TextField, PasswordField {
 	-fx-background-color: "#FFFFFF";
 	-fx-border-color: "#000000";
 	-fx-border-radius: 4;
 	-fx-border-width: 2;
+}
+
+PasswordField {
+	-fx-pref-width: 361;
 }
 
 

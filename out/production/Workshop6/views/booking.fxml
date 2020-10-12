@@ -90,5 +90,10 @@
       </Label>
       <TextField fx:id="txtItineraryNo" layoutX="160.0" layoutY="224.0" promptText="Itinerary Number:" />
       <TextField fx:id="txtDestination" layoutX="319.0" layoutY="185.0" promptText="Destination:" />
+      <Label fx:id="txtAlert" alignment="CENTER" layoutX="243.0" layoutY="363.0" prefHeight="26.0" prefWidth="326.0" textAlignment="CENTER" textFill="RED">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>
