@@ -88,13 +88,10 @@ public class UserLoginController {
 
                             try {
                                 FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("views/main.fxml"), resources);
-                                Parent mainLoader = null;
-                                mainLoader = (Parent) loader.load();
-                                stage.setScene(new Scene(mainLoader, 800, 600));
-                                stage.setTitle("Agent Portal");
+                                Parent root = (Parent) loader.load();
+                                mainPane.getChildren().setAll(root);
                                 DashBoardController addDashBoardController = loader.getController();
                                 addDashBoardController.GetAgentInfo(a);
-                                stage.show();
 
 
                             } catch (IOException e) {
@@ -111,6 +108,8 @@ public class UserLoginController {
                     }
 
                 }
+
+
             }
 
         });
