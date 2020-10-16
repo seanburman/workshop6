@@ -5,6 +5,7 @@ import Validator.Validator;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.*;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.ResourceBundle;
 
@@ -29,8 +30,8 @@ import javax.naming.Context;
 import javax.swing.*;
 
 public class SearchController {
-    public Customer customer;
-    public BookingDetail bd;
+    public Customer customer; //Customer object
+    public BookingDetail bd; //BookingDetail Object
     public Booking booking;
     JFrame f;
 
@@ -135,21 +136,25 @@ public class SearchController {
 //        assert btnBookDelete != null : "fx:id=\"btnBookDelete\" was not injected: check your FXML file 'SearchView.fxml'.";
 
 
+        // Open SQL Connection
         Connection conn = connectDB();
+        //Array list of BookingDetails
         ObservableList<BookingDetail> bookingList = FXCollections.observableArrayList();
 
+        //Search button event handler
         btnSearch.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
                 String sql = null;
                 String phone = null, email = null;
+                //If one of the two search fields is filled out then execute search, if not throw error
                 if (!tfEmail.getText().isEmpty() || !tfPhone.getText().isEmpty()) {
-                    if (tfEmail.getText().isEmpty() && !tfPhone.getText().isEmpty()
+                    if (tfEmail.getText().isEmpty() && !tfPhone.getText().isEmpty() //if phone field filled, search by phone
                             && Validator.isValidPhone(tfPhone, "tfPhone", "Invaid Phone Number!")) {
                         phone = tfPhone.getText();
                         sql = "Select * from customers Where custHomePhone= '" + phone + "' OR custBusPhone= '" + phone + "'";
                     }
-                    if (!tfEmail.getText().isEmpty() && tfPhone.getText().isEmpty()
+                    if (!tfEmail.getText().isEmpty() && tfPhone.getText().isEmpty() //if email field filled, search by email
                             && Validator.isValidEmail(tfEmail, "tfEmail", "Invaid Email!")) {
                         email = tfEmail.getText().trim();
                         sql = "Select * from customers Where CustEmail= '" + email + "'";
@@ -159,6 +164,7 @@ public class SearchController {
                     {
                         try {
 
+                            //execute searchand fill out create the customer object
                             Statement statement = conn.createStatement();
                             ResultSet rs = statement.executeQuery(sql);
                             if (rs.first()){
@@ -175,9 +181,12 @@ public class SearchController {
                                 tfCountry.setText(customer.getCustCountry());
                                 tfPostal.setText(customer.getCustPostal());
 
+
                                 if (tfEmail.getText().isEmpty()){
                                     tfEmail.setDisable(true);
                                 }
+
+                                //Once customer object is created, use the customer ID to find all of the bookings of the customer
 
                                 int customerId = customer.getCustomerId();
                                 System.out.println(customerId);
@@ -196,6 +205,7 @@ public class SearchController {
                                 tcBasePrice.setCellValueFactory(new PropertyValueFactory<BookingDetail, Double>("basePrice"));
                                 tcBookingId.setCellValueFactory(new PropertyValueFactory<BookingDetail, Integer>("bookingId"));
 
+                                //Create an array of Booking detail objects and add to the bookingList
                                 while (rs1.next()){
                                     bookingList.add(new BookingDetail(rs1.getInt(1),rs1.getString(2),rs1.getDate(3),
                                             rs1.getDate(4),rs1.getString(5),rs1.getDouble(6),rs1.getInt(7)));
@@ -207,6 +217,7 @@ public class SearchController {
                                 btnBookAdd.setDisable(false);
                             }
                             else{
+                                //If customer was not found during search, prompt user to create the user and open the add customer screen if confirmed
                                 f = new JFrame();
                                 int a = JOptionPane.showConfirmDialog(f, "Customer does not exist! Would you like the create this Customer?");
 
@@ -234,11 +245,13 @@ public class SearchController {
             }
         });
 
+        //Customer Edit Button Edit Handler
         btnEdit.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
                 Stage stage = new Stage();
                 try {
+                    //Edit button to open the add customer screen but populate the customers information into the fields
                     FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("views/AddCustomer.fxml"));
                     Parent root = (Parent) loader.load();
                     mainPane.getChildren().setAll(root);
@@ -253,6 +266,7 @@ public class SearchController {
             }
         });
 
+        //Reset Button Event Handler
         btnReset.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
@@ -260,12 +274,13 @@ public class SearchController {
             }
         });
 
+        //Add Booking Event Handler
         btnBookAdd.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
                 Stage stage = new Stage();
                 try {
-
+                    //Open Add Bookings page with customer name sent over
                     FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("views/booking.fxml"));
                     Parent root = (Parent) loader.load();
                     mainPane.getChildren().setAll(root);
@@ -276,21 +291,27 @@ public class SearchController {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-
             }
         });
 
+        //Booking Detail List Selection Event Handler
         tvBookings.getSelectionModel().selectedItemProperty().addListener((observableValue, bookingDetail, t1) -> {
             btnBookEdit.setDisable(false);
-            btnBookDelete.setDisable(false);
+            Date bookingDate = t1.getTripStart();
+            if (bookingDate.after(Calendar.getInstance().getTime())) //only enable the delete button if the tripstart date has passed yet
+            {
+                btnBookDelete.setDisable(false);
+            }
             bd = t1;
         });
-        
+
+        //Booking Edit Button Event Handler
         btnBookEdit.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
                 Stage stage = new Stage();
                 try {
+                    //Open Booking Screen with booking information sent over
                     FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("views/booking.fxml"));
                     Parent root = (Parent) loader.load();
                     mainPane.getChildren().setAll(root);
@@ -305,6 +326,7 @@ public class SearchController {
             }
         });
 
+        //Booking Delete Button Event Handler
         btnBookDelete.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
@@ -326,6 +348,7 @@ public class SearchController {
             });
         }
 
+        //Clear Fields Method
     private void ClearFields() {
         tfEmail.setText("");
         tfPhone.setText("");
@@ -345,6 +368,7 @@ public class SearchController {
     }
 
 
+    //Connect to Database Method
     private Connection connectDB(){
         Connection c = null;
         try {
