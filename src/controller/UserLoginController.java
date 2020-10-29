@@ -48,12 +48,16 @@ public class UserLoginController {
     private Button btn_Login;
 
     @FXML
+    private Label txtAlert;
+
+    @FXML
     void initialize() {
         assert lbl_Username != null : "fx:id=\"lbl_Username\" was not injected: check your FXML file 'AgentLogin.fxml'.";
         assert txt_Username != null : "fx:id=\"txt_Username\" was not injected: check your FXML file 'AgentLogin.fxml'.";
         assert lbl_Password != null : "fx:id=\"lbl_Password\" was not injected: check your FXML file 'AgentLogin.fxml'.";
         assert txt_Password != null : "fx:id=\"txt_Password\" was not injected: check your FXML file 'AgentLogin.fxml'.";
         assert btn_Login != null : "fx:id=\"btn_Login\" was not injected: check your FXML file 'AgentLogin.fxml'.";
+        assert txtAlert != null : "fx:id=\"txtAlert\" was not injected: check your FXML file 'AgentLogin.fxml'.";
 
         Connection conn = connectDB();  //call method to create the db connection
         Statement stmt = null;  //create a statement object
@@ -100,7 +104,7 @@ public class UserLoginController {
                         }
                         else
                         {
-                            createMessageBox("Agent Search","This agent could not be found. Please try again.");
+                            txtAlert.setText("Invalid Login Credentials. Please Try Again.");
                         }
 
                     } catch (SQLException throwables) {
