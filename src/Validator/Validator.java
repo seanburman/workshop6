@@ -117,6 +117,22 @@ public class Validator {
         return isValid;
     }
 
+    public static boolean isValidPhoneNoParenth(TextField tf) { //
+        boolean isValid = true;
+
+        String phone = tf.getText();
+        String regex = "^(\\+\\d{1,2}\\s?)?1?\\-?\\.?\\s?\\(?\\d{3}\\)?[\\s.-]?\\d{3}[\\s.-]?\\d{4}$";
+        //"^((\\(\\d{3}\\))|\\s{3})\\s\\d{3}[-]\\d{4}$";
+
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(phone);
+        if (!matcher.matches()) {
+
+            isValid = false;
+        }
+        return isValid;
+    }
+
     //this matches phone format (403) 210-7801
     public static boolean isValidPhoneNoAlert(TextField tf) { //TextField tf, String fieldName, String message
         boolean isValid = true;
