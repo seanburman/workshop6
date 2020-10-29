@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -197,9 +198,30 @@ public class AddCustomerController {
             boolean checkExists = custEmailExists();
             if (checkExists) {
 //                    if the customer exists, show the agent a message
-                   JOptionPane.showMessageDialog(null, "Customer Email Exists, do not add new customer",   //------ TESTING ONLY!!!!!!!!! REPLACE WITH REDIRECT ----------/
-                           //change the token
-                        "Warning", JOptionPane.CLOSED_OPTION);
+//                   JOptionPane.showMessageDialog(null, "Sorry, a customer with this email already exists, try using the customer search!",   //------ TESTING ONLY!!!!!!!!! REPLACE WITH REDIRECT ----------/
+//                           //change the token
+//                        "Warning", JOptionPane.CLOSED_OPTION);
+                Alert alert = new Alert(Alert.AlertType.NONE,
+                        "Sorry, a customer with this email already exists. Go to customer search?",
+                        ButtonType.YES, ButtonType.NO);
+
+                Optional<ButtonType> result = alert.showAndWait();
+                if (result.get() == ButtonType.YES){
+                    // ... user chose YES
+                    try {
+                        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../views/SearchView.fxml"));
+                        Parent root1 = (Parent) fxmlLoader.load();
+                        mainPane.getChildren().setAll(root1);
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                } else {
+                    // ... user chose NO or closed the dialog
+                    txt_CustEmail.clear();
+                }
+
                      } else {
                      //if it DOESNT, then we want to allow the addition of this customer
                     //FIRST check if cust email and cust phone are both not null4
@@ -237,8 +259,27 @@ public class AddCustomerController {
                     boolean checkExists = custPhoneExists();
                     if (checkExists) {
 //                    if the customer exists, show the agent a message
-                        JOptionPane.showMessageDialog(null, "Customer with this phone exists, do not add new customer",   //------ TESTING ONLY!!!!!!!!! REPLACE WITH REDIRECT ----------//
-                                "Warning", JOptionPane.CLOSED_OPTION);
+                        Alert alert = new Alert(Alert.AlertType.NONE,
+                                "Sorry, a customer with this phone already exists. Go to customer search?",
+                                ButtonType.YES, ButtonType.NO);
+
+                        Optional<ButtonType> result = alert.showAndWait();
+                        if (result.get() == ButtonType.YES){
+                            // ... user chose YES
+                            try {
+                                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../views/SearchView.fxml"));
+                                Parent root1 = (Parent) fxmlLoader.load();
+                                mainPane.getChildren().setAll(root1);
+
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+
+                        } else {
+                            // ... user chose NO or closed the dialog
+                            txt_CustBusPhone.clear();
+
+                        }
                     } else {
                         //if it DOESNT, then we want to allow the addition of this customer
                         //FIRST check if cust email and cust phone are both not null4
