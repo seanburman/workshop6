@@ -78,6 +78,7 @@
                            </children>
                         </Pane>
                         <Label fx:id="lbl_Validation" layoutX="30.0" layoutY="14.0" prefHeight="29.0" prefWidth="386.0" textFill="RED" />
+                        <Label fx:id="lbl_Phoneformat" layoutX="30.0" layoutY="14.0" prefHeight="29.0" prefWidth="386.0" textFill="RED" />
                      </children>
                      <HBox.margin>
                         <Insets />
