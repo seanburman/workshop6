@@ -415,7 +415,7 @@ public class AddCustomerController {
             public void handle(MouseEvent mouseEvent) {
                 if (isSavePage) {
                     try {
-                        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../views/Main.fxml"));
+                        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../views/Dashboard.fxml"));
                         Parent root1 = (Parent) fxmlLoader.load();
                         mainPane.getChildren().setAll(root1);
 
