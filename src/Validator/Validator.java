@@ -14,6 +14,15 @@ public class Validator {
 
             createAlert(tf, fieldName, message);
             tf.setStyle("-fx-border-color: #ff0000");
+
+            isValid = false;
+        }
+        return isValid;
+    }
+
+    public boolean isPresentNoAlert(TextField tf) {
+        boolean isValid = true;
+        if (tf.getText().isEmpty()) {
             isValid = false;
         }
         return isValid;

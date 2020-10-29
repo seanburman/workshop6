@@ -69,9 +69,22 @@ public class UserLoginController {
                 Connection conn = connectDB(); //set a new db connection
                 Statement stmtSelect;
                 Validator v = new Validator();
-                if (v.isPresent(txt_Username, "User Name", " must not be empty") &&
-                        v.isPresent(txt_Password, "Password", " must not be empty") &&
-                        v.isValidEmail(txt_Username, "User Name", " format may be incorrect")
+                if (!v.isPresentNoAlert(txt_Username)) {
+                    txtAlert.setText("Please enter a username.");
+                }
+                if (!v.isPresentNoAlert(txt_Password)) {
+                    txtAlert.setText("Please enter a password");
+                }
+                if (!v.isPresentNoAlert(txt_Username) && !v.isPresentNoAlert(txt_Password)) {
+                    txtAlert.setText("Please enter a username and password.");
+                }
+//                if (!v.isValidEmailNoAlert(txt_Username)) {
+//                    txtAlert.setText("Invalid username.");
+//                }
+                if (v.isPresentNoAlert(txt_Username) &&
+                        v.isPresentNoAlert(txt_Password) //&&
+                   //     v.isValidEmailNoAlert(txt_Username)
+
                 ){
                     try {
                         stmtSelect = conn.createStatement();
