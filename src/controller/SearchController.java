@@ -285,7 +285,7 @@ public class SearchController {
                     }
                 }
                 else {
-                    txtAlert.setText("Please enter a valid email or phone.");
+                    txtAlert.setText("Please enter an email or phone.");
                     tfPhone.setStyle("-fx-border-color: #ff0000");
                     tfEmail.setStyle("-fx-border-color: #ff0000");
                 }
