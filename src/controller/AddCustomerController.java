@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -75,6 +76,9 @@ public class AddCustomerController {
     private Label lbl_Validation;
 
     @FXML
+    private Label lbl_Phoneformat;
+
+    @FXML
     private TextField txt_CustAddress;
 
     @FXML
@@ -113,6 +117,7 @@ public class AddCustomerController {
         assert txt_CustHomePhone != null : "fx:id=\"txt_CustHomePhone\" was not injected: check your FXML file 'AddCustomer.fxml'.";
         assert tt_homePhoneFormat != null : "fx:id=\"tt_homePhoneFormat\" was not injected: check your FXML file 'AddCustomer.fxml'.";
         assert lbl_Validation != null : "fx:id=\"lbl_Validation\" was not injected: check your FXML file 'AddCustomer.fxml'.";
+        assert lbl_Phoneformat != null : "fx:id=\"lbl_Phoneformat\" was not injected: check your FXML file 'AddCustomer.fxml'.";
         assert txt_CustAddress != null : "fx:id=\"txt_CustAddress\" was not injected: check your FXML file 'AddCustomer.fxml'.";
         assert txt_CustPostal != null : "fx:id=\"txt_CustPostal\" was not injected: check your FXML file 'AddCustomer.fxml'.";
         assert txt_CustCity != null : "fx:id=\"txt_CustCity\" was not injected: check your FXML file 'AddCustomer.fxml'.";
@@ -197,9 +202,30 @@ public class AddCustomerController {
             boolean checkExists = custEmailExists();
             if (checkExists) {
 //                    if the customer exists, show the agent a message
-                   JOptionPane.showMessageDialog(null, "Customer Email Exists, do not add new customer",   //------ TESTING ONLY!!!!!!!!! REPLACE WITH REDIRECT ----------/
-                           //change the token
-                        "Warning", JOptionPane.CLOSED_OPTION);
+//                   JOptionPane.showMessageDialog(null, "Sorry, a customer with this email already exists, try using the customer search!",   //------ TESTING ONLY!!!!!!!!! REPLACE WITH REDIRECT ----------/
+//                           //change the token
+//                        "Warning", JOptionPane.CLOSED_OPTION);
+                Alert alert = new Alert(Alert.AlertType.NONE,
+                        "Sorry, a customer with this email already exists. Go to customer search?",
+                        ButtonType.YES, ButtonType.NO);
+
+                Optional<ButtonType> result = alert.showAndWait();
+                if (result.get() == ButtonType.YES){
+                    // ... user chose YES
+                    try {
+                        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../views/SearchView.fxml"));
+                        Parent root1 = (Parent) fxmlLoader.load();
+                        mainPane.getChildren().setAll(root1);
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                } else {
+                    // ... user chose NO or closed the dialog
+                    txt_CustEmail.clear();
+                }
+
                      } else {
                      //if it DOESNT, then we want to allow the addition of this customer
                     //FIRST check if cust email and cust phone are both not null4
@@ -227,18 +253,39 @@ public class AddCustomerController {
                         enableFields();
                     }
                     txt_CustBusPhone.setStyle("-fx-border-color: null");
-                }else if(!Validator.isValidEmailNoAlert(txt_CustBusPhone)) {           //if its not valid, lets indicate that to the user
+                }else if(!Validator.isValidPhoneNoAlert(txt_CustBusPhone)) {           //if its not valid, lets indicate that to the user
                     txt_CustBusPhone.focusedProperty();
                     txt_CustBusPhone.setStyle("-fx-border-color: red");
+                    lbl_Phoneformat.setText("**Please use phone format (###) ###-####");
                 }
             }else{ //else isEditPage returns FALSE
                 //check if valid phone using validator
                 if (Validator.isValidPhoneNoAlert(txt_CustBusPhone)) {                  //if it is valid do this stuff
+                    lbl_Phoneformat.setText("");
                     boolean checkExists = custPhoneExists();
                     if (checkExists) {
 //                    if the customer exists, show the agent a message
-                        JOptionPane.showMessageDialog(null, "Customer with this phone exists, do not add new customer",   //------ TESTING ONLY!!!!!!!!! REPLACE WITH REDIRECT ----------//
-                                "Warning", JOptionPane.CLOSED_OPTION);
+                        Alert alert = new Alert(Alert.AlertType.NONE,
+                                "Sorry, a customer with this phone already exists. Go to customer search?",
+                                ButtonType.YES, ButtonType.NO);
+
+                        Optional<ButtonType> result = alert.showAndWait();
+                        if (result.get() == ButtonType.YES){
+                            // ... user chose YES
+                            try {
+                                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../views/SearchView.fxml"));
+                                Parent root1 = (Parent) fxmlLoader.load();
+                                mainPane.getChildren().setAll(root1);
+
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+
+                        } else {
+                            // ... user chose NO or closed the dialog
+                            txt_CustBusPhone.clear();
+
+                        }
                     } else {
                         //if it DOESNT, then we want to allow the addition of this customer
                         //FIRST check if cust email and cust phone are both not null4
@@ -252,6 +299,8 @@ public class AddCustomerController {
                 } else if(!Validator.isValidPhoneNoAlert(txt_CustBusPhone)) {           //if its not valid, lets indicate that to the user
                     txt_CustBusPhone.focusedProperty();
                     txt_CustBusPhone.setStyle("-fx-border-color: red");
+                    lbl_Phoneformat.setText("**Please use phone format (###) ###-####");
+
                 }
             }
         });
@@ -485,7 +534,6 @@ public class AddCustomerController {
                             throwables.printStackTrace();
                         }
                     } else {
-                        //////////////////////////////////////--------INSERT VALIDATION STUFF FOR SAVE BUTTON ON EDIT PAGE
                         lbl_Validation.setText("Please fill in all required fields");
                         MonsterValidation();
 

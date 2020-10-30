@@ -13,7 +13,7 @@
 
 <AnchorPane fx:id="mainPane" prefHeight="475.0" prefWidth="800.0" style="-fx-background-color: FFFFFF;" stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.SearchController">
    <children>
-      <HBox alignment="CENTER" layoutX="9.0" layoutY="6.0" prefHeight="63.0" prefWidth="800.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <HBox alignment="CENTER" layoutX="9.0" layoutY="6.0" prefHeight="57.0" prefWidth="800.0" style="-fx-background-color: A4C2F4;" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <Label prefHeight="27.0" prefWidth="153.0" text="Customer Search">
                <font>
@@ -193,5 +193,10 @@
       <Button fx:id="btnBookAdd" disable="true" layoutX="189.0" layoutY="243.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="52.0" text="Add" AnchorPane.leftAnchor="189.0" />
       <Button fx:id="btnBookEdit" disable="true" layoutX="241.0" layoutY="243.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="52.0" text="Edit" AnchorPane.leftAnchor="251.0" />
       <Button fx:id="btnBookDelete" disable="true" layoutX="313.0" layoutY="243.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="52.0" text="Delete" />
+      <Label fx:id="txtAlert" layoutX="400.0" layoutY="243.0" prefHeight="26.0" prefWidth="350.0" textAlignment="CENTER" textFill="RED">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

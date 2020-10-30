@@ -108,6 +108,9 @@ public class SearchController {
     private Button btnBookDelete;
 
     @FXML
+    private Label txtAlert;
+
+    @FXML
     private AnchorPane mainPane;
 
     @FXML
@@ -133,6 +136,7 @@ public class SearchController {
         assert tcTripEnd != null : "fx:id=\"tcTripEnd\" was not injected: check your FXML file 'SearchView.fxml'.";
         assert tcDescription != null : "fx:id=\"tcDescription\" was not injected: check your FXML file 'SearchView.fxml'.";
         assert tcBasePrice != null : "fx:id=\"tcBasePrice\" was not injected: check your FXML file 'SearchView.fxml'.";
+        assert txtAlert != null : "fx:id=\"txtAlert\" was not injected: check your FXML file 'SearchView.fxml'.";
 //        assert btnBookDelete != null : "fx:id=\"btnBookDelete\" was not injected: check your FXML file 'SearchView.fxml'.";
 
 
@@ -147,15 +151,57 @@ public class SearchController {
             public void handle(MouseEvent mouseEvent) {
                 String sql = null;
                 String phone = null, email = null;
+
+                String phoneOrEmail = "";
+                if (!Validator.isValidPhoneNoParenth(tfPhone) && tfEmail.getText().isEmpty()) {
+                    phoneOrEmail = "phone";
+                }
+                else if (!Validator.isValidEmailNoAlert(tfEmail) && tfPhone.getText().isEmpty()) {
+                    phoneOrEmail = "email";
+                }
+                else if (tfPhone.getText().isEmpty() && tfEmail.getText().isEmpty()) {
+                    phoneOrEmail = "na";
+                }
+                else if (!Validator.isValidPhoneNoParenth(tfPhone) && !Validator.isValidEmailNoAlert(tfEmail)) {
+                    phoneOrEmail = "both";
+                }
+                switch(phoneOrEmail) {
+                    case "phone":
+                        txtAlert.setText("Please enter a valid phone number.");
+                        tfPhone.setStyle("-fx-border-color: #ff0000");
+                        tfEmail.setStyle("-fx-border-color: #000000");
+                        break;
+                    case "email":
+                        txtAlert.setText("Please enter a valid email address.");
+                        tfEmail.setStyle("-fx-border-color: #ff0000");
+                        tfPhone.setStyle("-fx-border-color: #000000");
+                        break;
+                    case "na":
+                        txtAlert.setText("Please enter an email or phone.");
+                        tfEmail.setStyle("-fx-border-color: #ff0000");
+                        tfPhone.setStyle("-fx-border-color: #ff0000");
+                        break;
+                    case "both":
+                        txtAlert.setText("Please enter a valid email or phone.");
+                        tfEmail.setStyle("-fx-border-color: #ff0000");
+                        tfPhone.setStyle("-fx-border-color: #ff0000");
+                        break;
+                    default:
+                        tfEmail.setStyle("-fx-border-color: #000000");
+                        tfPhone.setStyle("-fx-border-color: #000000");
+                        txtAlert.setText("");
+                        break;
+
+                }
                 //If one of the two search fields is filled out then execute search, if not throw error
                 if (!tfEmail.getText().isEmpty() || !tfPhone.getText().isEmpty()) {
                     if (tfEmail.getText().isEmpty() && !tfPhone.getText().isEmpty() //if phone field filled, search by phone
-                            && Validator.isValidPhone(tfPhone, "tfPhone", "Invaid Phone Number!")) {
+                            && Validator.isValidPhoneNoParenth(tfPhone)) {
                         phone = tfPhone.getText();
                         sql = "Select * from customers Where custHomePhone= '" + phone + "' OR custBusPhone= '" + phone + "'";
                     }
                     if (!tfEmail.getText().isEmpty() && tfPhone.getText().isEmpty() //if email field filled, search by email
-                            && Validator.isValidEmail(tfEmail, "tfEmail", "Invaid Email!")) {
+                            && Validator.isValidEmailNoAlert(tfEmail)) {
                         email = tfEmail.getText().trim();
                         sql = "Select * from customers Where CustEmail= '" + email + "'";
                     }
@@ -239,8 +285,9 @@ public class SearchController {
                     }
                 }
                 else {
-                    JOptionPane.showMessageDialog(f,"Please enter a valid Email or Phone Number to do a search!");
-                    tfEmail.isFocused();
+                    txtAlert.setText("Please enter an email or phone.");
+                    tfPhone.setStyle("-fx-border-color: #ff0000");
+                    tfEmail.setStyle("-fx-border-color: #ff0000");
                 }
             }
         });
@@ -337,9 +384,9 @@ public class SearchController {
                     int sucesss = stmt.executeUpdate();
 
                     if (sucesss == 1) {
-                        JOptionPane.showMessageDialog(f,"Success!");
+                        txtAlert.setText("Deletion successful.");
                     } else {
-                        JOptionPane.showMessageDialog(f,"Delete Failed!");
+                        txtAlert.setText("Deletion Failed.");
                     }
                 } catch (SQLException throwables) {
                     throwables.printStackTrace();
