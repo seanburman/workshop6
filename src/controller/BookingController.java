@@ -30,6 +30,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.util.Callback;
 import model.*;
 
 import javax.swing.*;
@@ -114,6 +115,38 @@ public class BookingController {
         assert txtItineraryNo != null : "fx:id=\"txtItineraryNo\" was not injected: check your FXML file 'booking.fxml'.";
         assert txtDestination != null : "fx:id=\"txtDestination\" was not injected: check your FXML file 'booking.fxml'.";
         assert txtAlert != null : "fx:id=\"txtAlert\" was not injected: check your FXML file 'booking.fxml'.";
+
+        Callback<DatePicker, DateCell> callStart = new Callback<DatePicker, DateCell>() {
+                    @Override
+                    public DateCell call(final DatePicker param) {
+                        return new DateCell() {
+                            @Override
+                            public void updateItem(LocalDate item, boolean empty) {
+                                super.updateItem(item, empty); //To change body of generated methods, choose Tools | Templates.
+                                LocalDate today = LocalDate.now().plusDays(1);
+                                setDisable(empty || item.compareTo(today) < 0);
+                            }
+
+                        };
+                    }
+                };
+        dtBookingStart.setDayCellFactory(callStart);
+
+        Callback<DatePicker, DateCell> callEnd = new Callback<DatePicker, DateCell>() {
+            @Override
+            public DateCell call(final DatePicker param) {
+                return new DateCell() {
+                    @Override
+                    public void updateItem(LocalDate item, boolean empty) {
+                        super.updateItem(item, empty); //To change body of generated methods, choose Tools | Templates.
+                        LocalDate bookingStartGet = LocalDate.from(dtBookingStart.getValue().plusDays(1));
+                        setDisable(empty || item.compareTo(bookingStartGet) < 0);
+                    }
+
+                };
+            }
+        };
+        dtBookingEnd.setDayCellFactory(callEnd);
 
         txtAlert.setText("");
         Connection conn = connectDB();
