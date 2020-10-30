@@ -43,12 +43,6 @@ public class AgentProfileController {
     private TextField txtAgtEmail;
 
     @FXML
-    private Button btnAgtAddPhone;
-
-    @FXML
-    private Button btnAgtProfileRefresh;
-
-    @FXML
     private TextField txtAgtMiddleInitial;
 
     @FXML
@@ -75,8 +69,6 @@ public class AgentProfileController {
         assert txtAgtLastName != null : "fx:id=\"txtAgtLastName\" was not injected: check your FXML file 'AgentProfile.fxml'.";
         assert txtAgtBusPhone != null : "fx:id=\"txtAgtBusPhone\" was not injected: check your FXML file 'AgentProfile.fxml'.";
         assert txtAgtEmail != null : "fx:id=\"txtAgtEmail\" was not injected: check your FXML file 'AgentProfile.fxml'.";
-        assert btnAgtAddPhone != null : "fx:id=\"btnAgtAddPhone\" was not injected: check your FXML file 'AgentProfile.fxml'.";
-        assert btnAgtProfileRefresh != null : "fx:id=\"btnAgtProfileRefresh\" was not injected: check your FXML file 'AgentProfile.fxml'.";
         assert txtAgtMiddleInitial != null : "fx:id=\"txtAgtMiddleInitial\" was not injected: check your FXML file 'AgentProfile.fxml'.";
         assert txtAgtPosition != null : "fx:id=\"txtAgtPosition\" was not injected: check your FXML file 'AgentProfile.fxml'.";
         assert cbAgencyId != null : "fx:id=\"cbAgencyId\" was not injected: check your FXML file 'AgentProfile.fxml'.";
