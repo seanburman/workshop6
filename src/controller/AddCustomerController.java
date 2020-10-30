@@ -206,7 +206,7 @@ public class AddCustomerController {
 //                           //change the token
 //                        "Warning", JOptionPane.CLOSED_OPTION);
                 Alert alert = new Alert(Alert.AlertType.NONE,
-                        "Sorry, a customer with this email already exists. Go to customer search?",
+                        "Sorry, a customer with this email already exists. \n Go to customer search?",
                         ButtonType.YES, ButtonType.NO);
 
                 Optional<ButtonType> result = alert.showAndWait();
@@ -266,7 +266,7 @@ public class AddCustomerController {
                     if (checkExists) {
 //                    if the customer exists, show the agent a message
                         Alert alert = new Alert(Alert.AlertType.NONE,
-                                "Sorry, a customer with this phone already exists. Go to customer search?",
+                                "Sorry, a customer with this phone number already exists. \n Go to customer search?",
                                 ButtonType.YES, ButtonType.NO);
 
                         Optional<ButtonType> result = alert.showAndWait();
