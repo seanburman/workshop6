@@ -1,4 +1,9 @@
 package model;
+/*
+Author: Jessy Perreault
+Class Name: PROJ-207-OOS
+Date: November 2020
+ */
 
 import java.util.Date;
 
