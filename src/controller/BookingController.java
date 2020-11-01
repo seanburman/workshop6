@@ -1,4 +1,9 @@
 package controller;
+/*
+Author: Jessy Perreault
+Class Name: PROJ-207-OOS
+Date: November 2020
+ */
 
 import java.io.IOException;
 import java.net.URL;
