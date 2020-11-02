@@ -1,3 +1,11 @@
+/*
+ * Threaded Project Term 3 - Workshop 6
+ * Purpose: This is the code for the class that runs
+ * the Agent profile update scene
+ * Author: Group 2 - Doug Cameron primary developer of this page
+ * Date: Oct, 2020
+ */
+
 package controller;
 
 import java.net.URL;
@@ -86,13 +94,15 @@ public class AgentProfileController {
 
         initialLoad(conn, agenciesList);
 
+        //set the combo box for the Agency Id
         cbAgencyId.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Agency>() {
             @Override
-            public void changed(ObservableValue<? extends Agency> observableValue, Agency agency, Agency t1) {
+            public void changed(ObservableValue<? extends Agency> observableValue, Agency agency, Agency t1)           {
                 txtAgtAgencyId.setText(t1.getAgencyId() + "");
             }
         });
-
+        //onclick method assigned to button which activates the controls
+        //for editing
         btnAgtProfileEdit.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
@@ -116,6 +126,7 @@ public class AgentProfileController {
             }
         });
 
+        //cancel button
         btnAgtProfileCancel.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
@@ -123,6 +134,8 @@ public class AgentProfileController {
                 stage.close();
             }
         });
+        //onclick method for the Save button that saves the edits
+        //to the database
         btnAgtProfileSave.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
@@ -130,11 +143,12 @@ public class AgentProfileController {
                 //prepare the sql update statement
                 String sql = "UPDATE `agents` SET `AgtFirstName`=?,`AgtMiddleInitial`=?,`AgtLastName`=?,`AgtBusPhone`=?,`AgtEmail`=?,`AgtPosition`=?,`AgencyId`=? WHERE AgentId ="+ agentIdForQuery;
 
+                //validate Firstname, Lastname, phone, email and position attributes
                 Validator v = new Validator();
                 if (v.isPresent(txtAgtFirstName, "First Name", " must not be empty") &&
                 v.isPresent(txtAgtLastName, "Last Name", " must not be empty") &&
-                //v.isValidPhone(txtAgtBusPhone, "Business Phone", " format may be incorrect")&&
-                //v.isValidEmail(txtAgtEmail, "Email", " format may be incorrect") &&
+                v.isValidPhone(txtAgtBusPhone, "Business Phone", " format may be incorrect")&&
+                v.isValidEmail(txtAgtEmail, "Email", " format may be incorrect") &&
                 v.isPresent(txtAgtPosition, "Agent Position", " must not be empty")) {
                     try {
                         PreparedStatement stmtUpdate = conn.prepareStatement(sql);
@@ -187,6 +201,7 @@ public class AgentProfileController {
         });
     }
 
+    //class for the initial load of the data
     private void initialLoad(Connection conn, ObservableList<Agency> agenciesList) {
         Statement stmtAgencyID;
         Statement stmt;

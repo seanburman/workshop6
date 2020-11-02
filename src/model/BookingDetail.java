@@ -1,6 +1,11 @@
 package model;
 
 import java.sql.Date;
+/*
+Author: Jessy Perreault
+Class Name: PROJ-207-OOS
+Date: November 2020
+ */
 
 public class BookingDetail {
 

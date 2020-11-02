@@ -1,3 +1,11 @@
+/*
+ * Threaded Project Term 3 - Workshop 6
+ * Purpose: This is the code for the class that runs
+ * the Agent login scene
+ * Author: Group 2 - Doug Cameron and Sean Burman - primary developers of this page
+ * Date: Oct, 2020
+ */
+
 package controller;
 
 import java.io.IOException;
@@ -68,11 +76,13 @@ public class UserLoginController {
             public void handle(MouseEvent mouseEvent) {
                 Connection conn = connectDB(); //set a new db connection
                 Statement stmtSelect;
+                //set a reference to the validator classes
                 Validator v = new Validator();
-                if (!v.isPresentNoAlert(txt_Username)) {
+
+                if (!v.isPresentNoAlert(txt_Username)) { // check it username is present
                     txtAlert.setText("Please enter a username.");
                 }
-                if (!v.isPresentNoAlert(txt_Password)) {
+                if (!v.isPresentNoAlert(txt_Password)) { // check if password is present
                     txtAlert.setText("Please enter a password");
                 }
                 if (!v.isPresentNoAlert(txt_Username) && !v.isPresentNoAlert(txt_Password)) {
@@ -88,22 +98,25 @@ public class UserLoginController {
                 ){
                     try {
                         stmtSelect = conn.createStatement();
-                        String searchUserName = txt_Username.getText();
-                        String searchPassword = txt_Password.getText();
+                        String searchUserName = txt_Username.getText();//get the username from textfield
+                        String searchPassword = txt_Password.getText();//get password
 
                         //System.out.println(searchEmail);
+                        //create the sql to query the agents from the table
                         String sql = "Select * from agents Where AgtEmail= '" + searchUserName + "' AND AgtLastName= '" + searchPassword + "'";
                         System.out.println(sql);
                         ResultSet rs = stmtSelect.executeQuery(sql); //execute the query and get data
 
                         if(rs.next())
                         {
+                            //create a new agent object from the retrieved data
                             Agent a = new Agent(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6),rs.getString(7), rs.getInt(8));
 
-
+                            //create a new stage for a scene
                             Stage stage = new Stage();
 
                             try {
+                                //set a new loader for the main.fxml scene
                                 FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("views/main.fxml"), resources);
                                 Parent root = (Parent) loader.load();
                                 mainPane.getChildren().setAll(root);
@@ -123,19 +136,16 @@ public class UserLoginController {
                     } catch (SQLException throwables) {
                         throwables.printStackTrace();
                     }
-
                 }
-
-
             }
-
         });
     }
-    //call the load method
+    //method for the database connection
     private Connection connectDB(){
         Connection c = null;
         try {
-            Class.forName("com.mysql.jdbc.Driver");
+            Class.forName("com.mysql.jdbc.Driver");//db driver name
+            //set the connection parameters
             c = DriverManager.getConnection("jdbc:mysql://localhost:3306/travelexperts","TEAdmin","password");
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
@@ -144,6 +154,9 @@ public class UserLoginController {
         }
         return c;
     }
+
+    //the method was used only for testing to alert if user
+    //was successfully logged in
     private void createMessageBox(String fieldName, String message) {
 
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
