@@ -5,7 +5,6 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
@@ -53,12 +52,6 @@
                         <TextField fx:id="txtAgtLastName" disable="true" editable="false" layoutX="199.0" layoutY="89.0" prefHeight="25.0" prefWidth="142.0" />
                         <TextField fx:id="txtAgtBusPhone" disable="true" editable="false" layoutX="200.0" layoutY="124.0" prefHeight="25.0" prefWidth="118.0" />
                         <TextField fx:id="txtAgtEmail" disable="true" editable="false" layoutX="200.0" layoutY="160.0" prefHeight="25.0" prefWidth="190.0" />
-                        <Button fx:id="btnAgtAddPhone" disable="true" layoutX="323.0" layoutY="126.0" mnemonicParsing="false" text="+">
-                           <tooltip>
-                              <Tooltip text="Add Home Phone" />
-                           </tooltip>
-                        </Button>
-                        <Button fx:id="btnAgtProfileRefresh" layoutX="431.0" layoutY="18.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="63.0" text="(refresh)" />
                         <TextField fx:id="txtAgtMiddleInitial" disable="true" editable="false" layoutX="199.0" layoutY="54.0" prefHeight="25.0" prefWidth="142.0" />
                         <Label alignment="CENTER_RIGHT" layoutX="86.0" layoutY="56.0" prefHeight="25.0" prefWidth="103.0" text="Middle Initial">
                            <font>
