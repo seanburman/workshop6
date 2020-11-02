@@ -25,9 +25,15 @@ import java.util.ResourceBundle;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+
+
+/// AUTHOR : Crystal Champion ////
+
+
 public class AddCustomerController {
+    // This page operates as an Add customer page or an Edit customer page depending on the isSavePage boolean value, by default the page is an add customer page (isSavePage = true)
+    // when called by the customer search page, this variable is altered to false and will change the function of the page.
     public boolean isSavePage = true;
-    private boolean testToken;
     int custID = 0;
 
     @FXML
@@ -127,13 +133,9 @@ public class AddCustomerController {
         assert btn_AddCustomerSave != null : "fx:id=\"btn_AddCustomerSave\" was not injected: check your FXML file 'AddCustomer.fxml'.";
         assert btn_AddCustomerCancel != null : "fx:id=\"btn_AddCustomerCancel\" was not injected: check your FXML file 'AddCustomer.fxml'.";
 
-        // -------------------- CASING ------- NEED TO FIX
-                // Methods should be PascalCase
-                // Variables should be camelCase
-                // Constants are all UPPERCASE
 
         final Customer[] customer = new Customer[1];
-        if(isSavePage == false){
+        if(isSavePage == false){                                // changes title depending on if 'Add Customer' or 'Edit Customer'
             btn_AddCustomerRefresh.setVisible(false);
             lbl_Title.setText("Edit Customer");
         }
@@ -184,60 +186,43 @@ public class AddCustomerController {
 
         ///-------------CUSTOMER EMAIL-------------///
         txt_CustEmail.focusedProperty().addListener((ov, oldV, newV) -> {
-        if (!isSavePage){ //if this page was loaded as EDIT PAGE
-            //check if valid email address
-            if (Validator.isValidEmailNoAlert(txt_CustEmail)) {                  //if it is valid do this stuff
-                if (!txt_CustEmail.getText().isEmpty() && !txt_CustBusPhone.getText().isEmpty()) {
-                    //if the fields are both filled, and subsequently both do not belong to other customers, then enable fields
-                    enableFields();
+        if (!isSavePage){                                                                                                   //if this page was loaded as EDIT PAGE
+            if (Validator.isValidEmailNoAlert(txt_CustEmail)) {                                                                 //check if valid email address
+                if (!txt_CustEmail.getText().isEmpty() && !txt_CustBusPhone.getText().isEmpty()) {                                  //then, check if not null
+                    enableFields();                                                                                                 // if not null , and valid, then enable other fields
                 }
-                txt_CustEmail.setStyle("-fx-border-color: null");
-            }else if(!Validator.isValidEmailNoAlert(txt_CustEmail)) {           //if its not valid, lets indicate that to the user
-            txt_CustEmail.focusedProperty();
-            txt_CustEmail.setStyle("-fx-border-color: red");
+                txt_CustEmail.setStyle("-fx-border-color: null");                                                                   // also, remove red border color :)
+            }else if(!Validator.isValidEmailNoAlert(txt_CustEmail)) {                                                           //if its not valid email
+            txt_CustEmail.focusedProperty();                                                                                        //focus user back on email,
+            txt_CustEmail.setStyle("-fx-border-color: red");                                                                        //indicate error with red border
             }
-        }else{ //else isEditPage returns FALSE
-        //check if valid email address
-        if (Validator.isValidEmailNoAlert(txt_CustEmail)) {                  //if it is valid do this stuff
-            boolean checkExists = custEmailExists();
-            if (checkExists) {
-//                    if the customer exists, show the agent a message
-//                   JOptionPane.showMessageDialog(null, "Sorry, a customer with this email already exists, try using the customer search!",   //------ TESTING ONLY!!!!!!!!! REPLACE WITH REDIRECT ----------/
-//                           //change the token
-//                        "Warning", JOptionPane.CLOSED_OPTION);
-                Alert alert = new Alert(Alert.AlertType.NONE,
-                        "Sorry, a customer with this email already exists. \n Go to customer search?",
-                        ButtonType.YES, ButtonType.NO);
-
-                Optional<ButtonType> result = alert.showAndWait();
-                if (result.get() == ButtonType.YES){
-                    // ... user chose YES
-                    try {
-                        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../views/SearchView.fxml"));
-                        Parent root1 = (Parent) fxmlLoader.load();
-                        mainPane.getChildren().setAll(root1);
-
-                    } catch (IOException e) {
-                        e.printStackTrace();
+        }else{                                                                                                                //else this page was loaded as SAVE PAGE
+            if (Validator.isValidEmailNoAlert(txt_CustEmail)) {                                                                      //check if valid email address
+                boolean checkExists = custEmailExists();                                                                                //check if email exists using custEmailExists() function
+                if (checkExists) {                                                                                                      // if cust email exists
+                    Alert alert = new Alert(Alert.AlertType.NONE,                                                                          //present user with alert box, customer exists
+                         "Sorry, a customer with this email already exists. \n Go to customer search?",                                 // want to go to cust search instead?
+                            ButtonType.YES, ButtonType.NO);
+                    Optional<ButtonType> result = alert.showAndWait();
+                    if (result.get() == ButtonType.YES){                                                                                        // button logic, yes / no
+                        try {                                                                                                                       // ... user chose YES
+                            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../views/SearchView.fxml"));                       // redirect to search view
+                            Parent root1 = (Parent) fxmlLoader.load();
+                            mainPane.getChildren().setAll(root1);
+                        } catch (IOException e) {                                                                                               // exception in case redirect doesnt work
+                            e.printStackTrace();                                                                                                    //print error
+                        }
+                    } else {                                                                                                                    // ... user chose NO or closed the dialog
+                        txt_CustEmail.clear();                                                                                                      //clear cust email
                     }
-
-                } else {
-                    // ... user chose NO or closed the dialog
-                    txt_CustEmail.clear();
-                }
-
-                     } else {
-                     //if it DOESNT, then we want to allow the addition of this customer
-                    //FIRST check if cust email and cust phone are both not null4
-                    txt_CustEmail.setStyle("-fx-border-color: null");
-
-                    if (!txt_CustEmail.getText().isEmpty() && !txt_CustBusPhone.getText().isEmpty()) {
-                         //if the fields are both filled, and subsequently both do not belong to other customers, then enable fields
-                        enableFields();
+                } else {                                                                                                                    // else if , cust email does not exist in db & is valid
+                        txt_CustEmail.setStyle("-fx-border-color: null");                                                                       //remove the red border error indicator
+                        if (!txt_CustEmail.getText().isEmpty() && !txt_CustBusPhone.getText().isEmpty()) {                                      //final check if email and custphone are not empty
+                            enableFields();                                                                                                         //enable the rest of the form fields
+                        }
                     }
-                }
-            } else if(!Validator.isValidEmailNoAlert(txt_CustEmail)) {           //if its not valid, lets indicate that to the user
-                txt_CustEmail.focusedProperty();
+            }else if(!Validator.isValidEmailNoAlert(txt_CustEmail)) {                                                                   //if the email was never valid to begin with
+                txt_CustEmail.focusedProperty();                                                                                                //indicate to user that it is invalid.
                 txt_CustEmail.setStyle("-fx-border-color: red");
             }
          }
@@ -245,67 +230,52 @@ public class AddCustomerController {
 
         ///-------------CUSTOMER BUSINESS PHONE-------------///
         txt_CustBusPhone.focusedProperty().addListener((ov, oldV, newV) -> {
-            if (!isSavePage){ //if this page was loaded as EDIT PAGE
-                //check if valid phone using validator
-                if (Validator.isValidPhoneNoAlert(txt_CustBusPhone)) {                  //if it is valid do this stuff
-                    if (!txt_CustBusPhone.getText().isEmpty() && !txt_CustBusPhone.getText().isEmpty()) {
-                        //if the fields are both filled, and subsequently both do not belong to other customers, then enable fields
-                        enableFields();
+            if (!isSavePage){                                                                                                   //if this page was loaded as EDIT PAGE
+                if (Validator.isValidPhoneNoAlert(txt_CustBusPhone)) {                                                                 //check if valid phone number
+                    if (!txt_CustBusPhone.getText().isEmpty() && !txt_CustBusPhone.getText().isEmpty()) {                                  //then, check if not null
+                        enableFields();                                                                                                    // if not null , and valid, then enable other fields
                     }
-                    txt_CustBusPhone.setStyle("-fx-border-color: null");
-                }else if(!Validator.isValidPhoneNoAlert(txt_CustBusPhone)) {           //if its not valid, lets indicate that to the user
-                    txt_CustBusPhone.focusedProperty();
-                    txt_CustBusPhone.setStyle("-fx-border-color: red");
-                    lbl_Phoneformat.setText("**Please use phone format (###) ###-####");
+                    txt_CustBusPhone.setStyle("-fx-border-color: null");                                                                   // also, remove red border color :)
+                }else if(!Validator.isValidPhoneNoAlert(txt_CustBusPhone)) {                                                           //if its not valid phone number
+                    txt_CustBusPhone.focusedProperty();                                                                                        //focus user back on phone number
+                    txt_CustBusPhone.setStyle("-fx-border-color: red");                                                                        //indicate error with red border
+                    lbl_Phoneformat.setText("**Please use phone format (###) ###-####");                                                       //show error message with correct format
                 }
-            }else{ //else isEditPage returns FALSE
-                //check if valid phone using validator
-                if (Validator.isValidPhoneNoAlert(txt_CustBusPhone)) {                  //if it is valid do this stuff
-                    lbl_Phoneformat.setText("");
-                    boolean checkExists = custPhoneExists();
-                    if (checkExists) {
-//                    if the customer exists, show the agent a message
-                        Alert alert = new Alert(Alert.AlertType.NONE,
-                                "Sorry, a customer with this phone number already exists. \n Go to customer search?",
+            }else{                                                                                                                //else this page was loaded as SAVE PAGE
+                if (Validator.isValidPhoneNoAlert(txt_CustBusPhone)) {                                                                      //check if valid phone number
+                    lbl_Phoneformat.setText("");                                                                                            // if valid, remove format error
+                    boolean checkExists = custPhoneExists();                                                                                //check if phone exists using custPhoneExists() function
+                    if (checkExists) {                                                                                                      // if cust phone exists
+                        Alert alert = new Alert(Alert.AlertType.NONE,                                                                          //present user with alert box, customer exists
+                                "Sorry, a customer with this phone number already exists. \n Go to customer search?",                        // want to go to cust search instead?
                                 ButtonType.YES, ButtonType.NO);
-
                         Optional<ButtonType> result = alert.showAndWait();
-                        if (result.get() == ButtonType.YES){
-                            // ... user chose YES
-                            try {
-                                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../views/SearchView.fxml"));
+                        if (result.get() == ButtonType.YES){                                                                                        // button logic, yes / no
+                            try {                                                                                                                       // ... user chose YES
+                                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../views/SearchView.fxml"));                       // redirect to search view
                                 Parent root1 = (Parent) fxmlLoader.load();
                                 mainPane.getChildren().setAll(root1);
-
-                            } catch (IOException e) {
-                                e.printStackTrace();
+                            } catch (IOException e) {                                                                                               // exception in case redirect doesnt work
+                                e.printStackTrace();                                                                                                    //print error
                             }
-
-                        } else {
-                            // ... user chose NO or closed the dialog
-                            txt_CustBusPhone.clear();
-
+                        } else {                                                                                                                    // ... user chose NO or closed the dialog
+                            txt_CustBusPhone.clear();                                                                                                      //clear cust phone
                         }
-                    } else {
-                        //if it DOESNT, then we want to allow the addition of this customer
-                        //FIRST check if cust email and cust phone are both not null4
-                        txt_CustBusPhone.setStyle("-fx-border-color: null");
-
-                        if (!txt_CustBusPhone.getText().isEmpty() && !txt_CustBusPhone.getText().isEmpty()) {
-                            //if the fields are both filled, and subsequently both do not belong to other customers, then enable fields
-                            enableFields();
+                    } else {                                                                                                                    // else if , cust phone does not exist in db & is valid
+                        txt_CustBusPhone.setStyle("-fx-border-color: null");                                                                       //remove the red border error indicator
+                        if (!txt_CustBusPhone.getText().isEmpty() && !txt_CustBusPhone.getText().isEmpty()) {                                      //final check if phone and custphone are not empty
+                            enableFields();                                                                                                         //enable the rest of the form fields
                         }
                     }
-                } else if(!Validator.isValidPhoneNoAlert(txt_CustBusPhone)) {           //if its not valid, lets indicate that to the user
-                    txt_CustBusPhone.focusedProperty();
+                } else if(!Validator.isValidPhoneNoAlert(txt_CustBusPhone)) {                                                                   //if the phone was never valid to begin with
+                    txt_CustBusPhone.focusedProperty();                                                                                                //indicate to user that it is invalid.
                     txt_CustBusPhone.setStyle("-fx-border-color: red");
                     lbl_Phoneformat.setText("**Please use phone format (###) ###-####");
-
                 }
             }
         });
 
-        ///-------------CUSTOMER HOME PHONE-------------///
+        ///-------------CUSTOMER HOME PHONE-------------///                                                                                     // uses validator in validator class
         txt_CustHomePhone.focusedProperty().addListener((ov, oldV, newV) -> {
             if (Validator.isValidPhoneNoAlert(txt_CustHomePhone) || txt_CustHomePhone.getText().isEmpty()) {
                 txt_CustHomePhone.setStyle("-fx-border-color: null");
@@ -315,7 +285,7 @@ public class AddCustomerController {
             }
         });
 
-        ///-------------CUSTOMER FIRST NAME-------------///
+        ///-------------CUSTOMER FIRST NAME-------------///                                                                                     // checks for null value
         txt_CustFName.focusedProperty().addListener((ov, oldV, newV) -> {
             if (!newV){
                 if (!txt_CustFName.getText().isEmpty()){
@@ -327,7 +297,7 @@ public class AddCustomerController {
             }
                 });
 
-        ///-------------CUSTOMER FIRST NAME-------------///
+        ///-------------CUSTOMER FIRST NAME-------------///                                                                                     // checks for null value
         txt_CustLName.focusedProperty().addListener((ov, oldV, newV) -> {
             if (!newV){
                 if (!txt_CustLName.getText().isEmpty()){
@@ -339,7 +309,7 @@ public class AddCustomerController {
             }
         });
 
-        ///-------------CUSTOMER ADDRESS-------------///
+        ///-------------CUSTOMER ADDRESS-------------///                                                                                     // checks for null value
         txt_CustAddress.focusedProperty().addListener((ov, oldV, newV) -> {
             if (!newV){
                 if (!txt_CustAddress.getText().isEmpty() ){
@@ -351,7 +321,7 @@ public class AddCustomerController {
             }
         });
 
-        ///-------------CUSTOMER POSTAL-------------///
+        ///-------------CUSTOMER POSTAL-------------///                                                                                     // uses validator in validator class
         txt_CustPostal.focusedProperty().addListener((ov, oldV, newV) -> {
             if (!newV){
                 if (!txt_CustPostal.getText().isEmpty() && Validator.isValidPostalCodeNoAlert(txt_CustPostal)){
@@ -383,17 +353,6 @@ public class AddCustomerController {
                 }
                 else {
                     cb_CustCountry.setStyle("-fx-border-color: red");
-                }
-            }
-        });
-        ///-------------COUNTRY-------------///
-        cb_CustProvince.focusedProperty().addListener((ov, oldV, newV) -> {
-            if (!newV){//on not focus
-                if (!cb_CustProvince.getSelectionModel().isEmpty()){
-                    cb_CustProvince.setStyle("-fx-border-color: null");
-                }
-                else {
-                    cb_CustProvince.setStyle("-fx-border-color: red");
                 }
             }
         });
@@ -462,10 +421,10 @@ public class AddCustomerController {
         btn_AddCustomerCancel.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                if (isSavePage) {
-                    try {
-                        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../views/Dashboard.fxml"));
-                        Parent root1 = (Parent) fxmlLoader.load();
+                if (isSavePage) {                                                                                                   //since this page is called from 2 different places, cancel will
+                    try {                                                                                                           //load different screens. cancel from 'Add Customer' brings you
+                        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../views/Dashboard.fxml"));            //back to the dashboard, while cancel from 'Edit Customer' brings
+                        Parent root1 = (Parent) fxmlLoader.load();                                                                  //you back to the search view
                         mainPane.getChildren().setAll(root1);
 
                     } catch (IOException e) {
@@ -488,10 +447,10 @@ public class AddCustomerController {
 
         ////--------------------------------------------------SAVE BUTTON-----------------------------------------------////
 
-        btn_AddCustomerSave.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                if(!isSavePage){ //if this page was loaded as EDIT PAGE
+        btn_AddCustomerSave.setOnMouseClicked(new EventHandler<MouseEvent>() {                                                  //some complexity here again with the isSavePage variable,
+            @Override                                                                                                           //the save button needs to do two things, update a pre existing
+            public void handle(MouseEvent event) {                                                                              //customers info if it is pressed on the Edit Customer page, or
+                if(!isSavePage){ // !isSavePage = Edit Customer Page                                                            // insert a new customer if pressed on the Add Customer page.
                     //if all fields are filled
                     if (allArePresent() && IsValidData()) {
                         //establish connection to insert new customer into DB
@@ -538,7 +497,7 @@ public class AddCustomerController {
                         MonsterValidation();
 
                     }
-                }else{ //if this page was loaded as SAVE PAGE
+                }else{ //if this page was loaded as Add Customer Page
                     //if all fields are filled and valid data - allow save
                     if (allArePresent() && IsValidData()) {
 
@@ -593,9 +552,8 @@ public class AddCustomerController {
                             throwables.printStackTrace();
                         }
                     } else {
-                        //////////////////////////////////////--------INSERT VALIDATION STUFF FOR SAVE BUTTON ON EDIT PAGE
                         lbl_Validation.setText("Please fill in all required fields");
-                        MonsterValidation();
+                        MonsterValidation();  // all validation was added to a function i have named 'Monster Validation'
                     }
                 }
             }
@@ -725,7 +683,7 @@ public class AddCustomerController {
 
     private boolean allArePresent() { // doesnt include home phone as that one is nullable
         return(
-                !txt_CustFName.getText().isEmpty() && !txt_CustLName.getText().isEmpty() && !txt_CustEmail.getText().isEmpty()                      //ADD VALIDATION
+                !txt_CustFName.getText().isEmpty() && !txt_CustLName.getText().isEmpty() && !txt_CustEmail.getText().isEmpty()
                         && !txt_CustBusPhone.getText().isEmpty() && !txt_CustAddress.getText().isEmpty() && !txt_CustCity.getText().isEmpty()
                         && !txt_CustPostal.getText().isEmpty() && !cb_CustProvince.getValue().isEmpty() && !cb_CustCountry.getValue().isEmpty()
         );
@@ -802,79 +760,92 @@ public class AddCustomerController {
             txt_CustHomePhone.setStyle("-fx-border-color: red");
         }
         //----------BUSINESS PHONE
-        if (!isSavePage){ //if this page was loaded as EDIT PAGE
-            //check if valid phone using validator
-            if (Validator.isValidPhoneNoAlert(txt_CustBusPhone)) {                  //if it is valid do this stuff
-                if (!txt_CustBusPhone.getText().isEmpty() && !txt_CustBusPhone.getText().isEmpty()) {
-                    //if the fields are both filled, and subsequently both do not belong to other customers, then enable fields
-                    enableFields();
+        if (!isSavePage){                                                                                                   //if this page was loaded as EDIT PAGE
+            if (Validator.isValidPhoneNoAlert(txt_CustBusPhone)) {                                                                 //check if valid phone number
+                if (!txt_CustBusPhone.getText().isEmpty() && !txt_CustBusPhone.getText().isEmpty()) {                                  //then, check if not null
+                    enableFields();                                                                                                    // if not null , and valid, then enable other fields
                 }
-                txt_CustBusPhone.setStyle("-fx-border-color: null");
-            }else if(!Validator.isValidEmailNoAlert(txt_CustBusPhone)) {           //if its not valid, lets indicate that to the user
-                txt_CustBusPhone.focusedProperty();
-                txt_CustBusPhone.setStyle("-fx-border-color: red");
+                txt_CustBusPhone.setStyle("-fx-border-color: null");                                                                   // also, remove red border color :)
+            }else if(!Validator.isValidPhoneNoAlert(txt_CustBusPhone)) {                                                           //if its not valid phone number
+                txt_CustBusPhone.focusedProperty();                                                                                        //focus user back on phone number
+                txt_CustBusPhone.setStyle("-fx-border-color: red");                                                                        //indicate error with red border
+                lbl_Phoneformat.setText("**Please use phone format (###) ###-####");                                                       //show error message with correct format
             }
-        }else{ //else isEditPage returns FALSE
-            //check if valid phone using validator
-            if (Validator.isValidPhoneNoAlert(txt_CustBusPhone)) {                  //if it is valid do this stuff
-                boolean checkExists = custPhoneExists();
-                if (checkExists) {
-//                    if the customer exists, show the agent a message
-                    JOptionPane.showMessageDialog(null, "Customer with this phone exists, do not add new customer",   //------ TESTING ONLY!!!!!!!!! REPLACE WITH REDIRECT ----------//
-                            "Warning", JOptionPane.CLOSED_OPTION);
-                } else {
-                    //if it DOESNT, then we want to allow the addition of this customer
-                    //FIRST check if cust email and cust phone are both not null4
-                    txt_CustBusPhone.setStyle("-fx-border-color: null");
-
-                    if (!txt_CustBusPhone.getText().isEmpty() && !txt_CustBusPhone.getText().isEmpty()) {
-                        //if the fields are both filled, and subsequently both do not belong to other customers, then enable fields
-                        enableFields();
+        }else{                                                                                                                //else this page was loaded as SAVE PAGE
+            if (Validator.isValidPhoneNoAlert(txt_CustBusPhone)) {                                                                      //check if valid phone number
+                lbl_Phoneformat.setText("");                                                                                            // if valid, remove format error
+                boolean checkExists = custPhoneExists();                                                                                //check if phone exists using custPhoneExists() function
+                if (checkExists) {                                                                                                      // if cust phone exists
+                    Alert alert = new Alert(Alert.AlertType.NONE,                                                                          //present user with alert box, customer exists
+                            "Sorry, a customer with this phone number already exists. \n Go to customer search?",                        // want to go to cust search instead?
+                            ButtonType.YES, ButtonType.NO);
+                    Optional<ButtonType> result = alert.showAndWait();
+                    if (result.get() == ButtonType.YES){                                                                                        // button logic, yes / no
+                        try {                                                                                                                       // ... user chose YES
+                            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../views/SearchView.fxml"));                       // redirect to search view
+                            Parent root1 = (Parent) fxmlLoader.load();
+                            mainPane.getChildren().setAll(root1);
+                        } catch (IOException e) {                                                                                               // exception in case redirect doesnt work
+                            e.printStackTrace();                                                                                                    //print error
+                        }
+                    } else {                                                                                                                    // ... user chose NO or closed the dialog
+                        txt_CustBusPhone.clear();                                                                                                      //clear cust phone
+                    }
+                } else {                                                                                                                    // else if , cust phone does not exist in db & is valid
+                    txt_CustBusPhone.setStyle("-fx-border-color: null");                                                                       //remove the red border error indicator
+                    if (!txt_CustBusPhone.getText().isEmpty() && !txt_CustBusPhone.getText().isEmpty()) {                                      //final check if phone and custphone are not empty
+                        enableFields();                                                                                                         //enable the rest of the form fields
                     }
                 }
-            } else if(!Validator.isValidPhoneNoAlert(txt_CustBusPhone)) {           //if its not valid, lets indicate that to the user
-                txt_CustBusPhone.focusedProperty();
+            } else if(!Validator.isValidPhoneNoAlert(txt_CustBusPhone)) {                                                                   //if the phone was never valid to begin with
+                txt_CustBusPhone.focusedProperty();                                                                                                //indicate to user that it is invalid.
                 txt_CustBusPhone.setStyle("-fx-border-color: red");
+                lbl_Phoneformat.setText("**Please use phone format (###) ###-####");
             }
         }
 
         //-------------EMAIL
-        if (!isSavePage){ //if this page was loaded as EDIT PAGE
-            //check if valid email address
-            if (Validator.isValidEmailNoAlert(txt_CustEmail)) {                  //if it is valid do this stuff
-                if (!txt_CustEmail.getText().isEmpty() && !txt_CustBusPhone.getText().isEmpty()) {
-                    //if the fields are both filled, and subsequently both do not belong to other customers, then enable fields
-                    enableFields();
+        if (!isSavePage){                                                                                                   //if this page was loaded as EDIT PAGE
+            if (Validator.isValidEmailNoAlert(txt_CustEmail)) {                                                                 //check if valid email address
+                if (!txt_CustEmail.getText().isEmpty() && !txt_CustBusPhone.getText().isEmpty()) {                                  //then, check if not null
+                    enableFields();                                                                                                 // if not null , and valid, then enable other fields
                 }
-                txt_CustEmail.setStyle("-fx-border-color: null");
-            }else if(!Validator.isValidEmailNoAlert(txt_CustEmail)) {           //if its not valid, lets indicate that to the user
-                txt_CustEmail.focusedProperty();
-                txt_CustEmail.setStyle("-fx-border-color: red");
+                txt_CustEmail.setStyle("-fx-border-color: null");                                                                   // also, remove red border color :)
+            }else if(!Validator.isValidEmailNoAlert(txt_CustEmail)) {                                                           //if its not valid email
+                txt_CustEmail.focusedProperty();                                                                                        //focus user back on email,
+                txt_CustEmail.setStyle("-fx-border-color: red");                                                                        //indicate error with red border
             }
-        }else{ //else isEditPage returns FALSE
-            //check if valid email address
-            if (Validator.isValidEmailNoAlert(txt_CustEmail)) {                  //if it is valid do this stuff
-                boolean checkExists = custEmailExists();
-                if (checkExists) {
-//                    if the customer exists, show the agent a message
-                    JOptionPane.showMessageDialog(null, "Customer Email Exists, do not add new customer",   //------ TESTING ONLY!!!!!!!!! REPLACE WITH REDIRECT ----------/
-                            //change the token
-                            "Warning", JOptionPane.CLOSED_OPTION);
-                } else {
-                    //if it DOESNT, then we want to allow the addition of this customer
-                    //FIRST check if cust email and cust phone are both not null4
-                    txt_CustEmail.setStyle("-fx-border-color: null");
-
-                    if (!txt_CustEmail.getText().isEmpty() && !txt_CustBusPhone.getText().isEmpty()) {
-                        //if the fields are both filled, and subsequently both do not belong to other customers, then enable fields
-                        enableFields();
+        }else{                                                                                                                //else this page was loaded as SAVE PAGE
+            if (Validator.isValidEmailNoAlert(txt_CustEmail)) {                                                                      //check if valid email address
+                boolean checkExists = custEmailExists();                                                                                //check if email exists using custEmailExists() function
+                if (checkExists) {                                                                                                      // if cust email exists
+                    Alert alert = new Alert(Alert.AlertType.NONE,                                                                          //present user with alert box, customer exists
+                            "Sorry, a customer with this email already exists. \n Go to customer search?",                                 // want to go to cust search instead?
+                            ButtonType.YES, ButtonType.NO);
+                    Optional<ButtonType> result = alert.showAndWait();
+                    if (result.get() == ButtonType.YES){                                                                                        // button logic, yes / no
+                        try {                                                                                                                       // ... user chose YES
+                            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../views/SearchView.fxml"));                       // redirect to search view
+                            Parent root1 = (Parent) fxmlLoader.load();
+                            mainPane.getChildren().setAll(root1);
+                        } catch (IOException e) {                                                                                               // exception in case redirect doesnt work
+                            e.printStackTrace();                                                                                                    //print error
+                        }
+                    } else {                                                                                                                    // ... user chose NO or closed the dialog
+                        txt_CustEmail.clear();                                                                                                      //clear cust email
+                    }
+                } else {                                                                                                                    // else if , cust email does not exist in db & is valid
+                    txt_CustEmail.setStyle("-fx-border-color: null");                                                                       //remove the red border error indicator
+                    if (!txt_CustEmail.getText().isEmpty() && !txt_CustBusPhone.getText().isEmpty()) {                                      //final check if email and custphone are not empty
+                        enableFields();                                                                                                         //enable the rest of the form fields
                     }
                 }
-            } else if(!Validator.isValidEmailNoAlert(txt_CustEmail)) {           //if its not valid, lets indicate that to the user
-                txt_CustEmail.focusedProperty();
+            }else if(!Validator.isValidEmailNoAlert(txt_CustEmail)) {                                                                   //if the email was never valid to begin with
+                txt_CustEmail.focusedProperty();                                                                                                //indicate to user that it is invalid.
                 txt_CustEmail.setStyle("-fx-border-color: red");
             }
         }
+
         //-------------COUNTRY
         if (!cb_CustCountry.getSelectionModel().isEmpty()){
             cb_CustCountry.setStyle("-fx-border-color: null");
