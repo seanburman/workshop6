@@ -2,6 +2,10 @@ package controller;
 
 import Validator.Validator;
 
+/*
+Author: Ehsan Novin-Pour & Sean Burman
+ */
+
 import java.io.IOException;
 import java.net.URL;
 import java.sql.*;
